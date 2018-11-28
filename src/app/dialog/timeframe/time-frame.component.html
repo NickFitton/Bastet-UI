@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Options</h1>
+<div mat-dialog-content class="dialog-content">
+  <div>
+    <h3>Start Time</h3>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker1" placeholder="Choose a date" [(ngModel)]="data.start.date"
+             disabled>
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Choose a time" type="time" [(ngModel)]="data.start.time">
+    </mat-form-field>
+  </div>
+  <div>
+    <h3>End Time</h3>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker2" placeholder="Choose a date" [(ngModel)]="data.end.date" disabled>
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2 disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Choose a time" type="time" [(ngModel)]="data.end.time">
+    </mat-form-field>
+  </div>
+  <div>
+    <h3>Graph Type</h3>
+    <mat-radio-group [(ngModel)]="data.currentGraph">
+      <mat-radio-button *ngFor="let type of data.graphTypes" [value]=type.toLowerCase()>{{type}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Submit</button>
+</div>

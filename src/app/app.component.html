@@ -1,0 +1,13 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<mat-toolbar class="title-content">
+  <span>Camera Project</span>
+</mat-toolbar>
+
+<div class="content">
+  <app-chartjsbar-graph-component [dataPoints]="graphData" [graphType]="graphType">
+  </app-chartjsbar-graph-component>
+</div>
+
+<button class="floating-button" mat-fab color="primary" (click)="showTimeFrame()">
+  <mat-icon aria-label="Menu button for editing the graph">menu</mat-icon>
+</button>
