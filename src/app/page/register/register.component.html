@@ -1,0 +1,49 @@
+<div class="centered-content">
+  <p>{{otherReason}}</p>
+  <mat-card ngClass.lt-sm="smallBox">
+    <mat-card-title>Log In</mat-card-title>
+    <form>
+      <mat-card-content class="column">
+        <div class="input-row" fxLayoutGap="10px">
+        <mat-form-field>
+          <input matInput placeholder="First Name" type="text" autocomplete="given-name">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Last Name" type="text" autocomplete="family-name">
+        </mat-form-field>
+        </div>
+        <mat-form-field>
+          <input matInput placeholder="Email" type="email" autocomplete="email">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Password" type="password" autocomplete="current-password">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Reason for using projectName" [(value)]="reason">
+            <mat-option value="commercial">
+              Securing my Business (Commercial)
+            </mat-option>
+            <mat-option value="personal">
+              Securing my Home (Personal)
+            </mat-option>
+            <mat-option value="other">
+              Other
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="reason==='other'">
+          <input name="otherReason" matInput [(ngModel)]="otherReason" placeholder="Reason for using projectName" type="text" [maxlength]="otherReasonLength">
+          <mat-hint align="end">{{otherReason.length}} / {{otherReasonLength}}</mat-hint>
+        </mat-form-field>
+      </mat-card-content>
+    </form>
+    <mat-card-actions>
+      <button mat-raised-button routerLink="/login">
+        I have an account
+      </button>
+      <button mat-flat-button (click)="attemptRegister()">
+        Register
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
