@@ -1,3 +1,14 @@
-<p>
-  toolbar works!
-</p>
+<mat-toolbar>
+  <div fxLayoutGap="8px">
+    <mat-icon>
+      menu
+    </mat-icon>
+    <span>
+      {{pageName}}
+    </span>
+  </div>
+  <div fxLayoutGap="8px">
+    <mat-icon>notification</mat-icon>
+    <span>Welcome {{firstName}}</span>
+  </div>
+</mat-toolbar>

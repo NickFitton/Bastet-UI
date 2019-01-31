@@ -1,3 +1,19 @@
-<p>
-  user-groups works!
-</p>
+<app-toolbar pageName="User Groups" [firstName]="user.getFirstName()"></app-toolbar>
+<div class="content column">
+  <div *ngFor="let group of userGroups">
+    <div class="space_between">
+      <h2>{{group.getName()}}</h2>
+      <button mat-flat-button *ngIf="group.getAdmin() === user">Manage Group</button>
+      <button mat-flat-button *ngIf="group.getAdmin() !== user">Leave Group</button>
+    </div>
+    <div class="row selection" fxLayoutGap="32px">
+      <div class="box column" *ngFor="let groupMember of group.getMembers(user)">
+        <span>{{groupMember.getFormattedName()}}</span>
+      </div>
+      <div class="box column">
+        <span>+</span>
+        <span>Invite User</span>
+      </div>
+    </div>
+  </div>
+</div>

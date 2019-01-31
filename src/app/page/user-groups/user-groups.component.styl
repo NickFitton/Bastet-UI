@@ -1,0 +1,35 @@
+.content
+  padding 16px
+
+.row
+  display flex
+  flex-direction row
+
+.column
+  display flex
+  flex-flow column wrap
+
+.selection
+  padding 8px
+
+.box
+  display flex
+  justify-content center
+  align-items center
+  background #eee
+  width 192px
+  height 128px
+  cursor pointer
+  &:hover
+    -webkit-transition background ease-in-out 0.25s
+    -moz-transition background ease-in-out 0.25s
+    -ms-transition background ease-in-out 0.25s
+    -o-transition background ease-in-out 0.25s
+    transition background ease-in-out 0.25s
+    background #ddd
+
+.space_between
+  display flex
+  flex-direction row
+  justify-content space-between
+  align-items center

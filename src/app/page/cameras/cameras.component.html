@@ -1,3 +1,21 @@
-<p>
-  cameras works!
-</p>
+<app-toolbar pageName="Cameras" [firstName]="user.getFirstName()"></app-toolbar>
+<div class="content column">
+  <div>
+    <h2>My Cameras</h2>
+    <div class="row selection" fxLayoutGap="32px">
+      <div class="box column" *ngFor="let camera of ownedCameras">
+        <span>{{camera.name}}</span>
+        <span *ngIf="camera.getOwnedBy() != user.id">Owned by: {{camera.getOwnedBy()}}</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h2>Shared Cameras</h2>
+    <div class="row selection" fxLayoutGap="32px">
+      <div class="box column" *ngFor="let camera of sharedCameras">
+        <span>{{camera.name}}</span>
+        <span *ngIf="camera.getOwnedBy() != user.id">Owned by: {{camera.getOwnedBy()}}</span>
+      </div>
+    </div>
+  </div>
+</div>
