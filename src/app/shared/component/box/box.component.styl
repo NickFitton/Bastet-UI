@@ -1,35 +1,36 @@
 @import "../../../../styles.styl"
 
-.content
-  &:hover
-    & + .box
-      -webkit-transition background ease-in-out 0.25s, border-radius ease-in-out 0.5s, height ease-in-out 0.5s
-      -moz-transition background ease-in-out 0.25s, border-radius ease-in-out 0.5s, height ease-in-out 0.5s
-      -ms-transition background ease-in-out 0.25s, border-radius ease-in-out 0.5s, height ease-in-out 0.5s
-      -o-transition background ease-in-out 0.25s, border-radius ease-in-out 0.5s, height ease-in-out 0.5s
-      transition background ease-in-out 0.25s, border-radius ease-in-out 0.5s, height ease-in-out 0.5s
-      background #ddd
-      border-radius 16px 16px 0 0
-      height 85px
-
-.box, .content
-  width 192px
-  height 128px
-  flex-direction column
-
 .box, .options, .content
   display flex
   justify-content center
   align-items center
   border-radius 16px
 
+.box, .content
+  width 192px
+  height 128px
+  flex-direction column
+  pointer-events inherit
+
 .content
   z-index 3
+  &:hover
+    & + .box
+      background #ddd
+      border-radius 16px 16px 0 0
+      height 85px
+
 .box
   position absolute
   z-index 2
   background #fff
   border-radius 16px
+  -webkit-transition background 0.25s, border-radius 0.5s, height 0.5s
+  -moz-transition background 0.25s, border-radius 0.5s, height 0.5s
+  -ms-transition background 0.25s, border-radius 0.5s, height 0.5s
+  -o-transition background 0.25s, border-radius 0.5s, height 0.5s
+  transition background 0.25s, border-radius 0.5s, height 0.5s
+
 .options
   position relative
   flex-direction row
