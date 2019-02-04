@@ -13,9 +13,29 @@ export class ToolbarComponent implements OnInit {
   @Input()
   firstName: string;
 
-  constructor() { }
+  toolbarLinks: Link[];
+
+  constructor() {
+    this.toolbarLinks = [
+      new Link('Dashboard', '/dashboard', 'home'),
+      new Link('Cameras', '/cameras', 'videocam'),
+      new Link('Statistics', '/stats', 'bar_chart')
+    ];
+  }
 
   ngOnInit() {
   }
 
+}
+
+class Link {
+  text: string;
+  link: string;
+  icon: string;
+
+  constructor(text: string, link: string, icon: string) {
+    this.text = text;
+    this.link = link;
+    this.icon = icon;
+  }
 }

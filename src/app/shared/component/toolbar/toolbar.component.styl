@@ -1,5 +1,45 @@
+@import "../../../../styles.styl"
+
 mat-toolbar
   display flex
   flex-flow row nowrap
   justify-content space-between
+  div
+    display flex
+    justify-content center
+    align-items center
 
+mat-toolbar
+  background-color $color-200
+  mat-icon
+    cursor pointer
+
+mat-sidenav-container
+  height calc(100vh - 64px)
+  mat-sidenav
+    background $color-50
+    width 200px
+    display flex
+    flex-flow column nowrap
+    .sidebar_item, .sidebar_item-disabled
+      padding 12px 16px 12px 16px
+      display flex
+      justify-content space-between
+    .sidebar_item-disabled
+      background-color $color-gray
+    .sidebar_item
+      background-color $color-50
+      color $color-900
+      cursor pointer
+      &:hover
+        background-color $color-100
+        -webkit-transition background ease-in-out 0.25s
+        -moz-transition background ease-in-out 0.25s
+        -ms-transition background ease-in-out 0.25s
+        -o-transition background ease-in-out 0.25s
+        transition background ease-in-out 0.25s
+      .mat-list-item-content
+        display flex
+        padding 0
+        flex-grow 1
+        justify-content space-between !important

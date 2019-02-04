@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-
 import {
   MatButtonModule,
   MatCardModule,
+  MatCheckboxModule,
   MatDatepickerModule,
+  MatDialogModule,
+  MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatRadioModule, MatSelectModule,
+  MatListModule,
+  MatProgressBarModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSidenavModule,
   MatSlideToggleModule,
   MatSnackBarModule,
   MatTabsModule,
@@ -19,38 +21,42 @@ import {
 
 @NgModule({
   imports: [
-    MatFormFieldModule,
-    MatCardModule,
-    MatToolbarModule,
     MatButtonModule,
-    MatInputModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatFormFieldModule,
     MatIconModule,
-    MatTabsModule,
+    MatInputModule,
+    MatListModule,
+    MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
-    MatDatepickerModule,
+    MatSidenavModule,
     MatSlideToggleModule,
-    MatDialogModule,
-    MatCheckboxModule,
     MatSnackBarModule,
-    MatProgressBarModule
+    MatTabsModule,
+    MatToolbarModule
   ],
   exports: [
-    MatFormFieldModule,
-    MatCardModule,
-    MatToolbarModule,
     MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
     MatDialogModule,
-    MatInputModule,
+    MatFormFieldModule,
     MatIconModule,
-    MatTabsModule,
+    MatInputModule,
+    MatListModule,
+    MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
-    MatDatepickerModule,
+    MatSidenavModule,
     MatSlideToggleModule,
-    MatCheckboxModule,
     MatSnackBarModule,
-    MatProgressBarModule
+    MatTabsModule,
+    MatToolbarModule
   ]
 })
 export class MaterialModule {

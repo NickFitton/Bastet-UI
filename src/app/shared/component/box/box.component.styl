@@ -1,0 +1,44 @@
+@import "../../../../styles.styl"
+
+.content
+  &:hover
+    & + .box
+      -webkit-transition background ease-in-out 0.25s, border-radius ease-in-out 0.5s, height ease-in-out 0.5s
+      -moz-transition background ease-in-out 0.25s, border-radius ease-in-out 0.5s, height ease-in-out 0.5s
+      -ms-transition background ease-in-out 0.25s, border-radius ease-in-out 0.5s, height ease-in-out 0.5s
+      -o-transition background ease-in-out 0.25s, border-radius ease-in-out 0.5s, height ease-in-out 0.5s
+      transition background ease-in-out 0.25s, border-radius ease-in-out 0.5s, height ease-in-out 0.5s
+      background #ddd
+      border-radius 16px 16px 0 0
+      height 85px
+
+.box, .content
+  width 192px
+  height 128px
+  flex-direction column
+
+.box, .options, .content
+  display flex
+  justify-content center
+  align-items center
+  border-radius 16px
+
+.content
+  z-index 3
+.box
+  position absolute
+  z-index 2
+  background #fff
+  border-radius 16px
+.options
+  position relative
+  flex-direction row
+  top -43px
+  width 192px
+  height 43px
+  border-radius 0 0 16px 16px
+  z-index 1
+  background-color $color-gray
+  span
+    cursor pointer
+

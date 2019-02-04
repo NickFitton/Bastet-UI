@@ -1,55 +1,56 @@
-<app-toolbar pageName="Dashboard" [firstName]="user.getFirstName()"></app-toolbar>
-<div class="content column">
-  <div class="activity">
-    <h2>Activity</h2>
-    <div class="row" fxLayoutGap="32px">
-      <div class="graph1 row">
-        <p>graph 1</p>
-        <table>
-          <tbody>
-          <tr>
-            <td>Front Door</td>
-            <td class="orange"></td>
-          </tr>
-          <tr>
-            <td>Garden</td>
-            <td class="green"></td>
-          </tr>
-          <tr>
-            <td>Garage</td>
-            <td class="blue"></td>
-          </tr>
-          </tbody>
-        </table>
+<app-toolbar pageName="Dashboard" [firstName]="user.getFirstName()">
+  <div class="content" fxLayout="column" fxLayoutGap="16px">
+    <section class="activity">
+      <h2>Activity</h2>
+      <div class="row" fxLayoutGap="32px">
+        <div class="graph1 row">
+          <p>graph 1</p>
+          <table>
+            <tbody>
+            <tr>
+              <td>Front Door</td>
+              <td class="orange"></td>
+            </tr>
+            <tr>
+              <td>Garden</td>
+              <td class="green"></td>
+            </tr>
+            <tr>
+              <td>Garage</td>
+              <td class="blue"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="graph2 row">
+          <p>graph 1</p>
+          <table>
+            <tbody>
+            <tr>
+              <td>Front Door</td>
+              <td class="orange"></td>
+            </tr>
+            <tr>
+              <td>Garden</td>
+              <td class="green"></td>
+            </tr>
+            <tr>
+              <td>Garage</td>
+              <td class="blue"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="graph2 row">
-        <p>graph 1</p>
-        <table>
-          <tbody>
-          <tr>
-            <td>Front Door</td>
-            <td class="orange"></td>
-          </tr>
-          <tr>
-            <td>Garden</td>
-            <td class="green"></td>
-          </tr>
-          <tr>
-            <td>Garage</td>
-            <td class="blue"></td>
-          </tr>
-          </tbody>
-        </table>
+    </section>
+    <section class="cameras">
+      <h2>Cameras</h2>
+      <div class="row" fxLayoutGap="16px">
+        <app-box class="column" *ngFor="let camera of cameras" options="View Manage" (link)="'/cameras/' + camera.getId()">
+          <span>{{camera.getName()}}</span>
+          <span>{{camera.getOwnedBy() != user.id ? 'Owned by: ' + camera.getOwnedBy() : 'Owned by: you'}}</span>
+        </app-box>
       </div>
-    </div>
+    </section>
   </div>
-  <div class="cameras">
-    <h2>Cameras</h2>
-    <div class="row" fxLayoutGap="32px">
-      <div class="box column" *ngFor="let camera of cameras">
-        <span>{{camera.name}}</span>
-        <span *ngIf="camera.getOwnedBy() != user.id">Owned by: {{camera.getOwnedBy()}}</span>
-      </div>
-    </div>
-  </div>
-</div>
+</app-toolbar>

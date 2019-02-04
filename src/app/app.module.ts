@@ -25,6 +25,7 @@ import { InviteUserComponent } from './dialog/invite-user/invite-user.component'
 import { ToolbarComponent } from './shared/component/toolbar/toolbar.component';
 import { RegisterComponent } from './page/register/register.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { BoxComponent } from './shared/component/box/box.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CameraToGroupsComponent,
     InviteUserComponent,
     ToolbarComponent,
-    RegisterComponent
+    RegisterComponent,
+    BoxComponent
   ],
   entryComponents: [
     TimeFrameComponent
