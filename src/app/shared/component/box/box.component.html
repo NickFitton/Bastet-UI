@@ -1,8 +1,8 @@
 <div class="content">
-  <div class="box collapsing" [routerLink]=link>
+  <div class="box collapsing" [routerLink]=link (click)="elementClicked(boxOptions[0])">
     <ng-content></ng-content>
   </div>
   <div class="options collapsing" fxLayoutGap="4px">
-    <span *ngFor="let option of boxOptions" (click)="console.log($event)">{{option}}</span>
+    <span *ngFor="let option of boxOptions" (click)="elementClicked(option)">{{option}}</span>
   </div>
 </div>

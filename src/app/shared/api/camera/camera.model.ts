@@ -37,4 +37,12 @@ export class CameraModel {
   getLastActive(): Date {
     return this.lastActive;
   }
+
+  isOwnedBy(id: string): string {
+    return id === this.ownedBy;
+  }
+
+  getOwnedStatement(id: string): string {
+    return this.isOwnedBy(id) ? 'Owned by you' : 'Owned by ' + this.ownedBy;
+  }
 }

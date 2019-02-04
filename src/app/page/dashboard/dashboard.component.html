@@ -46,9 +46,13 @@
     <section class="cameras">
       <h2>Cameras</h2>
       <div class="row" fxLayoutGap="16px">
-        <app-box class="column" *ngFor="let camera of cameras" options="View Manage" (link)="'/cameras/' + camera.getId()">
+        <app-box class="column" *ngFor="let camera of cameras"
+                 [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"
+                 (link)="'/cameras/' + camera.getId()" (clicked)="onClick(camera.getId(), $event)">
+          <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">
+            {{camera.isOwnedBy(user.getId()) ? 'person' : 'group'}}
+          </mat-icon>
           <span>{{camera.getName()}}</span>
-          <span>{{camera.getOwnedBy() != user.id ? 'Owned by: ' + camera.getOwnedBy() : 'Owned by: you'}}</span>
         </app-box>
       </div>
     </section>
