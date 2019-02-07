@@ -2,20 +2,27 @@ import { UserModel } from '../user/user.model';
 import { CameraModel } from '../camera/camera.model';
 
 export class GroupModel {
+  private readonly id: string;
   private readonly name: string;
   private readonly admin: UserModel;
   private readonly members: UserModel[];
   private readonly cameras: CameraModel[];
 
   constructor(
+    id: string,
     name: string,
     admin: UserModel,
     members: UserModel[],
     cameras: CameraModel[]) {
+    this.id = id;
     this.name = name;
     this.admin = admin;
     this.members = members;
     this.cameras = cameras;
+  }
+
+  getId(): string {
+    return this.id;
   }
 
   getName(): string {
@@ -26,14 +33,8 @@ export class GroupModel {
     return this.admin;
   }
 
-  getMembers(currentUser: UserModel): UserModel[] {
-    const returningMembers = [];
-    for (const member of this.members) {
-      if (member !== currentUser) {
-        returningMembers.push(member);
-      }
-    }
-    return returningMembers;
+  getMembers(): UserModel[] {
+    return this.members;
   }
 
   getCameras(): CameraModel[] {

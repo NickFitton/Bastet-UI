@@ -1,9 +1,12 @@
+@import "../../../styles.styl"
+
 .content
   padding 16px
+  background-color $color-50
 
 .row
   display flex
-  flex-direction row
+  flex-flow row wrap
 
 .column
   display flex
@@ -33,3 +36,6 @@
   flex-direction row
   justify-content space-between
   align-items center
+
+button
+  background-color $color-500 !important

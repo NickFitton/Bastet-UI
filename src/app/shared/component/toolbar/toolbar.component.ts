@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { UserService } from '../../api/user/user.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -15,17 +17,33 @@ export class ToolbarComponent implements OnInit {
 
   toolbarLinks: Link[];
 
-  constructor() {
+  settingsHidden: boolean;
+
+  constructor(private router: Router, private userService: UserService) {
     this.toolbarLinks = [
       new Link('Dashboard', '/dashboard', 'home'),
-      new Link('Cameras', '/cameras', 'videocam'),
+      new Link('My Cameras', '/cameras', 'videocam'),
+      new Link('My groups', '/groups', 'group'),
       new Link('Statistics', '/stats', 'bar_chart')
     ];
+    this.settingsHidden = true;
   }
 
   ngOnInit() {
   }
 
+  toggleSettings(): void {
+    this.settingsHidden = !this.settingsHidden;
+  }
+
+  signOut(): void {
+    this.userService.logOut();
+    this.router.navigate(['/']);
+  }
+
+  goToSettings(): void {
+    this.router.navigate(['/settings']);
+  }
 }
 
 class Link {

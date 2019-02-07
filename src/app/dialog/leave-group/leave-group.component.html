@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Leave a Group</h1>
+<div mat-dialog-content class="dialog-content">
+  <p>Are you sure you want to leave the group?</p>
+  <p *ngIf="hasCameras()">Your cameras will be removed from the group</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
+  <button mat-button [mat-dialog-close]="true">Leave Group</button>
+</div>

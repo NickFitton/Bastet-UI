@@ -38,7 +38,7 @@ export class CameraModel {
     return this.lastActive;
   }
 
-  isOwnedBy(id: string): string {
+  isOwnedBy(id: string): boolean {
     return id === this.ownedBy;
   }
 

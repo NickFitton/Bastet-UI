@@ -14,19 +14,28 @@ export class BoxComponent implements OnInit {
 
   @Input()
   set options(options: string) {
-    this.boxOptions = options.split(' ');
+    const newoptions = options.split(' ');
+    for (const option of newoptions) {
+      this.boxOptions.push(option);
+    }
   }
 
   @Output() clicked = new EventEmitter<string>();
 
   constructor() {
+    this.boxOptions = [];
+    this.link = '';
   }
 
   ngOnInit() {
   }
 
   elementClicked(option: string): void {
-    this.clicked.emit(option.toLowerCase());
+    if (option === undefined) {
+      this.clicked.emit('clicked');
+    } else {
+      this.clicked.emit(option.toLowerCase());
+    }
   }
 
 }

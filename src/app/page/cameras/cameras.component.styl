@@ -1,29 +1,14 @@
+@import "../../../styles.styl"
+
 .content
-  padding 16px
+  section
+    padding 16px
+    background-color $color-light-gray
+    app-box
+      span
+        text-align center
 
 .row
   display flex
   flex-direction row
 
-.column
-  display flex
-  flex-flow column wrap
-
-.selection
-  padding 8px
-
-.box
-  display flex
-  justify-content center
-  align-items center
-  background #eee
-  width 192px
-  height 128px
-  cursor pointer
-  &:hover
-    -webkit-transition background ease-in-out 0.25s
-    -moz-transition background ease-in-out 0.25s
-    -ms-transition background ease-in-out 0.25s
-    -o-transition background ease-in-out 0.25s
-    transition background ease-in-out 0.25s
-    background #ddd

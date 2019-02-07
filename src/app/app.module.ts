@@ -26,11 +26,13 @@ import { ToolbarComponent } from './shared/component/toolbar/toolbar.component';
 import { RegisterComponent } from './page/register/register.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BoxComponent } from './shared/component/box/box.component';
+import { LeaveGroupComponent } from './dialog/leave-group/leave-group.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TimeFrameComponent,
+    LeaveGroupComponent,
     LoginComponent,
     DashboardComponent,
     CamerasComponent,
@@ -49,7 +51,9 @@ import { BoxComponent } from './shared/component/box/box.component';
     BoxComponent
   ],
   entryComponents: [
-    TimeFrameComponent
+    TimeFrameComponent,
+    LeaveGroupComponent,
+    InviteUserComponent,
   ],
   imports: [
     FormsModule,

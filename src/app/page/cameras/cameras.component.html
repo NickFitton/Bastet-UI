@@ -1,21 +1,35 @@
-<app-toolbar pageName="Cameras" [firstName]="user.getFirstName()"></app-toolbar>
-<div class="content column">
-  <div>
-    <h2>My Cameras</h2>
-    <div class="row selection" fxLayoutGap="32px">
-      <div class="box column" *ngFor="let camera of ownedCameras">
-        <span>{{camera.name}}</span>
-        <span *ngIf="camera.getOwnedBy() != user.id">Owned by: {{camera.getOwnedBy()}}</span>
+<app-toolbar pageName="Cameras" [firstName]="user.getFirstName()">
+  <div class="content" fxLayout="column" fxLayoutGap="16px">
+    <section class="cameras">
+      <h2>My Cameras</h2>
+      <div class="row" fxLayoutGap="16px">
+        <app-box class="column" *ngFor="let camera of ownedCameras"
+                 [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"
+                 (link)="'/cameras/' + camera.getId()" (clicked)="onClick(camera.getId(), $event)">
+          <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">
+            {{camera.isOwnedBy(user.getId()) ? 'person' : 'group'}}
+          </mat-icon>
+          <span>{{camera.getName()}}</span>
+        </app-box>
+        <app-box class="column" (clicked)="createCamera()">
+          <mat-icon>video_call</mat-icon>
+          <span>Add a Camera</span>
+        </app-box>
       </div>
-    </div>
-  </div>
-  <div>
-    <h2>Shared Cameras</h2>
-    <div class="row selection" fxLayoutGap="32px">
-      <div class="box column" *ngFor="let camera of sharedCameras">
-        <span>{{camera.name}}</span>
-        <span *ngIf="camera.getOwnedBy() != user.id">Owned by: {{camera.getOwnedBy()}}</span>
+    </section>
+    <section class="cameras">
+      <h2>Cameras Shared with me</h2>
+      <div class="row" fxLayoutGap="16px">
+        <app-box class="column" *ngFor="let camera of sharedCameras"
+                 [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"
+                 (link)="'/cameras/' + camera.getId()" (clicked)="onClick(camera.getId(), $event)">
+          <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">
+            {{camera.isOwnedBy(user.getId()) ? 'person' : 'group'}}
+          </mat-icon>
+          <span>{{camera.getName()}}</span>
+        </app-box>
       </div>
-    </div>
+    </section>
   </div>
-</div>
+</app-toolbar>
+

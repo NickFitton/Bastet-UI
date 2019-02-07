@@ -1,13 +1,13 @@
 <mat-toolbar>
-  <div fxLayoutGap="8px">
-    <mat-icon (click)="sidenav.toggle()">
+  <div fxLayoutGap="8px" (click)="sidenav.toggle()">
+    <mat-icon>
       menu
     </mat-icon>
     <span>{{pageName}}</span>
   </div>
-  <div fxLayoutGap="8px">
-    <mat-icon>notifications</mat-icon>
-    <span>Welcome {{firstName}}</span>
+  <div>
+    <mat-icon class="toolbar-option icon_option">notifications</mat-icon>
+    <span class="toolbar-option span_option" (click)="toggleSettings()">Welcome {{firstName}}</span>
   </div>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
@@ -23,3 +23,15 @@
     <ng-content></ng-content>
   </mat-sidenav-content>
 </mat-sidenav-container>
+<div class="user-settings" [hidden]="settingsHidden">
+  <div class="list">
+    <div class="list_item" (click)="signOut()">
+      <span>Sign Out</span>
+      <mat-icon>exit_to_app</mat-icon>
+    </div>
+    <div class="list_item" [ngClass]="{'sidebar_items-disabled': 'settings' === pageName}" (click)="goToSettings()">
+      <span>Settings</span>
+      <mat-icon>settings</mat-icon>
+    </div>
+  </div>
+</div>

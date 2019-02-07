@@ -3,6 +3,7 @@ export class UserModel {
   private readonly firstName: string;
   private readonly lastName: string;
   private readonly email: string;
+  private readonly password: string;
   private readonly createdAt: Date;
 
   constructor(
@@ -10,12 +11,14 @@ export class UserModel {
     firstName: string,
     lastName: string,
     email: string,
+    password: string,
     createdAt: Date
   ) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
+    this.password = password;
     this.createdAt = createdAt;
   }
 
@@ -33,6 +36,10 @@ export class UserModel {
 
   getEmail(): string {
     return this.email;
+  }
+
+  getPassword(): string {
+    return this.password;
   }
 
   getCreatedAt(): Date {

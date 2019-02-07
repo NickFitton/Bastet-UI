@@ -6,17 +6,17 @@
       <mat-card-content class="column">
         <div class="input-row" fxLayoutGap="10px">
         <mat-form-field>
-          <input matInput placeholder="First Name" type="text" autocomplete="given-name">
+          <input name="given-name" [(ngModel)]="firstName" matInput placeholder="First Name" type="text" autocomplete="given-name">
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="Last Name" type="text" autocomplete="family-name">
+          <input name="family-name" [(ngModel)]="lastName" matInput placeholder="Last Name" type="text" autocomplete="family-name">
         </mat-form-field>
         </div>
         <mat-form-field>
-          <input matInput placeholder="Email" type="email" autocomplete="email">
+          <input name="email" [(ngModel)]="email" matInput placeholder="Email" type="email" autocomplete="email">
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="Password" type="password" autocomplete="current-password">
+          <input name="current-password" [(ngModel)]="password" matInput placeholder="Password" type="password" autocomplete="current-password">
         </mat-form-field>
         <mat-form-field>
           <mat-select placeholder="Reason for using projectName" [(value)]="reason">

@@ -54,6 +54,7 @@
           </mat-icon>
           <span>{{camera.getName()}}</span>
         </app-box>
+        <p *ngIf="cameras.length === 0">You currently don't have any cameras setup with us</p>
       </div>
     </section>
   </div>

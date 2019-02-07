@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../../shared/api/user/user.service';
+import { UserModel } from '../../shared/api/user/user.model';
 
 @Component({
   selector: 'app-login',
@@ -8,11 +10,16 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
 
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+
   reason: string;
   otherReason: string;
   otherReasonLength: number;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private userService: UserService) {
   }
 
   ngOnInit() {
@@ -22,6 +29,13 @@ export class RegisterComponent implements OnInit {
   }
 
   attemptRegister() {
-    this.router.navigate(['/dashboard']);
+    this.userService.createUser(new UserModel(null, this.firstName, this.lastName, this.email, this.password, null))
+      .subscribe(
+        next => {
+          this.router.navigate(['/dashboard']);
+        },
+        error => {
+          alert(error);
+        });
   }
 }

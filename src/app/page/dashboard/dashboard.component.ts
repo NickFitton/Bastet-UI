@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CameraModel } from '../../shared/api/camera/camera.model';
 import { UserModel } from '../../shared/api/user/user.model';
 import { Router } from '@angular/router';
+import { UserService } from '../../shared/api/user/user.service';
+import { CameraService } from '../../shared/api/camera/camera.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,19 +15,25 @@ export class DashboardComponent implements OnInit {
   cameras: CameraModel[];
   user: UserModel;
 
-  constructor(private router: Router) {
-    const cameraPop = [];
-    cameraPop.push(new CameraModel('camera_uuid_1', 'your_uuid', 'Front Door', new Date(2016, 5, 3), new Date(Date.now())));
-    cameraPop.push(new CameraModel('camera_uuid_2', 'not_your_uuid', 'Garage', new Date(2016, 6, 26), new Date(Date.now())));
-    this.cameras = cameraPop;
-    this.user = new UserModel('your_uuid', 'test', 'user', 'test@account.com', new Date(2016, 3, 22));
+  constructor(private router: Router, private userService: UserService, private cameraService: CameraService) {
+    const loggedInUser = userService.getLoggedIn();
+    if (loggedInUser === null || loggedInUser === undefined) {
+      router.navigate(['/login']);
+    } else {
+      this.user = loggedInUser;
+    }
+    this.cameras = [];
+    cameraService.getOwnedCameras(loggedInUser.getId()).subscribe(
+      nextCamera => {
+        this.cameras.push(nextCamera);
+      });
   }
 
   ngOnInit(): void {
   }
 
   onClick(cameraId: string, navigation: string): void {
-    this.router.navigate(['/camera/' + cameraId], {queryParams: {view: navigation}});
+    this.router.navigate(['/cameras/' + cameraId], {queryParams: {view: navigation}});
   }
 
 }

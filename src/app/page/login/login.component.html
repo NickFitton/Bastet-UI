@@ -4,18 +4,20 @@
     <form>
       <mat-card-content class="column">
         <mat-form-field>
-          <input matInput placeholder="Email" type="email" autocomplete="email">
+          <input matInput name="email" [(ngModel)]="email" placeholder="Email" type="email" autocomplete="email">
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="Password" type="password" autocomplete="current-password">
+          <input matInput name="password" [(ngModel)]="password" placeholder="Password" type="password"
+                 autocomplete="current-password">
         </mat-form-field>
+        <span class="error-message" *ngIf="errorMessage !== null && errorMessage !== undefined">{{errorMessage}}</span>
       </mat-card-content>
     </form>
     <mat-card-actions>
       <button mat-raised-button routerLink="/register">
         Register
       </button>
-      <button mat-flat-button>
+      <button mat-flat-button (click)="attemptLogin()">
         Log In
       </button>
     </mat-card-actions>
