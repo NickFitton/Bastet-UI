@@ -2,116 +2,104 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { UserModel } from './user.model';
 import { Observable } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { UserBean } from './user.bean';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
+  constructor(private client: HttpClient) {
+  }
+
+  private readonly TOKEN = 'auth_token';
+
   users: UserModel[];
   loggedInUser: UserModel;
 
-  constructor() {
-    if (!environment.production) {
-      this.users = [];
-      this.users.push(new UserModel('936c54b3-80a3-41ee-af1a-586d0302da2d', 'john', 'doe', 'j.doe@yahoo.co.uk', '1234', new Date(2010, 1, 1)));
-      this.users.push(new UserModel('69e20f9b-4d0d-45cf-96bd-af0e5f07863b', 'jane', 'doe', 'janedoe@gmail.com', '4321', new Date(2010, 1, 5)));
-      this.users.push(new UserModel('ad29a477-499f-4dcd-9098-75c629be0503', 'nick', 'fitton', 'dev@nfitton.com', 'password', new Date(Date.now())));
-    }
-  }
+  private readonly BASE_USER_URL = environment.serverUrl + '/v1/users';
+  private readonly USER_LOGIN_URL = environment.serverUrl + '/v1/login/user';
 
-  getUsers(): Observable<UserModel> {
-    return Observable.create(observer => {
-      for (const user of this.users) {
-        observer.next(user);
-      }
-      observer.complete();
-    });
-  }
-
-  getUser(userId: string): Observable<UserModel> {
-    return Observable.create(observer => {
-      let found = false;
-      for (const user of this.users) {
-        if (user.getId() === userId) {
-          observer.next(user);
-          observer.complete();
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        observer.error('404');
-      }
-    });
-  }
-
-  existsByEmail(email: string): Observable<boolean> {
-    return Observable.create(observer => {
-      let found = false;
-      for (const user of this.users) {
-        if (user.getEmail() === email) {
-          found = true;
-          break;
-        }
-      }
-      observer.next(found);
-      observer.complete();
-    });
-  }
-
-  existsById(id: string): Observable<boolean> {
-    return Observable.create(observer => {
-      let found = false;
-      for (const user of this.users) {
-        if (user.getId() === id) {
-          found = true;
-          break;
-        }
-      }
-      observer.next(found);
-      observer.complete();
-    });
+  static mapFromBean(bean: UserBean): UserModel {
+    return new UserModel(
+      bean.id,
+      bean.firstName,
+      bean.lastName,
+      bean.email,
+      bean.password,
+      bean.createdAt);
   }
 
   createUser(user: UserModel): Observable<UserModel> {
-    return this.existsByEmail(user.getEmail()).pipe(flatMap(exists => this.createIfNotExist(exists, user)));
+    return this.client
+      .post<BackendModel<UserBean>>(this.BASE_USER_URL, user)
+      .pipe(map(response => UserService.mapFromBean(response.data)));
   }
 
-  createIfNotExist(exist, user): Observable<UserModel> {
-    return Observable.create(observer => {
-      if (exist) {
-        observer.error('409');
-      } else {
-        const newUser = new UserModel(
-          'uuid', user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), new Date(Date.now()));
-        this.users.push(newUser);
-        observer.next(newUser);
-      }
-      observer.complete();
-    });
+  login(email: string, password: string): Observable<boolean> {
+    return this.client.post<BackendModel<string>>(this.USER_LOGIN_URL, undefined, {
+      observe: 'response',
+      headers: new HttpHeaders({'Authorization': 'Basic ' + btoa(email + ':' + password)})
+    })
+      .pipe(map(response => {
+        if (response.status !== 200) {
+          console.error('Failed to login: ' + response.body);
+          return false;
+        }
+        const data = response.body;
+        if (data.error) {
+          console.error(data.error);
+          return false;
+        }
+        sessionStorage.setItem(this.TOKEN, data.data);
+        return true;
+      }));
   }
 
-  login(email: string, password: string): Observable<string> {
-    return Observable.create(observer => {
-      const matchingUsers = this.users.filter(user => user.getEmail() === email && user.getPassword() === password);
+  getSelf(): Observable<UserModel> {
+    const sessionToken = sessionStorage.getItem(this.TOKEN);
+    if (sessionToken === null) {
+      return Observable.throw('No User');
+    }
 
-      if (matchingUsers.length === 1) {
-        this.loggedInUser = matchingUsers[0];
-        observer.next('access_token');
-      } else {
-        observer.error('403');
-      }
-      observer.complete();
-    });
+    return this.client
+      .get<BackendModel<UserBean>>(this.USER_LOGIN_URL, {
+        observe: 'response',
+        headers: new HttpHeaders({'Authorization': 'Token ' + sessionToken})
+      })
+      .pipe(map(response => {
+        if (response.status !== 200) {
+          return null;
+        }
+        const data = response.body;
+        if (data.error) {
+          return null;
+        }
+        this.loggedInUser = UserService.mapFromBean(data.data);
+        return this.loggedInUser;
+      }));
   }
 
   logOut(): void {
     this.loggedInUser = null;
+    sessionStorage.clear();
   }
 
   getLoggedIn(): UserModel {
-    return this.loggedInUser;
+    if (this.loggedInUser === null || this.loggedInUser === undefined) {
+      const currentId = sessionStorage.getItem(this.TOKEN);
+      for (const user of this.users) {
+        console.log(user.getId(), currentId);
+        if (user.getId() === currentId) {
+          this.loggedInUser = user;
+          return this.loggedInUser;
+        }
+      }
+      return null;
+    } else {
+      return this.loggedInUser;
+    }
   }
 }

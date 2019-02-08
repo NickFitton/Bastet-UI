@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/api/user/user.service';
 import { UserModel } from '../../shared/api/user/user.model';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -30,9 +31,13 @@ export class RegisterComponent implements OnInit {
 
   attemptRegister() {
     this.userService.createUser(new UserModel(null, this.firstName, this.lastName, this.email, this.password, null))
+      .pipe(flatMap(newUser => this.userService.login(this.email, this.password)))
       .subscribe(
-        next => {
-          this.router.navigate(['/dashboard']);
+        success => {
+          if (success) {
+            this.userService.getSelf().subscribe(user => this.router.navigate(['/dashboard']),
+              error => alert(error));
+          }
         },
         error => {
           alert(error);

@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
       this.user = loggedInUser;
     }
     this.cameras = [];
+    console.log(loggedInUser);
     cameraService.getOwnedCameras(loggedInUser.getId()).subscribe(
       nextCamera => {
         this.cameras.push(nextCamera);

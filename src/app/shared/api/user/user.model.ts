@@ -27,7 +27,7 @@ export class UserModel {
   }
 
   getFirstName(): string {
-    return this.firstName;
+    return this.firstName.substr(0, 1).toUpperCase() + this.firstName.substring(1);
   }
 
   getLastName(): string {
