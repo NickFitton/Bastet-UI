@@ -1,14 +1,32 @@
 import { Injectable } from '@angular/core';
-import { UserService } from '../user/user.service';
 import { CameraModel } from './camera.model';
 import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UserService } from '../user/user.service';
 
 @Injectable({providedIn: 'root'})
 export class CameraService {
 
   private cameras: CameraModel[];
 
-  constructor(private userService: UserService) {
+  private static readonly CAMERAS_PATH = '/v1/cameras';
+
+  private static cameraPath(cameraId: string): string {
+    return this.CAMERAS_PATH + '/' + cameraId;
+  }
+
+  constructor(private client: HttpClient, private userService: UserService) {
+    this.cameras = [];
+  }
+
+  claimCamera(cameraId: string): Promise<boolean> {
+    const headers = new HttpHeaders({'authorization': 'Token ' + this.userService.getToken()});
+
+    return this.client.patch(CameraService.cameraPath(cameraId), null, {
+      observe: 'response',
+      headers: headers
+    }).toPromise()
+      .then(response => response.status === 202);
   }
 
   getOwnedCameras(userId: string): Observable<CameraModel> {

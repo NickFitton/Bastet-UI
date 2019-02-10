@@ -27,11 +27,13 @@ import { RegisterComponent } from './page/register/register.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BoxComponent } from './shared/component/box/box.component';
 import { LeaveGroupComponent } from './dialog/leave-group/leave-group.component';
+import { ErrorComponent } from './dialog/error/error.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TimeFrameComponent,
+    ErrorComponent,
     LeaveGroupComponent,
     LoginComponent,
     DashboardComponent,
@@ -51,6 +53,8 @@ import { LeaveGroupComponent } from './dialog/leave-group/leave-group.component'
     BoxComponent
   ],
   entryComponents: [
+    AddCameraComponent,
+    ErrorComponent,
     TimeFrameComponent,
     LeaveGroupComponent,
     InviteUserComponent,

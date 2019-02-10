@@ -20,8 +20,8 @@ export class LoginComponent implements OnInit {
   }
 
   attemptLogin(): void {
-    this.userService.login(this.email, this.password).subscribe(
-      next => {
+    this.userService.login(this.email, this.password).then(
+      () => {
         this.router.navigate(['/dashboard']);
       },
       error => {

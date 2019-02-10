@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/api/user/user.service';
 import { UserModel } from '../../shared/api/user/user.model';
-import { flatMap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatDialog } from '@angular/material';
+import { ErrorComponent } from '../../dialog/error/error.component';
+import { ErrorConfig } from '../../dialog/error/error.config';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +23,7 @@ export class RegisterComponent implements OnInit {
   otherReason: string;
   otherReasonLength: number;
 
-  constructor(private router: Router, private userService: UserService) {
+  constructor(private router: Router, private userService: UserService, private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -31,16 +34,22 @@ export class RegisterComponent implements OnInit {
 
   attemptRegister() {
     this.userService.createUser(new UserModel(null, this.firstName, this.lastName, this.email, this.password, null))
-      .pipe(flatMap(newUser => this.userService.login(this.email, this.password)))
-      .subscribe(
-        success => {
-          if (success) {
-            this.userService.getSelf().subscribe(user => this.router.navigate(['/dashboard']),
-              error => alert(error));
-          }
-        },
+      .then(() => this.userService.login(this.email, this.password))
+      .then(() => this.router.navigate(['/dashboard']),
         error => {
-          alert(error);
+          if (error instanceof HttpErrorResponse) {
+            const httpErrorResponse = <HttpErrorResponse>error;
+            if (httpErrorResponse.status === 409) {
+              this.dialog.open(ErrorComponent, {
+                data: new ErrorConfig(
+                  'Email in use',
+                  'The email address you provided is already used by another account, please try again with a different email')});
+            } else {
+              alert(httpErrorResponse.status);
+            }
+          } else {
+            alert(error);
+          }
         });
   }
 }

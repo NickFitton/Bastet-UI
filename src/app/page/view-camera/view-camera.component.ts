@@ -13,40 +13,46 @@ import { MotionService } from '../../shared/api/motion/motion.service';
 })
 export class ViewCameraComponent implements OnInit {
 
-  private readonly user: UserModel;
+  private user: UserModel;
   private camera: CameraModel;
   private timeframe: string;
   private entityCount: number;
 
-  constructor(private userService: UserService, private cameraService: CameraService, private motionService: MotionService, private router: Router) {
-    this.user = userService.getLoggedIn();
-    if (this.user === null || this.user === undefined) {
-      this.router.navigate(['/']);
-    }
-    const url = router.url;
-    const segments = url
-      .split('/')
-      .map(segment => {
-        if (segment.includes('?')) {
-          return segment.split('?')[0];
-        }
-        return segment;
-      })
-      .filter(segment => segment.length > 0);
-
-    const cameraId = segments[segments.length - 1];
-
-    cameraService.getCamera(cameraId).subscribe(
-      camera => {
-        this.camera = camera;
-      },
-      error => {
-        alert(error);
-      }
-    );
+  constructor(
+    private userService: UserService,
+    private cameraService: CameraService,
+    private motionService: MotionService,
+    private router: Router) {
   }
 
   ngOnInit() {
+    this.userService.getLoggedIn().then(user => {
+      if (user === null || user === undefined) {
+        this.router.navigate(['/']);
+      }
+      this.user = user;
+      const url = this.router.url;
+      const segments = url
+        .split('/')
+        .map(segment => {
+          if (segment.includes('?')) {
+            return segment.split('?')[0];
+          }
+          return segment;
+        })
+        .filter(segment => segment.length > 0);
+
+      const cameraId = segments[segments.length - 1];
+
+      this.cameraService.getCamera(cameraId).subscribe(
+        camera => {
+          this.camera = camera;
+        },
+        error => {
+          alert(error);
+        }
+      );
+    });
   }
 
   timeframeChanged() {

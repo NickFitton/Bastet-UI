@@ -7,7 +7,7 @@
   </div>
   <div>
     <mat-icon class="toolbar-option icon_option">notifications</mat-icon>
-    <span class="toolbar-option span_option" (click)="toggleSettings()">Welcome {{firstName}}</span>
+    <span *ngIf="firstName" class="toolbar-option span_option" (click)="toggleSettings()">Welcome {{firstName}}</span>
   </div>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">

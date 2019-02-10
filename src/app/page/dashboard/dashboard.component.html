@@ -1,4 +1,4 @@
-<app-toolbar pageName="Dashboard" [firstName]="user.getFirstName()">
+<app-toolbar pageName="Dashboard" [firstName]="user !== null ? user.getFirstName() : null">
   <div class="content" fxLayout="column" fxLayoutGap="16px">
     <section class="activity">
       <h2>Activity</h2>
@@ -54,7 +54,13 @@
           </mat-icon>
           <span>{{camera.getName()}}</span>
         </app-box>
-        <p *ngIf="cameras.length === 0">You currently don't have any cameras setup with us</p>
+        <div *ngIf="cameras.length === 0">
+          <span>You currently don't have any cameras setup with us</span>
+          <app-box class="camera-setup" (clicked)="addCamera()">
+            <mat-icon>video_call</mat-icon>
+            <span>Set up now</span>
+          </app-box>
+        </div>
       </div>
     </section>
   </div>
