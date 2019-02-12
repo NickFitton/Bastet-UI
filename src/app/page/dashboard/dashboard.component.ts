@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CameraModel } from '../../shared/api/camera/camera.model';
 import { UserModel } from '../../shared/api/user/user.model';
 import { Router } from '@angular/router';
@@ -6,51 +6,33 @@ import { UserService } from '../../shared/api/user/user.service';
 import { CameraService } from '../../shared/api/camera/camera.service';
 import { MatDialog } from '@angular/material';
 import { AddCameraComponent } from '../../dialog/add-camera/add-camera.component';
-import { HttpErrorResponse } from '@angular/common/http';
+import { UserDependantComponent } from '../../shared/component/user-dependant.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.styl']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent extends UserDependantComponent {
 
   cameras: CameraModel[];
   user: UserModel;
 
   constructor(
-    private router: Router,
-    private userService: UserService,
+    router: Router,
+    userService: UserService,
     private cameraService: CameraService,
     private dialog: MatDialog) {
+    super(userService, router);
     this.user = null;
     this.cameras = [];
   }
 
-  ngOnInit(): void {
-    this.userService.getLoggedIn().then(loggedInUser => {
-        if (loggedInUser === null || loggedInUser === undefined) {
-          this.router.navigate(['/login']);
-        } else {
-          this.user = loggedInUser;
-        }
-        this.cameraService.getOwnedCameras(loggedInUser.getId()).subscribe(
-          nextCamera => {
-            this.cameras.push(nextCamera);
-          });
-      },
-      error => {
-        if (error instanceof HttpErrorResponse) {
-          const httpError = <HttpErrorResponse>error;
-          if (httpError.status === 500) {
-            this.userService.logOut();
-            this.router.navigate(['/']);
-          } else {
-            alert(httpError.status);
-          }
-        } else {
-          alert(error);
-        }
+  inInit(): Promise<void> {
+    return this.cameraService.getOwnedCameras().then(
+      cameras => {
+        this.cameras = this.cameras.concat(cameras);
+        return Promise.resolve();
       });
   }
 
@@ -59,6 +41,11 @@ export class DashboardComponent implements OnInit {
   }
 
   addCamera() {
-    this.dialog.open(AddCameraComponent, {width: '50%'});
+    const cameraDialog = this.dialog.open(AddCameraComponent, {width: '50%'});
+    cameraDialog.afterClosed().toPromise().then(
+      () => {
+        return this.inInit();
+      }
+    );
   }
 }

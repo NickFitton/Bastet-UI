@@ -26,7 +26,7 @@ export class UserService {
       bean.lastName,
       bean.email,
       bean.password,
-      bean.createdAt);
+      new Date(bean.createdAt));
   }
 
   createUser(user: UserModel): Promise<UserModel> {

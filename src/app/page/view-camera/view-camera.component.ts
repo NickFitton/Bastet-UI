@@ -1,58 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserService } from '../../shared/api/user/user.service';
-import { UserModel } from '../../shared/api/user/user.model';
 import { Router } from '@angular/router';
 import { CameraService } from '../../shared/api/camera/camera.service';
 import { CameraModel } from '../../shared/api/camera/camera.model';
 import { MotionService } from '../../shared/api/motion/motion.service';
+import { UserDependantComponent } from '../../shared/component/user-dependant.component';
+import { MotionModel } from '../../shared/api/motion/motion.model';
+import { DataPointModel } from '../../shared/component/box/data-point.model';
 
 @Component({
   selector: 'app-view-camera',
   templateUrl: './view-camera.component.html',
   styleUrls: ['./view-camera.component.styl']
 })
-export class ViewCameraComponent implements OnInit {
+export class ViewCameraComponent extends UserDependantComponent {
 
-  private user: UserModel;
   private camera: CameraModel;
+  private cameraId: string;
+  private cameraName: string;
   private timeframe: string;
   private entityCount: number;
+  private retrievedMotion: MotionModel[];
+  private chartValues: DataPointModel[];
+
+  private changingName: boolean;
 
   constructor(
-    private userService: UserService,
+    userService: UserService,
     private cameraService: CameraService,
     private motionService: MotionService,
-    private router: Router) {
+    router: Router) {
+    super(userService, router);
+    this.timeframe = 'day';
+    this.camera = null;
+    this.changingName = false;
+
+    const url = this.router.url;
+    const segments = url
+      .split('/')
+      .map(segment => {
+        if (segment.includes('?')) {
+          return segment.split('?')[0];
+        }
+        return segment;
+      })
+      .filter(segment => segment.length > 0);
+
+    this.cameraId = segments[segments.length - 1];
   }
 
-  ngOnInit() {
-    this.userService.getLoggedIn().then(user => {
-      if (user === null || user === undefined) {
-        this.router.navigate(['/']);
+  static matchingPoint(bars: DataPointModel[], time: Date): number {
+    for (let i = 0; i < bars.length; i++) {
+      if (bars[i].hoursMatch(time)) {
+        return i;
       }
-      this.user = user;
-      const url = this.router.url;
-      const segments = url
-        .split('/')
-        .map(segment => {
-          if (segment.includes('?')) {
-            return segment.split('?')[0];
-          }
-          return segment;
-        })
-        .filter(segment => segment.length > 0);
-
-      const cameraId = segments[segments.length - 1];
-
-      this.cameraService.getCamera(cameraId).subscribe(
-        camera => {
-          this.camera = camera;
-        },
-        error => {
-          alert(error);
-        }
-      );
-    });
+    }
+    return -1;
   }
 
   timeframeChanged() {
@@ -77,18 +80,63 @@ export class ViewCameraComponent implements OnInit {
         break;
     }
 
-    const motion = [];
+    this.retrievedMotion = [];
     this.motionService.getMotionBetween(from, now, this.camera.getId())
-      .subscribe(
-        nextMotion => {
-          motion.push(nextMotion);
+      .then(
+        motionData => {
+          for (const motion of motionData) {
+            this.retrievedMotion.push(motion);
+          }
+          // this.retrievedMotion.push(new DataPointModel(new Date(2019, 2, 12, 12, 0, 0)));
+          this.entityCount = this.retrievedMotion.length;
+          this.updateChartValues();
         },
         error => {
           console.error(error);
-        },
-        () => {
-          this.entityCount = motion.length;
         }
       );
   }
+
+  cancelNameChange(): void {
+    this.changingName = false;
+    this.cameraName = this.camera.getName();
+  }
+
+  changeName() {
+    const newData = new CameraModel(this.camera.getId(), null, this.cameraName, null, null, null);
+    this.cameraService.updateCamera(newData).then(success => {
+      if (success) {
+        this.changingName = false;
+        this.inInit();
+      } else {
+        console.error('Failed to change name');
+      }
+    });
+  }
+
+  updateChartValues() {
+    this.chartValues = [];
+
+    const bars: DataPointModel[] = [];
+    for (const motion of this.retrievedMotion) {
+      const matching = ViewCameraComponent.matchingPoint(bars, motion.getImageTime());
+      if (matching !== -1) {
+        bars[matching].increment();
+      } else {
+        bars.push(new DataPointModel(motion.getImageTime()));
+      }
+    }
+    this.chartValues = bars;
+  }
+
+  inInit(): Promise<void> {
+    return this.cameraService.getCamera(this.cameraId).then(camera => {
+      this.camera = camera;
+      this.cameraName = camera.getName();
+      return camera;
+    }).then(() => {
+      this.timeframeChanged();
+    });
+  }
+
 }

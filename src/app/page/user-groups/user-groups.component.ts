@@ -26,13 +26,13 @@ export class UserGroupsComponent implements OnInit {
       'Home',
       this.user,
       [this.user],
-      [new CameraModel('camera_uuid_1', 'your_uuid', 'Front Door', new Date(2016, 5, 3), new Date(Date.now()))]);
+      [new CameraModel('camera_uuid_1', 'your_uuid', 'Front Door', new Date(2016, 5, 3), new Date(2016, 5, 3), new Date(Date.now()))]);
     const secondUserGroup = new GroupModel(
       '0820b940-7da2-496a-8124-17332da19575',
       'Neighbours',
       johnDoe,
       [johnDoe, this.user],
-      [new CameraModel('camera_uuid_2', 'your_uuid', 'Front Door', new Date(2016, 5, 3), new Date(Date.now()))]);
+      [new CameraModel('camera_uuid_2', 'your_uuid', 'Front Door', new Date(2016, 5, 3), new Date(2016, 5, 3), new Date(Date.now()))]);
     this.userGroups = [];
     this.userGroups.push(firstUserGroup, secondUserGroup);
   }

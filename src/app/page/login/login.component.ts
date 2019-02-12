@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../shared/api/user/user.service';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -27,12 +28,15 @@ export class LoginComponent implements OnInit {
       error => {
         console.log('Got error');
         console.error(error);
-        switch (error) {
-          case '403':
+        if (error instanceof HttpErrorResponse) {
+          const httpError = <HttpErrorResponse>error;
+          if (httpError.status === 403) {
             this.errorMessage = 'email/password combination invalid';
-            break;
-          default:
-            this.errorMessage = error;
+          } else {
+            this.errorMessage = error.toLocaleString();
+          }
+        } else {
+          this.errorMessage = error.toLocaleString();
         }
       }
     );

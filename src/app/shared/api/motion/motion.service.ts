@@ -1,54 +1,73 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { MotionModel } from './motion.model';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MotionBean } from './motion.bean';
+import { UserService } from '../user/user.service';
+import { EntityBean } from './entity.bean';
+import { EntityModel } from './entity.model';
 
 @Injectable({providedIn: 'root'})
 export class MotionService {
 
-  motionCache: MotionModel[];
+  constructor(private client: HttpClient, private userService: UserService) {
 
-  constructor() {
-    if (environment.production !== true) {
-      this.motionCache = [];
-      for (let i = 0; i < 100; i++) {
-        const motionEntities = [];
-        for (let j = 0; j < 10; j++) {
-          motionEntities.push(i + j % 100, i + j % 50, i * j % 40, i * j % 25);
-        }
-        const id = i.toString(16);
-        let uuid = '5c1ec695-a38a-4f9c-8164-2875f41ce359';
-        uuid = id + uuid.substring(id.length, uuid.length - id.length);
-        this.motionCache.push(
-          new MotionModel(
-            uuid,
-            new Date(Date.now() - (i * 1000)),
-            new Date(Date.now()),
-            new Date(Date.now() - (Math.random() * i * 1000)),
-            new Date(Date.now()),
-            new Date(Date.now()),
-            false,
-            motionEntities));
-      }
-    }
+  }
+  private readonly GET_MOTION_URL = environment.serverUrl + '/v1/motion';
+
+  static mapToEntityModel(entity: EntityBean): EntityModel {
+    return new EntityModel(entity.x,
+      entity.y,
+      entity.width,
+      entity.height,
+      entity.type);
   }
 
-  getMotionBetween(from: Date, to: Date, cameraId: string): Observable<MotionModel> {
-    const diff = (to.valueOf() / 1000) - (from.valueOf() / 1000);
+  static mapToMotionModel(motion: MotionBean): MotionModel {
+    const entities = [];
+    for (const entity of motion.imageEntities) {
+      entities.push(this.mapToEntityModel(entity));
+    }
 
-    console.log('diff: ' + diff);
-    const months = Math.floor(diff / 31104);
-    const numOfMotions = Math.min(100, months);
+    return new MotionModel(
+      motion.id,
+      new Date(motion.entryTime),
+      new Date(motion.exitTime),
+      new Date(motion.imageTime),
+      new Date(motion.createdAt),
+      new Date(motion.updatedAt),
+      motion.fileExists,
+      entities
+    );
+  }
 
-    return Observable.create(observer => {
-      for (let p = 0; p < numOfMotions; p++) {
-        try {
-          observer.next(this.motionCache[p]);
-        } catch (e) {
-          observer.error(e);
+  private generateAuthHeaders(): HttpHeaders {
+    return new HttpHeaders({'authorization': 'Token ' + this.userService.getToken()});
+  }
+
+  private cameraMotionUrl(cameraIds: string[], from: Date, to: Date) {
+    return this.GET_MOTION_URL + '?cameras=' + cameraIds.join(',') + '&from=' + from.toISOString() + '&to=' + to.toISOString();
+  }
+
+  getMotionBetween(from: Date, to: Date, cameraId: string): Promise<MotionModel[]> {
+    return this.client.get<BackendModel<MotionBean[]>>(this.cameraMotionUrl([cameraId], from, to), {
+      observe: 'response',
+      headers: this.generateAuthHeaders()
+    }).toPromise()
+      .then(response => {
+        console.log(response);
+        if (response.status === 200) {
+          return response.body.data;
+        } else {
+          throw response.status;
         }
-      }
-      observer.complete();
-    });
+      }).then(beans => {
+        const models = [];
+        for (const bean of beans) {
+          models.push(MotionService.mapToMotionModel(bean));
+        }
+
+        return models;
+      });
   }
 }

@@ -1,59 +1,87 @@
 import { Injectable } from '@angular/core';
 import { CameraModel } from './camera.model';
-import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserService } from '../user/user.service';
+import { environment } from '../../../../environments/environment';
+import { CameraBean } from './camera.bean';
 
 @Injectable({providedIn: 'root'})
 export class CameraService {
-
-  private cameras: CameraModel[];
-
-  private static readonly CAMERAS_PATH = '/v1/cameras';
-
-  private static cameraPath(cameraId: string): string {
-    return this.CAMERAS_PATH + '/' + cameraId;
-  }
 
   constructor(private client: HttpClient, private userService: UserService) {
     this.cameras = [];
   }
 
-  claimCamera(cameraId: string): Promise<boolean> {
-    const headers = new HttpHeaders({'authorization': 'Token ' + this.userService.getToken()});
+  private static readonly CAMERAS_PATH = environment.serverUrl + '/v1/cameras';
 
+  private cameras: CameraModel[];
+
+  private static cameraPath(cameraId: string): string {
+    return this.CAMERAS_PATH + '/' + cameraId;
+  }
+
+  static mapFromBean(bean: CameraBean): CameraModel {
+    return new CameraModel(
+      bean.id,
+      bean.ownedBy,
+      bean.name,
+      new Date(bean.createdAt),
+      new Date(bean.updatedAt),
+      new Date(bean.lastUpload));
+  }
+
+  private generateAuthHeaders(): HttpHeaders {
+    return new HttpHeaders({'authorization': 'Token ' + this.userService.getToken()});
+  }
+
+  claimCamera(cameraId: string): Promise<boolean> {
     return this.client.patch(CameraService.cameraPath(cameraId), null, {
       observe: 'response',
-      headers: headers
+      headers: this.generateAuthHeaders()
     }).toPromise()
       .then(response => response.status === 202);
   }
 
-  getOwnedCameras(userId: string): Observable<CameraModel> {
-    return Observable.create(observer => {
-      for (const camera of this.cameras) {
-        if (camera.getOwnedBy() === userId) {
-          observer.next(camera);
-        }
-      }
-      observer.complete();
-    });
+  updateCamera(camera: CameraModel): Promise<boolean> {
+    return this.client.patch(CameraService.cameraPath(camera.getId()), camera, {
+      observe: 'response',
+      headers: this.generateAuthHeaders()
+    }).toPromise()
+      .then(response => response.status === 202);
   }
 
-  getCamera(id: string): Observable<CameraModel> {
-    return Observable.create(observer => {
-      let exists = false;
-      for (const camera of this.cameras) {
-        if (camera.getId() === id) {
-          observer.next(camera);
-          observer.complete();
-          exists = true;
-          break;
+  getOwnedCameras(): Promise<CameraModel[]> {
+    return this.client.get<BackendModel<CameraBean[]>>(CameraService.CAMERAS_PATH, {
+      observe: 'response',
+      headers: this.generateAuthHeaders()
+    }).toPromise()
+      .then(response => {
+        if (response.status === 200) {
+          return response.body.data;
+        } else {
+          throw response.status;
         }
-      }
-      if (!exists) {
-        observer.error('404');
-      }
-    });
+      })
+      .then(cameras => {
+        const models = [];
+        for (const camera of cameras) {
+          models.push(CameraService.mapFromBean(camera));
+        }
+        return models;
+      });
+  }
+
+  getCamera(id: string): Promise<CameraModel> {
+    return this.client.get<BackendModel<CameraBean>>(CameraService.cameraPath(id), {
+      observe: 'response',
+      headers: this.generateAuthHeaders()
+    }).toPromise()
+      .then(response => {
+        if (response.status === 200) {
+          return response.body.data;
+        } else {
+          throw response.status;
+        }
+      }).then(camera => CameraService.mapFromBean(camera));
   }
 }

@@ -3,6 +3,7 @@ export class CameraModel {
   private readonly ownedBy: string;
   private readonly name: string;
   private readonly createdAt: Date;
+  private readonly updatedAt: Date;
   private readonly lastActive: Date;
 
   constructor(
@@ -10,11 +11,13 @@ export class CameraModel {
     ownedBy: string,
     name: string,
     createdAt: Date,
+    updatedAt: Date,
     lastActive: Date) {
     this.id = id;
     this.ownedBy = ownedBy;
     this.name = name;
     this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
     this.lastActive = lastActive;
   }
 
@@ -32,6 +35,10 @@ export class CameraModel {
 
   getCreatedAt(): Date {
     return this.createdAt;
+  }
+
+  getUpdatedAt(): Date {
+    return this.updatedAt;
   }
 
   getLastActive(): Date {

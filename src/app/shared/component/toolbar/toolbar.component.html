@@ -5,7 +5,7 @@
     </mat-icon>
     <span>{{pageName}}</span>
   </div>
-  <div>
+  <div fxHide.lt-sm>
     <mat-icon class="toolbar-option icon_option">notifications</mat-icon>
     <span *ngIf="firstName" class="toolbar-option span_option" (click)="toggleSettings()">Welcome {{firstName}}</span>
   </div>
@@ -16,6 +16,14 @@
          [ngClass]="{'sidebar_item-disabled': link.text === pageName, 'sidebar_item': link.text !== pageName}">
       <span>{{link.text}}</span>
       <mat-icon>{{link.icon}}</mat-icon>
+    </div>
+    <div fxHide fxShow.lt-sm class="sidebar_item" (click)="goToSettings()">
+      <span>Settings</span>
+      <mat-icon>settings</mat-icon>
+    </div>
+    <div fxHide fxShow.lt-sm class="sidebar_item" (click)="signOut()">
+      <span>Sign out</span>
+      <mat-icon>exit_to_app</mat-icon>
     </div>
   </mat-sidenav>
 

@@ -28,6 +28,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { BoxComponent } from './shared/component/box/box.component';
 import { LeaveGroupComponent } from './dialog/leave-group/leave-group.component';
 import { ErrorComponent } from './dialog/error/error.component';
+import { BarChartComponent } from './shared/component/bar-chart/bar-chart.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ErrorComponent } from './dialog/error/error.component';
     InviteUserComponent,
     ToolbarComponent,
     RegisterComponent,
-    BoxComponent
+    BoxComponent,
+    BarChartComponent
   ],
   entryComponents: [
     AddCameraComponent,

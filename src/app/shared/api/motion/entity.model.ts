@@ -1,3 +1,5 @@
+import { EntityType } from './entity.bean';
+
 export class EntityModel {
   private readonly x: number;
   private readonly y: number;
@@ -5,34 +7,31 @@ export class EntityModel {
   private readonly height: number;
   private type: EntityType;
 
-  constructor(x, y, width, height) {
+  constructor(x: number, y: number, width: number, height: number, type: EntityType) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.type = type;
   }
 
-  getX() {
+  getX(): number {
     return this.x;
   }
 
-  getY() {
+  getY(): number {
     return this.y;
   }
 
-  getWidth() {
+  getWidth(): number {
     return this.width;
   }
 
-  getHeight() {
+  getHeight(): number {
     return this.height;
   }
-}
-enum EntityType {
-  FULL_BODY,
-  UPPER_BODY,
-  LOWER_BODY,
-  FACE,
-  EYE,
-  OTHER
+
+  getType(): EntityType {
+    return this.type;
+  }
 }

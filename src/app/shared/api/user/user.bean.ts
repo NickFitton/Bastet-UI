@@ -4,5 +4,5 @@ export interface UserBean {
   lastName: string;
   email: string;
   password: string;
-  createdAt: Date;
+  createdAt: string;
 }
