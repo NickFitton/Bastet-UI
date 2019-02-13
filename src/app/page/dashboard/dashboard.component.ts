@@ -7,6 +7,9 @@ import { CameraService } from '../../shared/api/camera/camera.service';
 import { MatDialog } from '@angular/material';
 import { AddCameraComponent } from '../../dialog/add-camera/add-camera.component';
 import { UserDependantComponent } from '../../shared/component/user-dependant.component';
+import { GroupModel } from '../../shared/api/group/group.model';
+import { GroupService } from '../../shared/api/group/group.service';
+import { CreateGroupComponent } from '../../dialog/create-group/create-group.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,36 +19,49 @@ import { UserDependantComponent } from '../../shared/component/user-dependant.co
 export class DashboardComponent extends UserDependantComponent {
 
   cameras: CameraModel[];
+  groups: GroupModel[];
   user: UserModel;
 
   constructor(
     router: Router,
     userService: UserService,
     private cameraService: CameraService,
+    private groupService: GroupService,
     private dialog: MatDialog) {
     super(userService, router);
     this.user = null;
     this.cameras = [];
+    this.groups = [];
   }
 
   inInit(): Promise<void> {
     return this.cameraService.getOwnedCameras().then(
       cameras => {
         this.cameras = this.cameras.concat(cameras);
-        return Promise.resolve();
-      });
+        return this.groupService.getUserGroups();
+      }).then(groups => {
+      this.groups = this.groups.concat(groups);
+      return Promise.resolve();
+    });
   }
 
-  onClick(cameraId: string, navigation: string): void {
+  onClickCamera(cameraId: string, navigation: string): void {
     this.router.navigate(['/cameras/' + cameraId], {queryParams: {view: navigation}});
+  }
+
+  onClickGroup(groupId: string, navigation: string): void {
+    this.router.navigate(['/groups/' + groupId], {queryParams: {view: navigation}});
   }
 
   addCamera() {
     const cameraDialog = this.dialog.open(AddCameraComponent, {width: '50%'});
     cameraDialog.afterClosed().toPromise().then(
-      () => {
-        return this.inInit();
-      }
-    );
+      () => this.inInit());
+  }
+
+  createGroup() {
+    const groupDialog = this.dialog.open(CreateGroupComponent, {width: '50%'});
+    groupDialog.afterClosed().toPromise().then(
+      () => this.inInit());
   }
 }

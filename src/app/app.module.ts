@@ -29,6 +29,7 @@ import { BoxComponent } from './shared/component/box/box.component';
 import { LeaveGroupComponent } from './dialog/leave-group/leave-group.component';
 import { ErrorComponent } from './dialog/error/error.component';
 import { BarChartComponent } from './shared/component/bar-chart/bar-chart.component';
+import { CreateGroupComponent } from './dialog/create-group/create-group.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { BarChartComponent } from './shared/component/bar-chart/bar-chart.compon
     UserGroupsComponent,
     StatisticsComponent,
     AddCameraComponent,
+    CreateGroupComponent,
     ViewCameraComponent,
     ManageUserGroupComponent,
     StatGraphComponent,
@@ -56,6 +58,7 @@ import { BarChartComponent } from './shared/component/bar-chart/bar-chart.compon
   ],
   entryComponents: [
     AddCameraComponent,
+    CreateGroupComponent,
     ErrorComponent,
     TimeFrameComponent,
     LeaveGroupComponent,

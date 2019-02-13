@@ -1,22 +1,30 @@
-<app-toolbar pageName="User Groups" [firstName]="user.getFirstName()">
-  <div class="content column">
-    <div *ngFor="let group of userGroups">
-      <div class="space_between">
-        <h2>{{group.getName()}}</h2>
-        <button mat-flat-button (click)="viewGroup(group.getId())">
-          {{group.getAdmin() === user ? 'Manage Group' : 'View Group'}}
-        </button>
-      </div>
-      <div class="row selection" fxLayoutGap="16px">
-        <app-box class="column" *ngFor="let groupMember of group.getMembers(user)">
-          <mat-icon>person</mat-icon>
-          <span>{{user === groupMember ? 'You' : groupMember.getFormattedName()}}</span>
+<app-toolbar pageName="Dashboard" [firstName]="user !== null ? user.getFirstName() : null">
+  <div class="content" fxLayout="column" fxLayoutGap="16px" ngClass.lt-sm="small_content" ngClass.gt-xs="large_content">
+    <section>
+      <h2>Groups you own</h2>
+      <div class="row" fxLayoutGap="16px">
+        <app-box class="column" *ngFor="let group of adminGroups"
+                 [options]="group.getAdmin() === user.getId() ? 'View Delete' : 'View Manage'"
+                 (link)="'/groups/' + group.getId()" (clicked)="onClick(group.getId(), $event)">
+          <mat-icon>group</mat-icon>
+          <span>{{group.getName()}}</span>
         </app-box>
-        <app-box options="New Existing" (clicked)="inviteClicked(group.getId(), $event)">
-          <mat-icon>add</mat-icon>
-          <span>Invite a User</span>
+        <app-box class="column" (clicked)="createGroup()">
+          <mat-icon>group_add</mat-icon>
+          <span>Create a group</span>
         </app-box>
       </div>
-    </div>
+    </section>
+    <section>
+      <h2>Other Groups</h2>
+      <div class="row" fxLayoutGap="16px">
+        <app-box class="column" *ngFor="let group of otherGroups"
+                 [options]="group.getAdmin() === user.getId() ? 'View Delete' : 'View Manage'"
+                 (link)="'/groups/' + group.getId()" (clicked)="onClick(group.getId(), $event)">
+          <mat-icon>group</mat-icon>
+          <span>{{group.getName()}}</span>
+        </app-box>
+      </div>
+    </section>
   </div>
 </app-toolbar>

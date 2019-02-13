@@ -18,8 +18,4 @@ export class LeaveGroupComponent {
     this.group = data.group;
     this.user = data.user;
   }
-
-  hasCameras(): boolean {
-    return this.group.getCameras().filter(camera => camera.getOwnedBy() === this.user.getId()).length > 0;
-  }
 }

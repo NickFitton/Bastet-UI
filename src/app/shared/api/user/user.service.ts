@@ -3,6 +3,10 @@ import { environment } from '../../../../environments/environment';
 import { UserModel } from './user.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserBean } from './user.bean';
+import { GroupBean } from '../group/group.bean';
+import { GroupModel } from '../group/group.model';
+import { GroupService } from '../group/group.service';
+import { RequestUtil } from '../request.util';
 
 @Injectable({
   providedIn: 'root'

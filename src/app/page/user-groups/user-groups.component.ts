@@ -6,38 +6,41 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { InviteType, InviteUserConfig } from '../../dialog/invite-user/invite-user.config';
 import { InviteUserComponent } from '../../dialog/invite-user/invite-user.component';
+import { UserDependantComponent } from '../../shared/component/user-dependant.component';
+import { UserService } from '../../shared/api/user/user.service';
+import { GroupService } from '../../shared/api/group/group.service';
+import { CreateGroupComponent } from '../../dialog/create-group/create-group.component';
 
 @Component({
   selector: 'app-user-groups',
   templateUrl: './user-groups.component.html',
   styleUrls: ['./user-groups.component.styl']
 })
-export class UserGroupsComponent implements OnInit {
+export class UserGroupsComponent extends UserDependantComponent {
 
-  user: UserModel;
-  userGroups: GroupModel[];
+  adminGroups: GroupModel[];
+  otherGroups: GroupModel[];
 
-  constructor(private router: Router, private dialog: MatDialog) {
-    this.user = new UserModel('your_uuid', 'test', 'user', 'test@account.com', '1234', new Date(2016, 3, 22));
-    const johnDoe = new UserModel('john_uuid', 'john', 'doe', 'j.doe@account.com', '1234', new Date(2010, 1, 1));
-
-    const firstUserGroup = new GroupModel(
-      'f4a2f55b-bc62-4edd-b245-e675d4f6121a',
-      'Home',
-      this.user,
-      [this.user],
-      [new CameraModel('camera_uuid_1', 'your_uuid', 'Front Door', new Date(2016, 5, 3), new Date(2016, 5, 3), new Date(Date.now()))]);
-    const secondUserGroup = new GroupModel(
-      '0820b940-7da2-496a-8124-17332da19575',
-      'Neighbours',
-      johnDoe,
-      [johnDoe, this.user],
-      [new CameraModel('camera_uuid_2', 'your_uuid', 'Front Door', new Date(2016, 5, 3), new Date(2016, 5, 3), new Date(Date.now()))]);
-    this.userGroups = [];
-    this.userGroups.push(firstUserGroup, secondUserGroup);
+  constructor(router: Router, userService: UserService, private groupService: GroupService, private dialog: MatDialog) {
+    super(userService, router);
+    this.adminGroups = [];
+    this.otherGroups = [];
   }
 
-  ngOnInit() {
+  inInit(): Promise<void> {
+    this.adminGroups = [];
+    this.otherGroups = [];
+    return this.groupService.getUserGroups().then(
+      groups => {
+        for (const group of groups) {
+          if (group.getAdmin() === this.user.getId()) {
+            this.adminGroups.push(group);
+          } else {
+            this.otherGroups.push(group);
+          }
+        }
+      }
+    );
   }
 
   viewGroup(groupId: string): void {
@@ -51,5 +54,11 @@ export class UserGroupsComponent implements OnInit {
         minWidth: '500px',
         data: new InviteUserConfig(type !== 'new', InviteType.CAMERA, this.user.getId())
       });
+  }
+
+  createGroup() {
+    const groupDialog = this.dialog.open(CreateGroupComponent, {width: '50%'});
+    groupDialog.afterClosed().toPromise().then(
+      () => this.inInit());
   }
 }

@@ -1,22 +1,19 @@
-import { UserModel } from '../user/user.model';
-import { CameraModel } from '../camera/camera.model';
-
 export class GroupModel {
   private readonly id: string;
   private readonly name: string;
-  private readonly admin: UserModel;
-  private readonly members: UserModel[];
-  private readonly cameras: CameraModel[];
+  private readonly ownedBy: string;
+  private readonly members: string[];
+  private readonly cameras: string[];
 
   constructor(
     id: string,
     name: string,
-    admin: UserModel,
-    members: UserModel[],
-    cameras: CameraModel[]) {
+    ownedBy: string,
+    members: string[],
+    cameras: string[]) {
     this.id = id;
     this.name = name;
-    this.admin = admin;
+    this.ownedBy = ownedBy;
     this.members = members;
     this.cameras = cameras;
   }
@@ -29,15 +26,15 @@ export class GroupModel {
     return this.name;
   }
 
-  getAdmin(): UserModel {
-    return this.admin;
+  getAdmin(): string {
+    return this.ownedBy;
   }
 
-  getMembers(): UserModel[] {
+  getMembers(): string[] {
     return this.members;
   }
 
-  getCameras(): CameraModel[] {
+  getCameras(): string[] {
     return this.cameras;
   }
 }
