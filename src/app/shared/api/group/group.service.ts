@@ -23,7 +23,7 @@ export class GroupService {
       bean.id,
       bean.name,
       bean.ownedBy,
-      bean.members,
+      bean.users,
       bean.cameras
     );
   }
@@ -91,8 +91,18 @@ export class GroupService {
       });
   }
 
-  getGroupById(): Promise<GroupModel> {
-    return Promise.reject('Not complete');
+  getGroupById(groupId: string): Promise<GroupModel> {
+    return this.client.get<BackendModel<GroupBean>>(GroupService.getGroupUrl(groupId), {
+      observe: 'response',
+      headers: RequestUtil.generateAuthHeaders(this.userService)
+    }).toPromise()
+      .then(response => {
+        if (response.status === 200) {
+          return response.body.data;
+        }
+        throw response.status;
+      })
+      .then(groupBean => GroupService.mapFromBean(groupBean));
   }
 
   addUserToGroup(): Promise<GroupModel> {

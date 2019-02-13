@@ -54,7 +54,7 @@ import { CreateGroupComponent } from './dialog/create-group/create-group.compone
     ToolbarComponent,
     RegisterComponent,
     BoxComponent,
-    BarChartComponent
+    BarChartComponent,
   ],
   entryComponents: [
     AddCameraComponent,
@@ -63,6 +63,7 @@ import { CreateGroupComponent } from './dialog/create-group/create-group.compone
     TimeFrameComponent,
     LeaveGroupComponent,
     InviteUserComponent,
+    CameraToGroupsComponent,
   ],
   imports: [
     FormsModule,
@@ -72,7 +73,7 @@ import { CreateGroupComponent } from './dialog/create-group/create-group.compone
     AppRoutingModule,
     MaterialModule,
     BrowserAnimationsModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

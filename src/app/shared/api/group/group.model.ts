@@ -31,10 +31,20 @@ export class GroupModel {
   }
 
   getMembers(): string[] {
+    // return this.members === null ? [] : this.members;
+    if (this.members === undefined) {
+      return [];
+    }
     return this.members;
+    // return [];
   }
 
   getCameras(): string[] {
+    // return this.cameras === null ?  [] : this.cameras;
+    if (this.cameras === undefined) {
+      return [];
+    }
     return this.cameras;
+    // return [];
   }
 }

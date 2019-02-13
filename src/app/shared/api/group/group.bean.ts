@@ -2,6 +2,6 @@ export interface GroupBean {
   id: string;
   name: string;
   ownedBy: string;
-  members: string[];
+  users: string[];
   cameras: string[];
 }

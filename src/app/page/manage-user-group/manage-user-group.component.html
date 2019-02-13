@@ -1,3 +1,33 @@
-<p>
-  manage-user-group works!
-</p>
+<app-toolbar pageName="Camera" [firstName]="user !== null ? user.getFirstName() : null">
+  <div class="content" ngClass.lt-sm="small_content" ngClass.gt-xs="large_content">
+    <h1 *ngIf="group !== null">{{group.getName()}}</h1>
+    <section>
+      <h2>Group Members</h2>
+      <div class="members" fxLayoutGap="16px">
+        <app-box *ngFor="let member of members">
+          <span>{{member.getId() === user.getId() ? "You" : member.getFormattedName()}}</span>
+        </app-box>
+        <app-box>
+          <mat-icon>group_add</mat-icon>
+          <span>Add a new</span>
+          <span>member</span>
+        </app-box>
+      </div>
+    </section>
+    <section>
+      <h2>Group Cameras</h2>
+      <div class="members" fxLayoutGap="16px">
+        <app-box *ngFor="let camera of cameras">
+          <mat-icon>video_call</mat-icon>
+          <span>{{camera.getName()}}</span>
+          <span>Shared by {{getOwnerName(camera.getOwnedBy())}}</span>
+        </app-box>
+        <app-box (clicked)="addCamera()">
+          <mat-icon>video_call</mat-icon>
+          <span>Share a</span>
+          <span>camera</span>
+        </app-box>
+      </div>
+    </section>
+  </div>
+</app-toolbar>

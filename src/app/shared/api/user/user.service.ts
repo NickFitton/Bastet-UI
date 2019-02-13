@@ -3,9 +3,6 @@ import { environment } from '../../../../environments/environment';
 import { UserModel } from './user.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserBean } from './user.bean';
-import { GroupBean } from '../group/group.bean';
-import { GroupModel } from '../group/group.model';
-import { GroupService } from '../group/group.service';
 import { RequestUtil } from '../request.util';
 
 @Injectable({
@@ -22,6 +19,10 @@ export class UserService {
 
   private readonly BASE_USER_URL = environment.serverUrl + '/v1/users';
   private readonly USER_LOGIN_URL = environment.serverUrl + '/v1/login/user';
+
+  private getUserUrl(userId: string): string {
+    return this.BASE_USER_URL + '/' + userId;
+  }
 
   static mapFromBean(bean: UserBean): UserModel {
     return new UserModel(
@@ -94,6 +95,24 @@ export class UserService {
   logOut(): void {
     this.loggedInUser = null;
     sessionStorage.clear();
+  }
+
+  getUser(userId: string): Promise<UserModel> {
+    return this.client
+      .get<BackendModel<UserBean>>(this.getUserUrl(userId), {
+        observe: 'response',
+        headers: RequestUtil.generateAuthHeaders(this)
+      }).toPromise()
+      .then(response => {
+        if (response.status !== 200) {
+          throw response.status;
+        }
+        const data = response.body;
+        if (data.error) {
+          return null;
+        }
+        return UserService.mapFromBean(data.data);
+      });
   }
 
   getLoggedIn(): Promise<UserModel> {
