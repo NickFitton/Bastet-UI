@@ -8,26 +8,27 @@ import { MaterialModule } from './shared/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
-import { TimeFrameComponent } from './dialog/timeframe/time-frame.component';
-import { BarComponent } from './graph/bar/bar.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { DialogModule } from './dialog/dialog.module';
+import { PageModule } from './page/page.module';
+import { ComponentsModule } from './shared/component/components.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BarComponent,
-    TimeFrameComponent
-  ],
-  entryComponents: [
-    TimeFrameComponent
   ],
   imports: [
+    ComponentsModule,
+    DialogModule,
+    PageModule,
     FormsModule,
+    FlexLayoutModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     MaterialModule,
     BrowserAnimationsModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

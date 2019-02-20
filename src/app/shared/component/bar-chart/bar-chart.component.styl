@@ -1,0 +1,17 @@
+@import "../../../../styles.styl"
+
+svg
+  -webkit-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+  -moz-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+  box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+  background white
+  font-size 12px
+  rect
+    fill $color-400
+    transition fill 0.5s
+    -o-transition fill 0.5s
+    -ms-transition fill 0.5s
+    -moz-transition fill 0.5s
+    -webkit-transition fill 0.5s
+    &:hover
+      fill $color-200

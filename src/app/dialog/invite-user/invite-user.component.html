@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Invite a User</h1>
+<div mat-dialog-content>
+  <form *ngIf="step === 0">
+    <mat-form-field>
+      <input name="invite-email" [(ngModel)]="inviteEmail" matInput placeholder="User Email">
+    </mat-form-field>
+    <mat-form-field>
+      <textarea name="invite-message" [(ngModel)]="inviteMessage" matInput placeholder="Add a message"></textarea>
+    </mat-form-field>
+  </form>
+  <div *ngIf="step === 1">
+    <p>{{inviteEmail}} is not currently registered to an account, do you still wish to invite the user?</p>
+  </div>
+  <div *ngIf="step === 2">
+    <p>Invitation sent!</p>
+  </div>
+  <div *ngIf="step === -1">
+    <h2>Invitation Failed</h2>
+    <p>{{errorMessage}}</p>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="step === 1 || step === -1 ? back() : closeDialog()">{{step === 1 || step === -1 ? 'Back' : 'Close'}}</button>
+  <button *ngIf="step === 0 || step === 2" mat-flat-button (click)="step === 0 ? invite() : confirmInvite()">Invite</button>
+</div>

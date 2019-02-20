@@ -1,0 +1,10 @@
+<div class="content">
+  <div class="box" [ngClass]="{'shrinking' : boxOptions.length > 0, 'clickable' : boxOptions.length > 0 }"
+       [routerLink]="link !== '' && link !== undefined ? link : undefined"
+       (click)="elementClicked()">
+    <ng-content></ng-content>
+  </div>
+  <div *ngIf="boxOptions.length > 0" class="options" fxLayoutGap="4px">
+    <span *ngFor="let option of boxOptions" (click)="elementClicked(option)">{{option}}</span>
+  </div>
+</div>

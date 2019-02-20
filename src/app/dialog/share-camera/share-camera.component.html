@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>{{step === 1 ? 'Add a camera' : 'Successfully connected'}}</h1>
+<div mat-dialog-content>
+  <div *ngIf="step === 1">
+    <form>
+      <mat-form-field>
+        <input name="cameraId" [(ngModel)]="cameraId" matInput placeholder="Camera ID">
+      </mat-form-field>
+      <button mat-icon-button (click)="toggleHelp()">
+        <mat-icon [ngClass]="showHelp ? 'black' : 'grey'">help</mat-icon>
+      </button>
+    </form>
+    <span *ngIf="!isClear(errorMessage)" class="error">{{errorMessage}}</span>
+    <span *ngIf="showHelp">The camera ID has either been given to you or is on the base of your camera</span>
+  </div>
+  <span *ngIf="step === 2">Your camera has been successfully connected to your account</span>
+</div>
+<div mat-dialog-actions class="actions">
+  <div *ngIf="step === 1">
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-flat-button (click)="claimCamera()">Add Camera</button>
+  </div>
+  <button *ngIf="step === 2" mat-flat-button (click)="closeDialog()">Done</button>
+</div>

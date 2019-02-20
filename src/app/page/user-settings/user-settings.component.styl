@@ -1,0 +1,32 @@
+@import "../../../styles.styl"
+
+.content
+  display flex
+  flex-flow row wrap
+  justify-content space-between
+
+form
+  display flex
+  flex-flow column nowrap
+
+input
+  width 600px
+
+.action
+  cursor pointer
+  padding 4px
+  margin 4px
+  display flex
+  flex-flow row nowrap
+  justify-content space-between
+  &:hover
+    background-color $color-100
+
+.main-user_groups
+  display flex
+  flex-flow column wrap
+  .user_groups-groups
+    display flex
+    flex-flow row wrap
+    app-box
+      padding 8px

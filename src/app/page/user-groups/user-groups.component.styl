@@ -1,0 +1,68 @@
+@import "../../../styles.styl"
+
+.content
+  display flex
+  flex-flow column nowrap
+  padding 16px
+  background-color $color-light-gray
+
+.large_content
+  width 80%
+  -webkit-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+  -moz-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+  box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+
+.small_content
+  .title
+    display flex
+    flex-flow column nowrap
+    justify-content center
+  .status
+    display flex
+    flex-flow row nowrap
+    justify-content center
+  width 100%
+  section
+    div
+      display flex
+      flex-flow column nowrap
+      align-items center
+
+.row
+  display flex
+  flex-flow row wrap
+
+.column
+  display flex
+  flex-flow column wrap
+
+.selection
+  padding 8px
+
+.box
+  display flex
+  justify-content center
+  align-items center
+  background #eee
+  width 192px
+  height 128px
+  cursor pointer
+  &:hover
+    -webkit-transition background ease-in-out 0.25s
+    -moz-transition background ease-in-out 0.25s
+    -ms-transition background ease-in-out 0.25s
+    -o-transition background ease-in-out 0.25s
+    transition background ease-in-out 0.25s
+    background #ddd
+
+.space_between
+  display flex
+  flex-direction row
+  justify-content space-between
+  align-items center
+
+button
+  background-color $color-500 !important
+
+app-box
+  padding-bottom 16px

@@ -1,0 +1,6 @@
+export enum StatusEnum {
+  GROUP_DELETED,
+  GROUP_LEFT,
+  CAMERA_DELETED,
+  CAMERA_LEFT
+}

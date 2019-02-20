@@ -1,0 +1,63 @@
+@import "../../../styles.styl"
+@import "../../shared/theme/button.styl"
+
+.content
+  display flex
+  flex-flow column nowrap
+  padding 16px
+  background-color $color-light-gray
+  section
+    padding 16px
+    background-color $color-light-gray
+    app-box
+      span
+        text-align center
+  .title
+    display flex
+    flex-flow row wrap
+    justify-content space-between
+    align-items center
+
+.large_content
+  width 80%
+  -webkit-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+  -moz-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+  box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+
+.small_content
+  .title
+    display flex
+    flex-flow column nowrap
+    justify-content center
+  .status
+    display flex
+    flex-flow row nowrap
+    justify-content center
+  width 100%
+
+.row, .camera-title
+  display flex
+  flex-direction row
+
+.camera-title
+  justify-content left
+  align-items center
+
+.column
+  display flex
+  flex-flow column wrap
+
+.orange
+  background orange
+
+.green
+  background lawngreen
+
+.blue
+  background dodgerblue
+
+table
+  text-align right
+
+.camera-setup
+  cursor pointer

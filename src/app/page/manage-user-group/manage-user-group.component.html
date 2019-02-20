@@ -1,0 +1,47 @@
+<app-toolbar pageName="Group" [firstName]="user !== null ? user.getFirstName() : null">
+  <div class="content" ngClass.lt-sm="small_content" ngClass.gt-xs="large_content" *ngIf="group !== null">
+    <div class="title">
+      <h1>{{group.getName()}}</h1>
+      <button mat-flat-button *ngIf="group.getAdmin() === user.getId()" (click)="groupClicked('delete', group.getId(), true)">
+        Delete Group
+      </button>
+      <button mat-flat-button *ngIf="group.getAdmin() !== user.getId()" (click)="groupClicked('leave', group.getId(), true)">
+        Leave Group
+      </button>
+    </div>
+    <section>
+      <h2>Group Members</h2>
+      <div class="members" fxLayoutGap="16px">
+        <app-box *ngFor="let member of members" [options]="member.getId() !== user.getId() ? 'Remove View' : undefined" [ngClass]="member.getId() !== user.getId() ? 'clickable' : ''">
+          <mat-icon *ngIf="member.getId() === group.getAdmin()">supervisor_account</mat-icon>
+          <span>{{member.getId() === user.getId() ? "You" : member.getFormattedName()}}</span>
+        </app-box>
+        <app-box class="clickable" (clicked)="addMember()">
+          <mat-icon>group_add</mat-icon>
+          <span>Add a new</span>
+          <span>member</span>
+        </app-box>
+      </div>
+    </section>
+    <section>
+      <h2>Group Cameras</h2>
+      <div class="members" fxLayoutGap="16px">
+        <app-box *ngFor="let camera of cameras">
+          <mat-icon>video_call</mat-icon>
+          <span>{{camera.getName()}}</span>
+          <span>Shared by {{getOwnerName(camera.getOwnedBy())}}</span>
+        </app-box>
+        <app-box class="clickable" (clicked)="addCamera()">
+          <mat-icon>video_call</mat-icon>
+          <span>Share a</span>
+          <span>camera</span>
+        </app-box>
+      </div>
+    </section>
+  </div>
+  <div *ngIf="groupNotFound" class="not-found">
+    <h1>404</h1>
+    <h2>Sorry, we couldn't find the group you tried to view</h2>
+    <span (click)="router.navigate(['/groups'])">Click here to go back to view your groups</span>
+  </div>
+</app-toolbar>

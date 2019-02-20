@@ -1,0 +1,46 @@
+<app-toolbar pageName="Settings" [firstName]="user.getFirstName()">
+  <div class="content">
+    <div class="main-user_details">
+      <h1>User Details</h1>
+      <form>
+        <mat-form-field>
+          <input [(ngModel)]="firstName" name="localFirstName" matInput (change)="changesMade = true" placeholder="First Name" type="text"
+                 autocomplete="given-name">
+        </mat-form-field>
+        <mat-form-field>
+          <input [(ngModel)]="lastName" name="localLastName" matInput placeholder="Last Name" type="text" autocomplete="family-name">
+        </mat-form-field>
+        <mat-form-field>
+          <input [(ngModel)]="email" name="localEmail" matInput placeholder="Email" type="email" autocomplete="email">
+        </mat-form-field>
+      </form>
+      <div class="user_details-buttons" fxLayoutGap="16px">
+        <button mat-flat-button [disabled]="!changesMade">Save Changes</button>
+        <button mat-flat-button>Change Password</button>
+      </div>
+      <div class="main-user_groups">
+        <h1>User Groups</h1>
+        <div class="user_groups-groups">
+          <app-box *ngFor="let group of groups" [options]="group.getAdmin() === user ? 'Manage': 'View'">
+            <span>{{group.getName()}}:</span>
+            <span>({{group.getMembers().length}} users including you)</span>
+          </app-box>
+        </div>
+      </div>
+    </div>
+    <div class="action_content">
+      <div class="action delete">
+        <mat-icon>delete</mat-icon>
+        <span>Delete Account</span>
+      </div>
+      <div class="action cameras">
+        <mat-icon>videocam</mat-icon>
+        <span>{{cameras.length}} cameras owned</span>
+      </div>
+      <div class="action groups">
+        <mat-icon>group</mat-icon>
+        <span>Member of {{groups.length}} groups</span>
+      </div>
+    </div>
+  </div>
+</app-toolbar>

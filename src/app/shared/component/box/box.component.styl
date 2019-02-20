@@ -1,0 +1,44 @@
+@import "../../../../styles.styl"
+
+.box, .options
+  display flex
+  align-items center
+
+.box, .content
+  width 192px
+  height 128px
+
+.content
+  &:hover
+    & > .shrinking
+      border-radius 16px 16px 0 0
+      height 85px
+
+.box
+  z-index 2
+  background #fff
+  position absolute
+  border-radius 16px
+  flex-direction column
+  justify-content center
+  transition border-radius 0.5s, height 0.5s
+  -o-transition border-radius 0.5s, height 0.5s
+  -ms-transition border-radius 0.5s, height 0.5s
+  -moz-transition border-radius 0.5s, height 0.5s
+  -webkit-transition border-radius 0.5s, height 0.5s
+
+.options
+  z-index 1
+  top 85px
+  width 192px
+  height 43px
+  position relative
+  flex-direction row
+  border-radius 0 0 16px 16px
+  justify-content space-around
+  background-color $color-gray
+  span
+    cursor pointer
+
+.clickable
+  cursor pointer

@@ -1,0 +1,56 @@
+<app-toolbar pageName="Camera" [firstName]="user !== null ? user.getFirstName() : null">
+  <div class="content" ngClass.lt-sm="small_content" ngClass.gt-xs="large_content">
+    <div class="left" *ngIf="camera !== null && camera !== undefined">
+      <div class="title">
+        <div class="title-left" *ngIf="!changingName">
+          <h1>{{camera.getName()}}</h1>
+          <h2 fxHide.lt-sm *ngIf="camera.getId() !== camera.getName()">{{camera.getId()}}</h2>
+        </div>
+        <form *ngIf="changingName">
+          <mat-form-field>
+            <input matInput name="camera-name" [(ngModel)]="cameraName" placeholder="Camera Name"
+                   type="text">
+          </mat-form-field>
+        </form>
+        <div class="title-right" fxLayoutGap="8px">
+          <button *ngIf="!changingName" mat-flat-button (click)="changingName = !changingName" class="primary">
+            {{camera.getId() === camera.getName()? 'Give Camera Name' : 'Change Camera Name'}}
+          </button>
+          <button *ngIf="changingName" mat-button (click)="cancelNameChange()" class="secondary">
+            Cancel
+          </button>
+          <button *ngIf="changingName" mat-flat-button (click)="changeName()" class="primary">
+            Save Changes
+          </button>
+        </div>
+      </div>
+
+
+      <div class="status" fxLayoutGap="4px">
+        <mat-icon [ngClass]="camera.isActive() ? 'green' : 'red'">{{camera.isActive() ? 'check_circle' : 'warning'}}
+        </mat-icon>
+        <h3>{{camera.isActive() ? 'Active' : 'Inactive'}}</h3>
+      </div>
+      <div>
+        <div>
+          <mat-form-field>
+            <mat-select [(ngModel)]="timeframe" placeholder="Select timeframe" (selectionChange)="timeframeChanged()">
+              <mat-option value="day">Day</mat-option>
+              <mat-option value="week">Week</mat-option>
+              <mat-option value="month">Month</mat-option>
+              <mat-option value="quater">Quater</mat-option>
+              <mat-option value="year">Year</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <span *ngIf="entityCount !== undefined">Recorded Entities: {{entityCount}}</span>
+        </div>
+      </div>
+      <div class="chart">
+        <app-bar-chart [values]="chartValues"></app-bar-chart>
+      </div>
+      <p>Registered at: {{camera.getCreatedAt().toLocaleString()}}</p>
+      <p>Last active: {{camera.getLastActive().toLocaleString()}}</p>
+    </div>
+    <div class="right"></div>
+  </div>
+</app-toolbar>

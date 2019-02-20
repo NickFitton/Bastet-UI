@@ -1,0 +1,35 @@
+@import "../../../styles.styl"
+@import "../../shared/theme/button.styl"
+@import "../../shared/theme/input.styl"
+
+.centered-content
+  display flex
+  flex-flow column nowrap
+  justify-content center
+  align-content center
+  align-items center
+  height 100vh
+  background: $color-50
+
+.column
+  display flex
+  flex-direction column
+  justify-content center
+
+mat-card
+  width 530px
+mat-card-actions
+  display flex
+  flex-flow row nowrap
+  justify-content space-between
+  align-content center
+  button
+    flex-shrink 1
+
+.smallBox
+  width 80%
+  margin 0 0 25% 0
+
+.error-message
+  color red
+  font-size 12px
