@@ -4,7 +4,7 @@ import { UserModel } from '../../shared/api/user/user.model';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/api/user/user.service';
 import { CameraService } from '../../shared/api/camera/camera.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddCameraComponent } from '../../dialog/add-camera/add-camera.component';
 import { UserDependantComponent } from '../../shared/component/user-dependant.component';
 import { GroupModel } from '../../shared/api/group/group.model';
@@ -25,22 +25,24 @@ export class DashboardComponent extends UserDependantComponent {
   constructor(
     router: Router,
     userService: UserService,
+    dialog: MatDialog,
+    snackBar: MatSnackBar,
     private cameraService: CameraService,
-    private groupService: GroupService,
-    private dialog: MatDialog) {
-    super(userService, router);
+    private groupService: GroupService) {
+    super(userService, router, dialog, snackBar);
     this.user = null;
     this.cameras = [];
     this.groups = [];
   }
 
   inInit(): Promise<void> {
+    super.inInit();
     return this.cameraService.getOwnedCameras().then(
       cameras => {
         this.cameras = this.cameras.concat(cameras);
         return this.groupService.getUserGroups();
       }).then(groups => {
-      this.groups = this.groups.concat(groups);
+      this.groups = groups;
       return Promise.resolve();
     });
   }
@@ -50,7 +52,20 @@ export class DashboardComponent extends UserDependantComponent {
   }
 
   onClickGroup(groupId: string, navigation: string): void {
-    this.router.navigate(['/groups/' + groupId], {queryParams: {view: navigation}});
+    // 'View Delete' : 'View Manage'
+    switch (navigation.toLowerCase()) {
+      case 'view':
+      case 'manage':
+      default:
+        this.router.navigate(['/groups/' + groupId], {queryParams: {view: navigation}});
+        break;
+      case 'delete':
+
+        break;
+      case 'leave':
+        console.log('Leave!');
+        break;
+    }
   }
 
   addCamera() {

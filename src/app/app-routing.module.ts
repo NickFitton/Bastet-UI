@@ -10,6 +10,7 @@ import { StatisticsComponent } from './page/statistics/statistics.component';
 import { ManageCameraSharingComponent } from './page/manage-camera-sharing/manage-camera-sharing.component';
 import { ManageUserGroupComponent } from './page/manage-user-group/manage-user-group.component';
 import { RegisterComponent } from './page/register/register.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -25,7 +26,7 @@ const routes: Routes = [
   {path: 'settings', component: UserSettingsComponent},
   {path: 'statistics', component: StatisticsComponent},
   {path: 'stats', component: StatisticsComponent},
-  {path: '**', component: LoginComponent}
+  {path: '**', component: NotFoundComponent}
 ];
 
 @NgModule({

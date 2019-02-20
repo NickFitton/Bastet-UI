@@ -16,7 +16,8 @@ import {
   MatSlideToggleModule,
   MatSnackBarModule,
   MatTabsModule,
-  MatToolbarModule, MatTooltipModule
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
 
 @NgModule({

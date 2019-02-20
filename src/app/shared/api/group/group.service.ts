@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserService } from '../user/user.service';
 import { GroupBean } from './group.bean';
 import { RequestUtil } from '../request.util';
+import { UserModel } from '../user/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,7 @@ export class GroupService {
 
   private static getMemberUrl(groupId: string, userId?: string): string {
     const memeberUrl = this.getGroupUrl(groupId) + '/member';
-    if (userId) {
+    if (userId !== undefined) {
       return memeberUrl + '/' + userId;
     }
     return memeberUrl;
@@ -105,12 +106,50 @@ export class GroupService {
       .then(groupBean => GroupService.mapFromBean(groupBean));
   }
 
-  addUserToGroup(): Promise<GroupModel> {
-    return Promise.reject('Not complete');
+  addUserToGroup(groupId: string, userEmail: string): Promise<GroupModel> {
+    const user = new UserModel(null, null, null, userEmail, null, null);
+    return this.client.post<BackendModel<GroupBean>>(GroupService.getMemberUrl(groupId), user, {
+      observe: 'response',
+      headers: RequestUtil.generateAuthHeaders(this.userService)
+    }).toPromise().then(response => {
+      if (response.status === 202) {
+        return response.body.data;
+      }
+      throw response.status;
+    }).then(bean => GroupService.mapFromBean(bean));
   }
 
-  removeUserFromGroup(): Promise<GroupModel> {
-    return Promise.reject('Not complete');
+  removeUserFromGroup(groupId: string, userId: string): Promise<boolean> {
+    return this.client.delete(GroupService.getMemberUrl(groupId, userId), {
+      observe: 'response',
+      headers: RequestUtil.generateAuthHeaders(this.userService)
+    }).toPromise()
+      .then(response => {
+        if (response.status === 202) {
+          return true;
+        } else if (response.status === 404) {
+          return false;
+        } else {
+          throw response.status;
+        }
+      });
+  }
+
+  deleteGroup(groupId: string): Promise<boolean> {
+    console.log('Deleting group');
+    return this.client.delete(GroupService.getGroupUrl(groupId), {
+      observe: 'response',
+      headers: RequestUtil.generateAuthHeaders(this.userService)
+    }).toPromise()
+      .then(response => {
+        if (response.status === 202) {
+          return true;
+        } else if (response.status === 404) {
+          return false;
+        } else {
+          throw response.status;
+        }
+      });
   }
 
   changeOwnerOfGroup(): Promise<GroupModel> {

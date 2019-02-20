@@ -1,9 +1,10 @@
-<h1 mat-dialog-title>Leave a Group</h1>
+<h1 mat-dialog-title>{{nameCase(data.leaveType)}} a Group</h1>
 <div mat-dialog-content class="dialog-content">
-  <p>Are you sure you want to leave the group?</p>
-  <p>Any cameras you have shared will be removed from the group</p>
+  <p>Are you sure you want to {{data.leaveType}} this group?</p>
+  <p *ngIf="data.leaveType === 'Leave'">Any cameras you have shared will be removed from the group</p>
+  <p *ngIf="data.leaveType === 'Delete'">All users cameras connected to the group will be unshared</p>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
-  <button mat-button [mat-dialog-close]="true">Leave Group</button>
+  <button mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+  <button mat-button (click)="confirm()">{{nameCase(data.leaveType)}} Group</button>
 </div>

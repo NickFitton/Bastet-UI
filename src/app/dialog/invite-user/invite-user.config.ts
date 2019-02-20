@@ -3,10 +3,10 @@ export class InviteUserConfig {
   inviteType: InviteType;
   from: string;
 
-  constructor(preexists: boolean, inviteType: InviteType, from: string) {
+  constructor(preexists: boolean, inviteType: InviteType, groupId: string) {
     this.preexists = preexists;
     this.inviteType = inviteType;
-    this.from = from;
+    this.from = groupId;
   }
 }
 

@@ -23,7 +23,7 @@ export class ToolbarComponent implements OnInit {
     this.toolbarLinks = [
       new Link('Dashboard', '/dashboard', 'home'),
       new Link('My Cameras', '/cameras', 'videocam'),
-      new Link('My groups', '/groups', 'group'),
+      new Link('My Groups', '/groups', 'group'),
       new Link('Statistics', '/stats', 'bar_chart')
     ];
     this.settingsHidden = true;

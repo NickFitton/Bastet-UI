@@ -7,8 +7,11 @@ import { Router } from '@angular/router';
 import { UserService } from '../../shared/api/user/user.service';
 import { CameraService } from '../../shared/api/camera/camera.service';
 import { GroupService } from '../../shared/api/group/group.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { CameraToGroupsComponent } from '../../dialog/camera-to-groups/camera-to-groups.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { InviteUserComponent } from '../../dialog/invite-user/invite-user.component';
+import { InviteType, InviteUserConfig } from '../../dialog/invite-user/invite-user.config';
 
 @Component({
   selector: 'app-manage-user-group',
@@ -22,34 +25,10 @@ export class ManageUserGroupComponent extends UserDependantComponent {
 
   cameras: CameraModel[];
   members: UserModel[];
-
-  constructor(
-    router: Router,
-    userService: UserService,
-    private cameraService: CameraService,
-    private groupService: GroupService,
-    private dialog: MatDialog) {
-    super(userService, router);
-    this.user = null;
-    this.group = null;
-    this.cameras = [];
-    this.members = [];
-
-    const url = this.router.url;
-    const segments = url
-      .split('/')
-      .map(segment => {
-        if (segment.includes('?')) {
-          return segment.split('?')[0];
-        }
-        return segment;
-      })
-      .filter(segment => segment.length > 0);
-
-    this.groupId = segments[segments.length - 1];
-  }
+  groupNotFound: boolean;
 
   inInit(): Promise<void> {
+    this.groupNotFound = false;
     return this.groupService.getGroupById(this.groupId)
       .then(groupModel => {
         const promiseTrain = [];
@@ -74,7 +53,44 @@ export class ManageUserGroupComponent extends UserDependantComponent {
             this.cameras.push(<CameraModel>model);
           }
         }
+      })
+      .catch(rejected => {
+        console.error(rejected);
+        if (rejected instanceof HttpErrorResponse) {
+          const status = (<HttpErrorResponse>rejected).status;
+          if (status === 404) {
+
+          }
+        }
+        this.groupNotFound = true;
       });
+  }
+
+  constructor(
+    router: Router,
+    userService: UserService,
+    dialog: MatDialog,
+    snackBar: MatSnackBar,
+    private cameraService: CameraService,
+    private groupService: GroupService) {
+    super(userService, router, dialog, snackBar);
+    this.user = null;
+    this.group = null;
+    this.cameras = [];
+    this.members = [];
+
+    const url = this.router.url;
+    const segments = url
+      .split('/')
+      .map(segment => {
+        if (segment.includes('?')) {
+          return segment.split('?')[0];
+        }
+        return segment;
+      })
+      .filter(segment => segment.length > 0);
+
+    this.groupId = segments[segments.length - 1];
   }
 
   getOwnerName(ownerId: string): string {
@@ -93,6 +109,17 @@ export class ManageUserGroupComponent extends UserDependantComponent {
     const addCamera = this.dialog.open(CameraToGroupsComponent);
 
     addCamera.afterClosed().toPromise().then(() => {
+      this.inInit();
+    });
+  }
+
+  addMember(): void {
+    const addMember = this.dialog.open(InviteUserComponent, {
+      width: '50%',
+      data: new InviteUserConfig(true, InviteType.GROUP, this.group.getId()),
+    });
+
+    addMember.afterClosed().toPromise().then(() => {
       this.inInit();
     });
   }

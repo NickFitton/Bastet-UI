@@ -1,11 +1,11 @@
-<app-toolbar pageName="Cameras" [firstName]="user !== null ? user.getFirstName() : null">
+<app-toolbar pageName="My Cameras" [firstName]="user !== null ? user.getFirstName() : null">
   <div class="content" fxLayout="column" fxLayoutGap="16px" ngClass.lt-sm="small_content" ngClass.gt-xs="large_content">
     <section class="cameras">
       <h2>My Cameras</h2>
       <div class="row" fxLayoutGap="16px">
         <app-box class="column" *ngFor="let camera of ownedCameras"
                  [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"
-                 (link)="'/cameras/' + camera.getId()" (clicked)="onClick(camera.getId(), $event)">
+                 [link]="'/cameras/' + camera.getId()" (clicked)="onClick(camera.getId(), $event)">
           <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">
             {{camera.isOwnedBy(user.getId()) ? 'person' : 'group'}}
           </mat-icon>
@@ -22,7 +22,7 @@
       <div class="row" fxLayoutGap="16px">
         <app-box class="column" *ngFor="let camera of sharedCameras"
                  [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"
-                 (link)="'/cameras/' + camera.getId()" (clicked)="onClick(camera.getId(), $event)">
+                 [link]="'/cameras/' + camera.getId()" (clicked)="onClick(camera.getId(), $event)">
           <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">
             {{camera.isOwnedBy(user.getId()) ? 'person' : 'group'}}
           </mat-icon>

@@ -8,64 +8,19 @@ import { MaterialModule } from './shared/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
-import { TimeFrameComponent } from './dialog/timeframe/time-frame.component';
-import { LoginComponent } from './page/login/login.component';
-import { DashboardComponent } from './page/dashboard/dashboard.component';
-import { CamerasComponent } from './page/cameras/cameras.component';
-import { UserGroupsComponent } from './page/user-groups/user-groups.component';
-import { StatisticsComponent } from './page/statistics/statistics.component';
-import { AddCameraComponent } from './dialog/add-camera/add-camera.component';
-import { ViewCameraComponent } from './page/view-camera/view-camera.component';
-import { ManageUserGroupComponent } from './page/manage-user-group/manage-user-group.component';
-import { StatGraphComponent } from './shared/component/stat-graph/stat-graph.component';
-import { UserSettingsComponent } from './page/user-settings/user-settings.component';
-import { ManageCameraSharingComponent } from './page/manage-camera-sharing/manage-camera-sharing.component';
-import { CameraToGroupsComponent } from './dialog/camera-to-groups/camera-to-groups.component';
-import { InviteUserComponent } from './dialog/invite-user/invite-user.component';
-import { ToolbarComponent } from './shared/component/toolbar/toolbar.component';
-import { RegisterComponent } from './page/register/register.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { BoxComponent } from './shared/component/box/box.component';
-import { LeaveGroupComponent } from './dialog/leave-group/leave-group.component';
-import { ErrorComponent } from './dialog/error/error.component';
-import { BarChartComponent } from './shared/component/bar-chart/bar-chart.component';
-import { CreateGroupComponent } from './dialog/create-group/create-group.component';
+import { DialogModule } from './dialog/dialog.module';
+import { PageModule } from './page/page.module';
+import { ComponentsModule } from './shared/component/components.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TimeFrameComponent,
-    ErrorComponent,
-    LeaveGroupComponent,
-    LoginComponent,
-    DashboardComponent,
-    CamerasComponent,
-    UserGroupsComponent,
-    StatisticsComponent,
-    AddCameraComponent,
-    CreateGroupComponent,
-    ViewCameraComponent,
-    ManageUserGroupComponent,
-    StatGraphComponent,
-    UserSettingsComponent,
-    ManageCameraSharingComponent,
-    CameraToGroupsComponent,
-    InviteUserComponent,
-    ToolbarComponent,
-    RegisterComponent,
-    BoxComponent,
-    BarChartComponent,
-  ],
-  entryComponents: [
-    AddCameraComponent,
-    CreateGroupComponent,
-    ErrorComponent,
-    TimeFrameComponent,
-    LeaveGroupComponent,
-    InviteUserComponent,
-    CameraToGroupsComponent,
   ],
   imports: [
+    ComponentsModule,
+    DialogModule,
+    PageModule,
     FormsModule,
     FlexLayoutModule,
     BrowserModule,

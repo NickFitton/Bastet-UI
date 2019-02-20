@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserDependantComponent } from '../../shared/component/user-dependant.component';
 import { UserService } from '../../shared/api/user/user.service';
 import { CameraService } from '../../shared/api/camera/camera.service';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-cameras',
@@ -15,13 +16,14 @@ export class CamerasComponent extends UserDependantComponent {
   ownedCameras: CameraModel[];
   sharedCameras: CameraModel[];
 
-  constructor(router: Router, userService: UserService, private cameraService: CameraService) {
-    super(userService, router);
+  constructor(router: Router, userService: UserService, dialog: MatDialog, snackBar: MatSnackBar, private cameraService: CameraService) {
+    super(userService, router, dialog, snackBar);
     this.ownedCameras = [];
     this.sharedCameras = [];
   }
 
   inInit(): Promise<void> {
+    super.inInit();
     return this.cameraService.getOwnedCameras().then(cameras => {
       for (const camera of cameras) {
         if (camera.isOwnedBy(this.user.getId())) {

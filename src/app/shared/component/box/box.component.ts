@@ -14,9 +14,11 @@ export class BoxComponent implements OnInit {
 
   @Input()
   set options(options: string) {
-    const newoptions = options.split(' ');
-    for (const option of newoptions) {
-      this.boxOptions.push(option);
+    if (options !== undefined) {
+      const newoptions = options.split(' ');
+      for (const option of newoptions) {
+        this.boxOptions.push(option);
+      }
     }
   }
 
@@ -30,7 +32,7 @@ export class BoxComponent implements OnInit {
   ngOnInit() {
   }
 
-  elementClicked(option: string): void {
+  elementClicked(option?: string): void {
     if (option === undefined) {
       this.clicked.emit('clicked');
     } else {

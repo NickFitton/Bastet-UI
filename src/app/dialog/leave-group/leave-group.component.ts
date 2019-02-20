@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { GroupModel } from '../../shared/api/group/group.model';
-import { MAT_DIALOG_DATA } from '@angular/material';
-import { UserModel } from '../../shared/api/user/user.model';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { LeaveGroupConfig } from './leave-group-config.model';
+import { StringUtil } from '../../shared/utilities/string.util';
+import { GroupService } from '../../shared/api/group/group.service';
 
 @Component({
   selector: 'app-leave-group-dialog-component',
@@ -11,11 +11,31 @@ import { LeaveGroupConfig } from './leave-group-config.model';
 })
 export class LeaveGroupComponent {
 
-  group: GroupModel;
-  user: UserModel;
+  private errorMessage: string;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: LeaveGroupConfig) {
-    this.group = data.group;
-    this.user = data.user;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private data: LeaveGroupConfig,
+    private dialogRef: MatDialogRef<LeaveGroupComponent>,
+    private groupService: GroupService) {
+  }
+
+  public nameCase(string: string): string {
+    return StringUtil.toNameCase(string);
+  }
+
+  private confirm(): void {
+    let promise;
+    if (this.data.leaveType.toLowerCase() === 'delete') {
+      promise = this.groupService.deleteGroup(this.data.groupId);
+    } else {
+      promise = this.groupService.removeUserFromGroup(this.data.groupId, this.data.userId);
+    }
+    promise.then(success => {
+      if (success) {
+        this.dialogRef.close();
+      } else {
+        this.errorMessage = 'Failed to ' + this.data.leaveType + ' group.';
+      }
+    });
   }
 }

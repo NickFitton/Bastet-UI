@@ -6,12 +6,29 @@
   flex-flow column nowrap
   padding 16px
   background-color $color-light-gray
+  .title
+    display flex
+    flex-flow row wrap
+    justify-content space-between
+    align-items center
+.not-found
+  display flex
+  flex-flow column nowrap
+  justify-content center
+  align-items center
+  h1,h2,span
+    padding 0
+    margin 0
+  span
+    cursor pointer
+    &:hover
+      color $color-400
 
 .large_content
   width 80%
-  -webkit-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
-  -moz-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
-  box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+  -webkit-box-shadow 0 0 10px 0 rgba(125, 125, 125, 0.75)
+  -moz-box-shadow 0 0 10px 0 rgba(125, 125, 125, 0.75)
+  box-shadow 0 0 10px 0 rgba(125, 125, 125, 0.75)
 
 .small_content
   .title
@@ -27,3 +44,6 @@
 .members
   display flex
   flex-flow row wrap
+
+.clickable
+  cursor pointer

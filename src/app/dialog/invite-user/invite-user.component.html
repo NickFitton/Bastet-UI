@@ -14,8 +14,12 @@
   <div *ngIf="step === 2">
     <p>Invitation sent!</p>
   </div>
+  <div *ngIf="step === -1">
+    <h2>Invitation Failed</h2>
+    <p>{{errorMessage}}</p>
+  </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="step === 1 ? back() : closeDialog()">{{step === 1 ? 'Back' : 'Close'}}</button>
-  <button *ngIf="step !== 2" mat-flat-button (click)="step === 0 ? invite() : confirmInvite()">Invite</button>
+  <button mat-button (click)="step === 1 || step === -1 ? back() : closeDialog()">{{step === 1 || step === -1 ? 'Back' : 'Close'}}</button>
+  <button *ngIf="step === 0 || step === 2" mat-flat-button (click)="step === 0 ? invite() : confirmInvite()">Invite</button>
 </div>

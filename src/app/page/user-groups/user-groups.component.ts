@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { GroupModel } from '../../shared/api/group/group.model';
-import { UserModel } from '../../shared/api/user/user.model';
-import { CameraModel } from '../../shared/api/camera/camera.model';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { InviteType, InviteUserConfig } from '../../dialog/invite-user/invite-user.config';
 import { InviteUserComponent } from '../../dialog/invite-user/invite-user.component';
 import { UserDependantComponent } from '../../shared/component/user-dependant.component';
@@ -21,8 +19,13 @@ export class UserGroupsComponent extends UserDependantComponent {
   adminGroups: GroupModel[];
   otherGroups: GroupModel[];
 
-  constructor(router: Router, userService: UserService, private groupService: GroupService, private dialog: MatDialog) {
-    super(userService, router);
+  constructor(
+    router: Router,
+    userService: UserService,
+    dialog: MatDialog,
+    snackBar: MatSnackBar,
+    private groupService: GroupService) {
+    super(userService, router, dialog, snackBar);
     this.adminGroups = [];
     this.otherGroups = [];
   }
@@ -41,10 +44,6 @@ export class UserGroupsComponent extends UserDependantComponent {
         }
       }
     );
-  }
-
-  viewGroup(groupId: string): void {
-    this.router.navigate(['/groups/' + groupId]);
   }
 
   inviteClicked(groupId: string, type: string): void {

@@ -7,6 +7,7 @@ import { MotionService } from '../../shared/api/motion/motion.service';
 import { UserDependantComponent } from '../../shared/component/user-dependant.component';
 import { MotionModel } from '../../shared/api/motion/motion.model';
 import { DataPointModel } from '../../shared/component/box/data-point.model';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-view-camera',
@@ -27,10 +28,12 @@ export class ViewCameraComponent extends UserDependantComponent {
 
   constructor(
     userService: UserService,
+    router: Router,
+    dialog: MatDialog,
+    snackBar: MatSnackBar,
     private cameraService: CameraService,
-    private motionService: MotionService,
-    router: Router) {
-    super(userService, router);
+    private motionService: MotionService) {
+    super(userService, router, dialog, snackBar);
     this.timeframe = 'day';
     this.camera = null;
     this.changingName = false;
@@ -130,6 +133,7 @@ export class ViewCameraComponent extends UserDependantComponent {
   }
 
   inInit(): Promise<void> {
+    super.inInit();
     return this.cameraService.getCamera(this.cameraId).then(camera => {
       this.camera = camera;
       this.cameraName = camera.getName();

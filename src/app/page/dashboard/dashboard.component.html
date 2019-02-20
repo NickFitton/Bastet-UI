@@ -44,11 +44,16 @@
       </div>
     </section>
     <section class="cameras">
-      <h2>Cameras</h2>
+      <div class="title">
+        <h1>Cameras</h1>
+        <button mat-flat-button (click)="router.navigate(['/cameras'])">
+          View Cameras
+        </button>
+      </div>
       <div class="row" fxLayoutGap="16px">
         <app-box class="column" *ngFor="let camera of cameras"
                  [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"
-                 (link)="'/cameras/' + camera.getId()" (clicked)="onClickCamera(camera.getId(), $event)">
+                 [link]="'/cameras/' + camera.getId()" (clicked)="onClickCamera(camera.getId(), $event)">
           <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">
             {{camera.isOwnedBy(user.getId()) ? 'person' : 'group'}}
           </mat-icon>
@@ -62,14 +67,21 @@
       </div>
     </section>
     <section class="groups">
-      <h2>Groups</h2>
+      <div class="title">
+        <h1>Groups</h1>
+        <button mat-flat-button (click)="router.navigate(['/groups'])">
+          View Groups
+        </button>
+      </div>
       <div class="row" fxLayoutGap="16px">
         <app-box class="column" *ngFor="let group of groups"
-                 [options]="group.getAdmin() === user.getId() ? 'View Delete' : 'View Manage'"
-                 (link)="'/groups/' + group.getId()" (clicked)="onClickGroup(group.getId(), $event)">
+                 [options]="group.getAdmin() === user.getId() ? 'Manage Delete' : 'View Leave'"
+                 [link]="'/groups/' + group.getId()" (clicked)="groupClicked($event, group.getId())">
           <mat-icon>group</mat-icon>
           <span>{{group.getName()}}</span>
-          <span>Members: {{group.getMembers() !== undefined ? 'You + ' + group.getMembers().length-1 + 'others' : 'You'}}</span>
+          <span *ngIf="group.getMembers().length > 1">
+            Members: {{group.getMembers() !== undefined ? 'You + ' + (group.getMembers().length - 1) + ' others' : 'You'}}
+          </span>
         </app-box>
         <div *ngIf="groups.length === 0">
           <app-box class="camera-setup" (clicked)="createGroup()">
