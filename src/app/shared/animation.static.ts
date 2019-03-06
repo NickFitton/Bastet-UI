@@ -50,4 +50,29 @@ export class AnimationStatic {
       ])
     ]);
   }
+
+  static get fadeInRight(): AnimationTriggerMetadata {
+    return trigger('fadeInRight', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          transform: 'translateY(50px)'
+        }),
+        animate('1s', style({
+          opacity: 1,
+          transform: 'none'
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          opacity: 1,
+          transform: 'none'
+        }),
+        animate('1s', style({
+          opacity: 0,
+          transform: 'translateY(50px)'
+        })),
+      ])
+    ]);
+  }
 }

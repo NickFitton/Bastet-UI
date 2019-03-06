@@ -1,49 +1,34 @@
 @import "../../../styles.styl"
-@import "../../shared/theme/button.styl"
 
 .content
-  display flex
-  flex-flow column nowrap
+  padding 16px
   min-height "calc(100vh - %s)" % $toolbar-height
-  section
-    padding 16px
-    background-color $color-light-gray
-    app-box
-      span
-        text-align center
+  background #f4f4f4
+  h1
+    margin 0
   .title
-    display flex
-    flex-flow column nowrap
-    justify-content center
-  .status
-    display flex
-    flex-flow row nowrap
-    justify-content center
-  width 100%
+    align-items center
+    justify-content space-between
 
-.row, .camera-title
-  display flex
-  flex-direction row
+  section
+    margin-bottom 16px
+.collection
+  justify-content flex-start
+  align-items flex-start
 
-.camera-title
-  justify-content left
-  align-items center
-
-.column
-  display flex
-  flex-flow column wrap
+.graphs
+  margin 8px
 
 .orange
   background orange
-
 .green
   background lawngreen
-
 .blue
   background dodgerblue
 
-table
-  text-align right
-
-.camera-setup
-  cursor pointer
+app-box
+  justify-content center
+  align-items center
+  margin 8px
+  span
+    text-align center

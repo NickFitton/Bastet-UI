@@ -10,11 +10,15 @@ import { UserDependantComponent } from '../../shared/component/user-dependant.co
 import { GroupModel } from '../../shared/api/group/group.model';
 import { GroupService } from '../../shared/api/group/group.service';
 import { CreateGroupComponent } from '../../dialog/create-group/create-group.component';
+import { AnimationStatic } from '../../shared/animation.static';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.styl']
+  styleUrls: ['./dashboard.component.styl'],
+  animations: [
+    AnimationStatic.fadeInRight
+  ]
 })
 export class DashboardComponent extends UserDependantComponent {
 
@@ -37,14 +41,14 @@ export class DashboardComponent extends UserDependantComponent {
 
   inInit(): Promise<void> {
     super.inInit();
-    return this.cameraService.getOwnedCameras().then(
-      cameras => {
-        this.cameras = this.cameras.concat(cameras);
+    return this.cameraService.getOwnedCameras()
+      .then(cameras => {
+        this.updateCameras(this.cameras, cameras);
         return this.groupService.getUserGroups();
       }).then(groups => {
-      this.groups = groups;
-      return Promise.resolve();
-    });
+        this.updateGroups(this.groups, groups);
+        return Promise.resolve();
+      });
   }
 
   onClickCamera(cameraId: string, navigation: string): void {
@@ -78,5 +82,57 @@ export class DashboardComponent extends UserDependantComponent {
     const groupDialog = this.dialog.open(CreateGroupComponent, {width: '50%'});
     groupDialog.afterClosed().toPromise().then(
       () => this.inInit());
+  }
+
+  updateGroups(existing: GroupModel[], newGroups: GroupModel[]): void {
+    const existingIds = existing.map(group => group.getId());
+    const newIds = newGroups.map(group => group.getId());
+
+    for (let i = 0; i < existing.length; i++) {
+      if (!newIds.includes(existing[i].getId())) {
+        console.log('Remove element');
+        existing.splice(i, 1);
+      }
+    }
+
+    for (const camera of newGroups) {
+      if (!existingIds.includes(camera.getId())) {
+        console.log('Push element');
+        existing.push(camera);
+      }
+    }
+  }
+
+  updateCameras(existing: CameraModel[], newCameras: CameraModel[]): void {
+    const existingIds = existing.map(camera => camera.getId());
+    const newIds = newCameras.map(camera => camera.getId());
+
+    for (let i = 0; i < existing.length; i++) {
+      if (!newIds.includes(existing[i].getId())) {
+        console.log('Remove element');
+        existing.splice(i, 1);
+      }
+    }
+
+    for (const camera of newCameras) {
+      if (!existingIds.includes(camera.getId())) {
+        console.log('Push element');
+        existing.push(camera);
+      }
+    }
+  }
+
+  mockGroup() {
+    this.groups.push(new GroupModel(
+      '',
+      'This is a mock ' + this.groups.length,
+      null,
+      [],
+      []
+    ));
+  }
+
+  loseGroup() {
+    this.groups.splice(0, 1);
   }
 }
