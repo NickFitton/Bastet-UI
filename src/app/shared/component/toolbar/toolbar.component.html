@@ -6,7 +6,7 @@
     <span>Bastet</span>
   </div>
   <div fxHide.lt-sm>
-    <span *ngIf="firstName" (click)="toggleSettings()" [matMenuTriggerFor]="menu">Welcome {{firstName}}</span>
+    <span class="clickable" *ngIf="firstName" (click)="toggleSettings()" [matMenuTriggerFor]="menu">Welcome {{firstName}}</span>
   </div>
 </mat-toolbar>
 
