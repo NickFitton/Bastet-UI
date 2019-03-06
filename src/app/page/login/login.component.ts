@@ -4,34 +4,14 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { UserModel } from '../../shared/api/user/user.model';
+import { AnimationStatic } from '../../shared/animation.static';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.styl'],
   animations: [
-    trigger('growIn', [
-      transition(':enter', [
-        style({
-          opacity: 0,
-          height: '0px'
-        }),
-        animate('0.5s', style({
-          opacity: 1,
-          height: '*'
-        })),
-      ]),
-      transition(':leave', [
-        style({
-          opacity: 1,
-          height: '*'
-        }),
-        animate('0.5s', style({
-          opacity: 0,
-          height: '0px'
-        })),
-      ])
-    ]),
+    AnimationStatic.fadeGrowIn,
     trigger('loadLogo', [
       transition(':enter', [
         style({

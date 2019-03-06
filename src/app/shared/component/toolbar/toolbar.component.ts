@@ -1,11 +1,34 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../api/user/user.service';
+import { AnimationStatic } from '../../animation.static';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.styl']
+  styleUrls: ['./toolbar.component.styl'],
+  animations: [
+    AnimationStatic.fadeIn,
+    trigger('topIn', [
+      transition(':enter', [
+        style({
+          top: '-100%'
+        }),
+        animate('1s', style({
+          top: '*'
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          top: '*'
+        }),
+        animate('1s', style({
+          top: '-100%'
+        })),
+      ])
+    ])
+  ]
 })
 export class ToolbarComponent implements OnInit {
 
@@ -22,8 +45,8 @@ export class ToolbarComponent implements OnInit {
   constructor(private router: Router, private userService: UserService) {
     this.toolbarLinks = [
       new Link('Dashboard', '/dashboard', 'home'),
-      new Link('My Cameras', '/cameras', 'videocam'),
-      new Link('My Groups', '/groups', 'group'),
+      new Link('Cameras', '/cameras', 'videocam'),
+      new Link('Groups', '/groups', 'group'),
       new Link('Statistics', '/stats', 'bar_chart')
     ];
     this.settingsHidden = true;

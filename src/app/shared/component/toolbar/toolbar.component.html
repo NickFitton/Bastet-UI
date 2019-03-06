@@ -1,29 +1,26 @@
-<mat-toolbar class="mat-primary">
-  <div fxLayoutGap="8px" (click)="sidenav.toggle()">
-    <mat-icon>
+<mat-toolbar class="mat-primary row">
+  <div fxLayoutGap="8px" class="row">
+    <mat-icon @fadeIn fxHide fxShow.lt-md (click)="sidenav.toggle()">
       menu
     </mat-icon>
-    <span>{{pageName}}</span>
+    <span>Bastet</span>
   </div>
   <div fxHide.lt-sm>
-    <mat-icon class="toolbar-option icon_option">notifications</mat-icon>
-    <span *ngIf="firstName" class="toolbar-option span_option" (click)="toggleSettings()">Welcome {{firstName}}</span>
+    <span *ngIf="firstName" (click)="toggleSettings()" [matMenuTriggerFor]="menu">Welcome {{firstName}}</span>
   </div>
 </mat-toolbar>
-<mat-sidenav-container class="sidenav-container mat-primary">
-  <mat-sidenav #sidenav mode="over">
-    <div *ngFor="let link of toolbarLinks" routerLink="{{link.link}}"
-         [ngClass]="{'sidebar_item-disabled': link.text === pageName, 'sidebar_item': link.text !== pageName}">
+
+<mat-sidenav-container class="mat-primary">
+  <mat-sidenav class="sidenav-container" #sidenav mode="side" opened>
+    <div class="sidebar_item" *ngFor="let link of toolbarLinks" routerLink="{{link.link}}"
+         [ngClass]="{'sidebar_item-active': pageName.includes(link.text), 'sidebar_item': !pageName.includes(link.text)}">
       <span>{{link.text}}</span>
-      <mat-icon>{{link.icon}}</mat-icon>
     </div>
-    <div fxHide fxShow.lt-sm class="sidebar_item" (click)="goToSettings()">
+    <div class="sidebar_item" fxHide fxShow.lt-sm (click)="goToSettings()">
       <span>Settings</span>
-      <mat-icon>settings</mat-icon>
     </div>
-    <div fxHide fxShow.lt-sm class="sidebar_item" (click)="signOut()">
+    <div class="sidebar_item" fxHide fxShow.lt-sm (click)="signOut()">
       <span>Sign out</span>
-      <mat-icon>exit_to_app</mat-icon>
     </div>
   </mat-sidenav>
 
@@ -31,15 +28,16 @@
     <ng-content></ng-content>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<div class="user-settings" [hidden]="settingsHidden">
-  <div class="list">
-    <div class="list_item" (click)="signOut()">
-      <span>Sign Out</span>
-      <mat-icon>exit_to_app</mat-icon>
-    </div>
-    <div class="list_item" [ngClass]="{'sidebar_items-disabled': 'settings' === pageName}" (click)="goToSettings()">
-      <span>Settings</span>
-      <mat-icon>settings</mat-icon>
-    </div>
-  </div>
-</div>
+
+<mat-menu #menu="matMenu" [overlapTrigger]="false">
+  <button class="row" mat-menu-item (click)="signOut()">
+    <span>Sign Out</span>
+    <mat-icon>exit_to_app</mat-icon>
+  </button>
+  <button class="row" mat-menu-item (click)="goToSettings()"
+          [disabled]="pageName.includes('Settings')"
+          [ngClass]="{'menu_item-active': pageName.includes('Settings')}">
+    <span>Settings</span>
+    <mat-icon>settings</mat-icon>
+  </button>
+</mat-menu>

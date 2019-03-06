@@ -30,27 +30,34 @@ export abstract class UserDependantComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getLoggedIn().then(loggedInUser => {
-        if (loggedInUser === null || loggedInUser === undefined) {
-          this.router.navigate(['/login']);
-        } else {
-          this.user = loggedInUser;
-        }
-        this.inInit();
-      },
-      error => {
-        if (error instanceof HttpErrorResponse) {
-          const httpError = <HttpErrorResponse>error;
-          if (httpError.status === 500) {
-            this.userService.logOut();
-            this.router.navigate(['/']);
-          } else {
-            alert(httpError.status);
-          }
-        } else {
-          alert(error);
-        }
-      });
+    const loggedIn = this.userService.getLoggedIn();
+    if (loggedIn != null) {
+      loggedIn
+        .then(loggedInUser => {
+            if (loggedInUser === null || loggedInUser === undefined) {
+              this.router.navigate(['/login']);
+            } else {
+              this.user = loggedInUser;
+            }
+            this.inInit();
+          },
+          error => {
+            if (error instanceof HttpErrorResponse) {
+              const httpError = <HttpErrorResponse>error;
+              if (httpError.status === 500) {
+                this.userService.logOut();
+                this.router.navigate(['/']);
+              } else {
+                alert(httpError.status);
+              }
+            } else {
+              alert(error);
+            }
+          });
+    } else {
+      this.userService.logOut();
+      this.router.navigate(['/']);
+    }
   }
 
   inInit(): Promise<void> {
