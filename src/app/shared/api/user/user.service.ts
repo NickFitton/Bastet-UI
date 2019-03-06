@@ -39,6 +39,9 @@ export class UserService {
       .then(response => {
         if (response.status === 201) {
           return response.body.data;
+        } else if (response.status === 400) {
+          console.log('Throwing error body');
+          throw response.body.error;
         } else {
           throw response.status;
         }

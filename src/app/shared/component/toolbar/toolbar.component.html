@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar class="mat-primary">
   <div fxLayoutGap="8px" (click)="sidenav.toggle()">
     <mat-icon>
       menu
@@ -10,7 +10,7 @@
     <span *ngIf="firstName" class="toolbar-option span_option" (click)="toggleSettings()">Welcome {{firstName}}</span>
   </div>
 </mat-toolbar>
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container mat-primary">
   <mat-sidenav #sidenav mode="over">
     <div *ngFor="let link of toolbarLinks" routerLink="{{link.link}}"
          [ngClass]="{'sidebar_item-disabled': link.text === pageName, 'sidebar_item': link.text !== pageName}">

@@ -16,7 +16,6 @@ import { ManageUserGroupComponent } from './manage-user-group/manage-user-group.
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { ManageCameraSharingComponent } from './manage-camera-sharing/manage-camera-sharing.component';
-import { RegisterComponent } from './register/register.component';
 import { ComponentsModule } from '../shared/component/components.module';
 import { NotFoundComponent } from '../not-found/not-found.component';
 
@@ -27,7 +26,6 @@ import { NotFoundComponent } from '../not-found/not-found.component';
     LoginComponent,
     ManageCameraSharingComponent,
     ManageUserGroupComponent,
-    RegisterComponent,
     StatisticsComponent,
     UserGroupsComponent,
     UserSettingsComponent,
@@ -40,7 +38,6 @@ import { NotFoundComponent } from '../not-found/not-found.component';
     LoginComponent,
     ManageCameraSharingComponent,
     ManageUserGroupComponent,
-    RegisterComponent,
     StatisticsComponent,
     UserGroupsComponent,
     UserSettingsComponent,

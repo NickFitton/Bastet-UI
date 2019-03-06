@@ -1,25 +1,39 @@
-<div class="centered-content">
-  <mat-card ngClass.lt-sm="smallBox">
-    <mat-card-title>Log In</mat-card-title>
+<div class="centered-content column" ngClass.lt-md="top-content">
+  <div @loadLogo class="header column">
+    <img src="https://via.placeholder.com/150">
+    <h1>Bastet</h1>
+  </div>
+  <div @loadForm class="form column" ngClass.lt-md  ="wide-form">
     <form>
       <mat-card-content class="column">
+        <mat-form-field @growIn *ngIf="state === 'Register'">
+          <input matInput name="firstName" [(ngModel)]="firstName" placeholder="First Name" type="text"
+                 autocomplete="given-name" (keypress)="clearErrors('first')">
+        </mat-form-field>
+        <mat-form-field @growIn *ngIf="state === 'Register'">
+          <input matInput name="lastName" [(ngModel)]="lastName" placeholder="Last Name" type="text"
+                 autocomplete="family-name" (keypress)="clearErrors('last')">
+        </mat-form-field>
         <mat-form-field>
-          <input matInput name="email" [(ngModel)]="email" placeholder="Email" type="email" autocomplete="email">
+          <input matInput name="email" [(ngModel)]="email" placeholder="Email" type="email" autocomplete="email"
+                 (keypress)="clearErrors('email')">
         </mat-form-field>
         <mat-form-field>
           <input matInput name="password" [(ngModel)]="password" placeholder="Password" type="password"
-                 autocomplete="current-password">
+                 autocomplete="current-password" (keypress)="clearErrors('password')">
         </mat-form-field>
-        <span class="error-message" *ngIf="errorMessage !== null && errorMessage !== undefined">{{errorMessage}}</span>
+        <span @growIn *ngFor="let message of errorMessages" class="error-message">{{message}}</span>
       </mat-card-content>
     </form>
-    <mat-card-actions>
-      <button mat-raised-button routerLink="/register">
-        Register
+    <div class="actions row">
+      <button mat-button (click)="toggleState()">
+        {{nextState}}
       </button>
-      <button mat-flat-button (click)="attemptLogin()">
-        Log In
+      <button mat-raised-button class="mat-primary"
+              (click)="state === LOGIN_STATE ? attemptLogin() : attemptRegister()">
+        {{state}}
       </button>
-    </mat-card-actions>
-  </mat-card>
+    </div>
+  </div>
+  <div ngHide ngShow.lt-md></div>
 </div>

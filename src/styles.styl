@@ -1,32 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file,
+ and also import other style files */
 body
   margin 0
-  font-family Roboto, "Helvetica Neue", sans-serif
+  font-family Roboto,
+ "Helvetica Neue",
+ sans-serif
 
 mat-icon
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer */
-  -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
-  -webkit-user-select: none; /* Chrome, Safari, and Opera */
-  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+  -moz-user-select none
+  -ms-user-select none
+  -khtml-user-select none
+  -webkit-user-select none
+  -webkit-touch-callout none
 
+.row
+  display flex
+  flex-flow row wrap
 
-$color-50 = #e5eae3
-$color-100 = #becab8
-$color-200 = #93a789
-$color-300 = #68835a
-$color-400 = #476936
-$color-500 = #274e13
-$color-600 = #234711
-$color-700 = #1d3d0e
-$color-800 = #17350b
-$color-900 = #0e2506
-$color-A100 = #7dff61
-$color-A200 = #53ff2e
-$color-A400 = #2cfa00
-$color-A700 = #27e100
+.column
+  display flex
+  flex-flow column nowrap
 
-$color-light-gray = #ECEFEA
-$color-gray = #d5dad3
-$color-white = #fff
-$color-black = #000
+$error-red = #d50000

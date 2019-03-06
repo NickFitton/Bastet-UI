@@ -9,13 +9,12 @@ import { UserSettingsComponent } from './page/user-settings/user-settings.compon
 import { StatisticsComponent } from './page/statistics/statistics.component';
 import { ManageCameraSharingComponent } from './page/manage-camera-sharing/manage-camera-sharing.component';
 import { ManageUserGroupComponent } from './page/manage-user-group/manage-user-group.component';
-import { RegisterComponent } from './page/register/register.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
+  {path: 'register', redirectTo: 'login'},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'home', component: DashboardComponent},
   {path: 'cameras', component: CamerasComponent},
