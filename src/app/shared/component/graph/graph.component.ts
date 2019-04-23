@@ -4,7 +4,7 @@ import { GraphModel } from './graph.model';
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
-  styleUrls: ['./graph.component.css']
+  styleUrls: ['./graph.component.styl']
 })
 export class GraphComponent implements OnInit {
 
