@@ -3,16 +3,9 @@
     <section>
       <h1>Activity</h1>
       <div class="row graphs" fxLayoutGap="32px">
-        <google-chart
-            [title] ="frequencyTitle"
-            [type] ="frequencyType"
-            [data] ="frequencyData"
-            [columnNames] ="frequencyColumnNames"
-            [options] ="frequencyOptions"
-            [width] ="frequencyWidth"
-            [height] ="frequencyHeight"
-        ></google-chart>
         <app-graph [data]="frequencyGraphData"></app-graph>
+        <app-graph [data]="entityTypeData"></app-graph>
+
         <div class="graph1 row">
           <p>graph 1</p>
           <table>

@@ -30,27 +30,8 @@ export class DashboardComponent extends UserDependantComponent {
   user: UserModel;
   cameraNames: string[];
 
-  frequencyTitle = 'Event Frequency per Camera';
-  frequencyType = 'LineChart';
-  frequencyData: any[][];
-  frequencyHashData = {
-    '00:00': [], '01:00': [], '02:00': [], '03:00': [], '04:00': [], '05:00': [], '06:00': [], '07:00': [],
-    '08:00': [], '09:00': [], '10:00': [], '11:00': [], '12:00': [], '13:00': [], '14:00': [], '15:00': [],
-    '16:00': [], '17:00': [], '18:00': [], '19:00': [], '20:00': [], '21:00': [], '22:00': [], '23:00': []
-  };
-  frequencyColumnNames = ['Time'];
-  frequencyOptions = {
-    hAxis: {
-      title: 'Time'
-    },
-    vAxis: {
-      title: 'Event Frequency'
-    },
-  };
-  frequencyWidth = 450;
-  frequencyHeight = 250;
-
   frequencyGraphData: GraphModel;
+  entityTypeData: GraphModel;
 
   constructor(
     router: Router,
@@ -62,8 +43,7 @@ export class DashboardComponent extends UserDependantComponent {
     private motionService: MotionService) {
     super(userService, router, dialog, snackBar);
     this.user = null;
-    this.frequencyData = DashboardComponent.hashDataToColumnData(this.frequencyHashData);
-    this.frequencyGraphData = new GraphModel('Event Frequency per Camera', 'LineChart', ['Time'],
+    this.frequencyGraphData = new GraphModel('Today\'s Events per Camera', 'LineChart', ['Time'],
       {
         hAxis: {
           title: 'Time'
@@ -72,6 +52,17 @@ export class DashboardComponent extends UserDependantComponent {
           title: 'Event Frequency'
         },
       }, 450, 250);
+    this.entityTypeData = new GraphModel('Entity Frequency Today', 'PieChart', null,
+      {
+        title: 'Entity Frequency Today'
+      }, 450, 250);
+    this.entityTypeData.data = [
+      ['Work', 11],
+      ['Eat', 2],
+      ['Commute', 2],
+      ['Watch TV', 2],
+      ['Sleep', 7]
+    ];
   }
 
   static getHourPointers(): string[] {
@@ -98,6 +89,14 @@ export class DashboardComponent extends UserDependantComponent {
       tempColumnData.push(column);
     }
     return tempColumnData;
+  }
+
+  static generateBlankHash(): any {
+    const tempHash = {};
+    for (const hour of DashboardComponent.getHourPointers()) {
+      tempHash[hour] = 0;
+    }
+    return tempHash;
   }
 
   inInit(): Promise<void> {
@@ -207,36 +206,37 @@ export class DashboardComponent extends UserDependantComponent {
         return hour + ':00';
       }
     });
-    const tempData = this.generateBlankHash();
+    const tempData = DashboardComponent.generateBlankHash();
     for (const hour of hours) {
       tempData[hour]++;
     }
     this.addCameraToDataset(cameraName, tempData);
+
+    const keyCount = new Map<string, number>();
+    motionData.map(motion => motion.getImageEntities())
+      .map(entities => entities.map(entity => entity.getType()))
+      .forEach(entities => {
+        entities.forEach(entity => {
+          if (!keyCount.has(entity)) {
+            keyCount.set(entity, 1);
+          } else {
+            keyCount.set(entity, keyCount.get(entity) + 1);
+          }
+        });
+      });
+
+    const arrayized = [];
+    for (const key of Array.from(keyCount.keys())) {
+      arrayized.push([key, keyCount.get(key)]);
+    }
+    this.entityTypeData.data = arrayized;
   }
 
   addCameraToDataset(cameraName: string, data: any): void {
     for (const pointer of DashboardComponent.getHourPointers()) {
-      this.frequencyHashData[pointer].push(data[pointer]);
+      this.frequencyGraphData.hashData[pointer].push(data[pointer]);
     }
-    this.frequencyData = DashboardComponent.hashDataToColumnData(this.frequencyHashData);
-    this.frequencyGraphData.data = DashboardComponent.hashDataToColumnData(this.frequencyHashData);
-    this.frequencyColumnNames.push(cameraName);
+    this.frequencyGraphData.data = DashboardComponent.hashDataToColumnData(this.frequencyGraphData.hashData);
     this.frequencyGraphData.columnNames.push(cameraName);
-  }
-
-  generateBlankHash(): any {
-    return {
-      '00:00': 0, '01:00': 0, '02:00': 0, '03:00': 0, '04:00': 0, '05:00': 0, '06:00': 0, '07:00': 0,
-      '08:00': 0, '09:00': 0, '10:00': 0, '11:00': 0, '12:00': 0, '13:00': 0, '14:00': 0, '15:00': 0,
-      '16:00': 0, '17:00': 0, '18:00': 0, '19:00': 0, '20:00': 0, '21:00': 0, '22:00': 0, '23:00': 0,
-    };
-  }
-
-  generateBlankHashData(): any {
-    return {
-      '00:00': [], '01:00': [], '02:00': [], '03:00': [], '04:00': [], '05:00': [], '06:00': [], '07:00': [],
-      '08:00': [], '09:00': [], '10:00': [], '11:00': [], '12:00': [], '13:00': [], '14:00': [], '15:00': [],
-      '16:00': [], '17:00': [], '18:00': [], '19:00': [], '20:00': [], '21:00': [], '22:00': [], '23:00': []
-    };
   }
 }
