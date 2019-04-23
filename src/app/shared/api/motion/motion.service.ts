@@ -6,6 +6,7 @@ import { MotionBean } from './motion.bean';
 import { UserService } from '../user/user.service';
 import { EntityBean } from './entity.bean';
 import { EntityModel } from './entity.model';
+import { Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class MotionService {
@@ -68,6 +69,22 @@ export class MotionService {
         }
 
         return models;
+      });
+  }
+
+  getImage(imageId: string): Promise<Blob> {
+    return this.client.get(`${this.GET_MOTION_URL}/${imageId}/image`, {
+      observe: 'response',
+      responseType: 'blob',
+      headers: this.generateAuthHeaders()
+    }).toPromise()
+      .then(response => {
+        console.log(response);
+        if (response.status === 200) {
+          return response.body;
+        } else {
+          throw response.status;
+        }
       });
   }
 }

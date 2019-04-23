@@ -26,7 +26,7 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('camera-frontend');
   });
 
-  it('should render title in a h1 tag', () => {
+  it('should render frequencyTitle in a h1 tag', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;

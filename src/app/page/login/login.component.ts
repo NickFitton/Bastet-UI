@@ -94,6 +94,8 @@ export class LoginComponent implements OnInit {
           const httpError = <HttpErrorResponse>error;
           if (httpError.status === 403) {
             this.errorMessages = ['email/password combination invalid'];
+          } else if (error.message === 'Http failure response for (unknown url): 0 Unknown Error') {
+            this.errorMessages = ['Failed to connect to the server'];
           } else {
             this.errorMessages = [error.toLocaleString()];
           }

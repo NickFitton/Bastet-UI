@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Delete camera {{cameraId}}</h1>
+<div mat-dialog-content>
+  <span>Please type in the start of the camera id to confirm:</span>
+  <form>
+    <mat-form-field>
+      <input name="cameraId" [(ngModel)]="typedCameraId" matInput placeholder="Camera Name">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions class="actions">
+  <button mat-flat-button class="mat-warn" (click)="deleteCamera()" [disabled]="typedCameraId.toLowerCase() !== cameraId.toLowerCase()">Delete Camera</button>
+</div>

@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Recorded Image</h1>
+<div mat-dialog-content>
+  <img [src]="image">
+  <div>
+    <h4>Percieved Entities</h4>
+    <div *ngFor="let entity of motion.getImageEntities()">
+      <span>{{entity.getType()}}</span>
+    </div>
+  </div>
+</div>

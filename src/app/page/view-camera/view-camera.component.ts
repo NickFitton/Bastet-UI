@@ -8,6 +8,7 @@ import { UserDependantComponent } from '../../shared/component/user-dependant.co
 import { MotionModel } from '../../shared/api/motion/motion.model';
 import { DataPointModel } from '../../shared/component/box/data-point.model';
 import { MatDialog, MatSnackBar } from '@angular/material';
+import { PresentImageComponent } from '../../dialog/present-image/present-image.component';
 
 @Component({
   selector: 'app-view-camera',
@@ -23,6 +24,7 @@ export class ViewCameraComponent extends UserDependantComponent {
   private entityCount: number;
   private retrievedMotion: MotionModel[];
   private chartValues: DataPointModel[];
+  private images: string[];
 
   private changingName: boolean;
 
@@ -84,13 +86,28 @@ export class ViewCameraComponent extends UserDependantComponent {
     }
 
     this.retrievedMotion = [];
+    this.images = [];
     this.motionService.getMotionBetween(from, now, this.camera.getId())
       .then(
         motionData => {
           for (const motion of motionData) {
-            this.retrievedMotion.push(motion);
+            this.motionService.getImage(motion.getId())
+              .then(image => {
+                const reader = new FileReader();
+                reader.addEventListener('load', () => {
+                  if (typeof reader.result === 'string') {
+                    motion.setImage(reader.result);
+                    this.retrievedMotion.push(motion);
+                  } else {
+                    console.log(reader.result);
+                  }
+                }, false);
+
+                if (image) {
+                  reader.readAsDataURL(image);
+                }
+              });
           }
-          // this.retrievedMotion.push(new DataPointModel(new Date(2019, 2, 12, 12, 0, 0)));
           this.entityCount = this.retrievedMotion.length;
           this.updateChartValues();
         },
@@ -143,4 +160,9 @@ export class ViewCameraComponent extends UserDependantComponent {
     });
   }
 
+  presentImage(motion: MotionModel): void {
+    this.dialog.open(PresentImageComponent, {
+      data: motion,
+    });
+  }
 }

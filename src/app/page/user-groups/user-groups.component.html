@@ -1,24 +1,24 @@
-<app-toolbar pageName="My Groups" [firstName]="user !== null ? user.getFirstName() : null">
-  <div class="content" fxLayout="column" fxLayoutGap="16px" ngClass.lt-sm="small_content" ngClass.gt-xs="large_content">
+<app-toolbar pageName="Groups" [firstName]="user !== null ? user.getFirstName() : null">
+  <div class="page_content column" fxLayout="column" fxLayoutGap="16px">
     <section>
       <h2>Groups you own</h2>
-      <div class="row" fxLayoutGap="16px">
-        <app-box class="column" *ngFor="let group of adminGroups"
+      <div class="row">
+        <app-box @fadeInRight *ngFor="let group of adminGroups"
                  options="Manage Delete"
                  [link]="'/groups/' + group.getId()" (clicked)="groupClicked($event, group.getId())">
           <mat-icon>group</mat-icon>
           <span>{{group.getName()}}</span>
         </app-box>
-        <app-box class="column" (clicked)="createGroup()">
+        <app-box @fadeInRight (clicked)="createGroup()">
           <mat-icon>group_add</mat-icon>
           <span>Create a group</span>
         </app-box>
       </div>
     </section>
-    <section>
+    <section *ngIf="otherGroups.length > 0">
       <h2>Other Groups</h2>
-      <div class="row" fxLayoutGap="16px">
-        <app-box class="column" *ngFor="let group of otherGroups"
+      <div class="row">
+        <app-box @fadeInRight *ngFor="let group of otherGroups"
                  [options]="group.getAdmin() === user.getId() ? 'View Delete' : 'View Manage'"
                  [link]="'/groups/' + group.getId()" (clicked)="onClick(group.getId(), $event)">
           <mat-icon>group</mat-icon>

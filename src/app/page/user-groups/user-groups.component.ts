@@ -8,11 +8,15 @@ import { UserDependantComponent } from '../../shared/component/user-dependant.co
 import { UserService } from '../../shared/api/user/user.service';
 import { GroupService } from '../../shared/api/group/group.service';
 import { CreateGroupComponent } from '../../dialog/create-group/create-group.component';
+import { AnimationStatic } from '../../shared/animation.static';
 
 @Component({
   selector: 'app-user-groups',
   templateUrl: './user-groups.component.html',
-  styleUrls: ['./user-groups.component.styl']
+  styleUrls: ['./user-groups.component.styl'],
+  animations: [
+    AnimationStatic.fadeInRight
+  ]
 })
 export class UserGroupsComponent extends UserDependantComponent {
 

@@ -15,6 +15,8 @@ import { AppRoutingModule } from '../app-routing.module';
 import { MaterialModule } from '../shared/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material';
+import { PresentImageComponent } from './present-image/present-image.component';
+import { RemoveCameraComponent } from './remove-camera/remove-camera.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { MatNativeDateModule } from '@angular/material';
     CreateGroupComponent,
     CameraToGroupsComponent,
     InviteUserComponent,
+    PresentImageComponent,
+    RemoveCameraComponent,
   ],
   entryComponents: [
     AddCameraComponent,
@@ -36,6 +40,8 @@ import { MatNativeDateModule } from '@angular/material';
     LeaveGroupComponent,
     InviteUserComponent,
     CameraToGroupsComponent,
+    PresentImageComponent,
+    RemoveCameraComponent,
   ],
   imports: [
     FormsModule,

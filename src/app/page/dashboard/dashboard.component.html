@@ -1,8 +1,18 @@
 <app-toolbar pageName="Dashboard" [firstName]="user !== null ? user.getFirstName() : null">
-  <div class="content column">
+  <div class="page_content column">
     <section>
       <h1>Activity</h1>
       <div class="row graphs" fxLayoutGap="32px">
+        <google-chart
+            [title] ="frequencyTitle"
+            [type] ="frequencyType"
+            [data] ="frequencyData"
+            [columnNames] ="frequencyColumnNames"
+            [options] ="frequencyOptions"
+            [width] ="frequencyWidth"
+            [height] ="frequencyHeight"
+        ></google-chart>
+        <app-graph [data]="frequencyGraphData"></app-graph>
         <div class="graph1 row">
           <p>graph 1</p>
           <table>
@@ -50,8 +60,8 @@
           View Cameras
         </button>
       </div>
-      <div class="row collection">
-        <app-box @fadeInRight class="column bottom-boi" *ngFor="let camera of cameras"
+      <div class="row collection" *ngIf="cameras">
+        <app-box @fadeInRight class="column" *ngFor="let camera of cameras"
                  [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"
                  [link]="'/cameras/' + camera.getId()" (clicked)="onClickCamera(camera.getId(), $event)">
           <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">
@@ -65,6 +75,9 @@
           <span>new camera</span>
         </app-box>
       </div>
+      <div class="row collection" *ngIf="!cameras">
+        <mat-spinner></mat-spinner>
+      </div>
     </section>
     <section>
       <div class="row title">
@@ -73,7 +86,7 @@
           View Groups
         </button>
       </div>
-      <div class="row collection">
+      <div class="row collection" *ngIf="groups">
         <app-box @fadeInRight class="column" *ngFor="let group of groups"
                  [options]="group.getAdmin() === user.getId() ? 'Manage Delete' : 'View Leave'"
                  [link]="'/groups/' + group.getId()" (clicked)="groupClicked($event, group.getId())">
@@ -87,6 +100,9 @@
           <mat-icon>group_add</mat-icon>
           <span>Create a group</span>
         </app-box>
+      </div>
+      <div class="row collection" *ngIf="!groups">
+        <mat-spinner></mat-spinner>
       </div>
     </section>
   </div>

@@ -1,6 +1,6 @@
 <app-toolbar pageName="Camera" [firstName]="user !== null ? user.getFirstName() : null">
-  <div class="content" ngClass.lt-sm="small_content" ngClass.gt-xs="large_content">
-    <div class="left" *ngIf="camera !== null && camera !== undefined">
+  <div class="page_content column">
+    <div *ngIf="camera !== null && camera !== undefined">
       <div class="title">
         <div class="title-left" *ngIf="!changingName">
           <h1>{{camera.getName()}}</h1>
@@ -45,12 +45,14 @@
           <span *ngIf="entityCount !== undefined">Recorded Entities: {{entityCount}}</span>
         </div>
       </div>
+      <div class="photos">
+        <img class="captured-entity" *ngFor="let motion of retrievedMotion" [src]="motion.getImage()" (click)="presentImage(motion)">
+      </div>
       <div class="chart">
-        <app-bar-chart [values]="chartValues"></app-bar-chart>
+        <!--<app-bar-chart [values]="chartValues"></app-bar-chart>-->
       </div>
       <p>Registered at: {{camera.getCreatedAt().toLocaleString()}}</p>
       <p>Last active: {{camera.getLastActive().toLocaleString()}}</p>
     </div>
-    <div class="right"></div>
   </div>
 </app-toolbar>

@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from '../app-routing.module';
 import { MaterialModule } from '../shared/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatNativeDateModule } from '@angular/material';
+import { MatNativeDateModule, MatProgressSpinnerModule } from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import { UserGroupsComponent } from './user-groups/user-groups.component';
 import { CamerasComponent } from './cameras/cameras.component';
@@ -18,6 +18,7 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { ManageCameraSharingComponent } from './manage-camera-sharing/manage-camera-sharing.component';
 import { ComponentsModule } from '../shared/component/components.module';
 import { NotFoundComponent } from '../not-found/not-found.component';
+import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,8 @@ import { NotFoundComponent } from '../not-found/not-found.component';
     MaterialModule,
     BrowserAnimationsModule,
     MatNativeDateModule,
+    MatProgressSpinnerModule,
+    GoogleChartsModule.forRoot(),
   ]
 })
 export class PageModule {

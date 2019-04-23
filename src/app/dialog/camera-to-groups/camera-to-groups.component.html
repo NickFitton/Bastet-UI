@@ -1,20 +1,16 @@
-<h1 mat-dialog-title>{{step === 1 ? 'Add a camera' : 'Successfully added'}}</h1>
+<h1 mat-dialog-title>Add a camera</h1>
 <div mat-dialog-content>
-  <div *ngIf="step === 1">
+  <div>
     <form>
-      <mat-select placeholder="Favorite food">
-        <mat-option *ngFor="let camera of availableCameras" [value]="camera.id">
+      <mat-select placeholder="Cameras" name="camera" [(ngModel)]="selectedCamera">
+        <mat-option *ngFor="let camera of cameras" [value]="camera.id">
           {{camera.name}}
         </mat-option>
       </mat-select>
     </form>
-    <span *ngIf="!isClear(errorMessage)" class="error">{{errorMessage}}</span>
+    <span>{{selectedCamera}}</span>
   </div>
 </div>
 <div mat-dialog-actions class="actions">
-  <div *ngIf="step === 1">
-    <button mat-button (click)="closeDialog()">Cancel</button>
-    <button mat-flat-button (click)="claimCamera()">Add Camera</button>
-  </div>
-  <button *ngIf="step === 2" mat-flat-button (click)="closeDialog()">Done</button>
+  <button mat-flat-button (click)="connectCamera()">Add Camera</button>
 </div>

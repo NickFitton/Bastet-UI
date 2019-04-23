@@ -1,5 +1,12 @@
 /* You can add global styles to this file,
  and also import other style files */
+
+$toolbar-height = 64px
+
+$error-red = #d50000
+$disabled-background = #ddd
+$primary = #004d40
+
 body
   margin 0
   font-family Roboto,
@@ -24,8 +31,7 @@ mat-icon
 .clickable
   cursor pointer
 
-$error-red = #d50000
-$disabled-background = #ddd
-$primary = #004d40
-
-$toolbar-height = 64px
+.page_content
+  padding 16px
+  min-height "calc(100vh - %s)" % $toolbar-height
+  background #f4f4f4
