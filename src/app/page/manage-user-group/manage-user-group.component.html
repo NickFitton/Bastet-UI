@@ -16,7 +16,7 @@
       <h2>Group Members</h2>
       <div class="members" fxLayoutGap="16px">
         <app-box *ngFor="let member of members"
-                 [options]="member.getId() !== user.getId() && group.getAdmin().startsWith(user.getId()) ? 'Remove View' : undefined"
+                 [options]="member.getId() !== user.getId() && group.getAdmin().startsWith(user.getId()) ? 'Remove' : undefined"
                  [ngClass]="member.getId() !== user.getId() ? 'clickable' : ''"
                  (clicked)="memberClicked($event, member.getId())">
           <mat-icon>{{member.getId() === group.getAdmin() ? 'supervisor_account' : 'person'}}</mat-icon>

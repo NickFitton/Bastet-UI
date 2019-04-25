@@ -5,14 +5,14 @@ export class GraphModel {
   hashData: any;
   columnNames: string[];
   options: any;
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
 
-  constructor(title: string, type: string, columnNames: string[], options: any, width: number, height: number) {
+  constructor(title: string, type: string, columnNames: string[], options: any, width: number | string, height: number | string) {
     this.title = title;
     this.type = type;
     this.hashData = GraphModel.generateBlankHashData();
-    this.data = this.hashDataToColumnData();
+    this.data = GraphModel.hashDataToColumnData(this.hashData);
     this.columnNames = columnNames;
     this.options = options;
     this.width = width;
@@ -38,12 +38,12 @@ export class GraphModel {
     return tempData;
   }
 
-  hashDataToColumnData(): any[][] {
+  static hashDataToColumnData(hashData: any): any[][] {
     const tempColumnData = [];
 
     for (const pointer of GraphModel.getHourPointers()) {
       const column = [];
-      const hashDatum = this.hashData[pointer];
+      const hashDatum = hashData[pointer];
       column.push(pointer);
       for (const element of hashDatum) {
         column.push(element);

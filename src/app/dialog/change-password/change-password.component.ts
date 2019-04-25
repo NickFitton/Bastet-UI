@@ -1,5 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { ChangePasswordConfig } from './change-password.config';
+import { UserService } from '../../shared/api/user/user.service';
 
 @Component({
   selector: 'app-change-password-dialog-component',
@@ -8,13 +10,19 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 })
 export class ChangePasswordComponent {
 
-  password: string;
-  confirmPassword: string;
+  currentPassword: string;
+  newPassword: string;
+  repeatedPassword: string;
 
-  constructor(public dialogRef: MatDialogRef<ChangePasswordComponent>) {
+  constructor(public dialogRef: MatDialogRef<ChangePasswordComponent>, @Inject(MAT_DIALOG_DATA) public data: ChangePasswordConfig,
+              public userService: UserService) {
   }
 
-  closeDialog(): void {
-    this.dialogRef.close();
+  confirmChange(): void {
+    this.userService.updateUserPassword(this.data.getUserId(), this.currentPassword, this.newPassword).then(() => {
+      this.dialogRef.close(true);
+    }, reason => {
+      console.log(reason);
+    });
   }
 }

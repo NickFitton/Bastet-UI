@@ -43,7 +43,7 @@ export class DashboardComponent extends UserDependantComponent {
     private motionService: MotionService) {
     super(userService, router, dialog, snackBar);
     this.user = null;
-    this.frequencyGraphData = new GraphModel('Today\'s Events per Camera', 'LineChart', ['Time'],
+    this.frequencyGraphData = new GraphModel('Today\'s Events per Camera', 'ColumnChart', ['Time'],
       {
         hAxis: {
           title: 'Time'
@@ -51,11 +51,12 @@ export class DashboardComponent extends UserDependantComponent {
         vAxis: {
           title: 'Event Frequency'
         },
-      }, 450, 250);
+        isStacked: true,
+      }, '45%', 250);
     this.entityTypeData = new GraphModel('Entity Frequency Today', 'PieChart', null,
       {
         title: 'Entity Frequency Today'
-      }, 450, 250);
+      }, '45%', 250);
     this.entityTypeData.data = [
       ['Work', 11],
       ['Eat', 2],
@@ -184,7 +185,7 @@ export class DashboardComponent extends UserDependantComponent {
       console.log('camera');
       const now = new Date(Date.now());
       const from = new Date(now.valueOf() - 86400000);
-      this.motionService.getMotionBetween(from, now, camera.getId()).then(motion => {
+      this.motionService.getMotionBetween(from, now, [camera.getId()]).then(motion => {
         this.addCameraMotionToDataset(camera.getName(), motion);
       });
     }

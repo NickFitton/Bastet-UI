@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material';
 import { PresentImageComponent } from './present-image/present-image.component';
 import { RemoveCameraComponent } from './remove-camera/remove-camera.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { RemoveCameraComponent } from './remove-camera/remove-camera.component';
     InviteUserComponent,
     PresentImageComponent,
     RemoveCameraComponent,
+    ChangePasswordComponent,
   ],
   entryComponents: [
     AddCameraComponent,
@@ -42,6 +44,7 @@ import { RemoveCameraComponent } from './remove-camera/remove-camera.component';
     CameraToGroupsComponent,
     PresentImageComponent,
     RemoveCameraComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     FormsModule,

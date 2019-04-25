@@ -10,18 +10,12 @@ import { RequestUtil } from '../request.util';
 })
 export class UserService {
 
-  constructor(private client: HttpClient) {
-  }
-
-  private readonly TOKEN = 'auth_token';
-
   loggedInUser: UserModel;
-
+  private readonly TOKEN = 'auth_token';
   private readonly BASE_USER_URL = environment.serverUrl + '/v1/users';
   private readonly USER_LOGIN_URL = environment.serverUrl + '/v1/login/user';
 
-  private getUserUrl(userId: string): string {
-    return this.BASE_USER_URL + '/' + userId;
+  constructor(private client: HttpClient) {
   }
 
   static mapFromBean(bean: UserBean): UserModel {
@@ -95,6 +89,36 @@ export class UserService {
       });
   }
 
+  updateUser(user: UserModel): Promise<UserModel> {
+    return this.client.patch<BackendModel<UserBean>>(this.getUserUrl(user.getId()), user, {
+      observe: 'response',
+      headers: this.generateAuthHeaders()
+    }).toPromise()
+      .then(response => {
+        if (response.status !== 202) {
+          throw response.status;
+        }
+        return response.body.data;
+      }).then(userBean => UserService.mapFromBean(userBean));
+  }
+
+  updateUserPassword(userId: string, currentPassword: string, newPassword: string): Promise<UserModel> {
+    return this.client.patch<BackendModel<UserBean>>(this.getUserUrl(userId) + '/password',
+      {
+        'currentPassword': currentPassword,
+        'newPassword': newPassword
+      }, {
+        observe: 'response',
+        headers: this.generateAuthHeaders()
+      }).toPromise()
+      .then(response => {
+        if (response.status !== 202) {
+          throw response.status;
+        }
+        return response.body.data;
+      }).then(userBean => UserService.mapFromBean(userBean));
+  }
+
   logOut(): void {
     this.loggedInUser = null;
     sessionStorage.clear();
@@ -132,5 +156,13 @@ export class UserService {
 
   getToken(): string {
     return sessionStorage.getItem(this.TOKEN);
+  }
+
+  private getUserUrl(userId: string): string {
+    return this.BASE_USER_URL + '/' + userId;
+  }
+
+  private generateAuthHeaders(): HttpHeaders {
+    return new HttpHeaders({'authorization': 'Token ' + this.getToken()});
   }
 }

@@ -51,7 +51,12 @@ export class CamerasComponent extends UserDependantComponent {
   }
 
   onClick(cameraId: string, navigationType: string): void {
-    this.router.navigate(['/cameras/' + cameraId], {queryParams: {view: navigationType}});
+    console.log(navigationType);
+    if (navigationType === 'delete') {
+      this.removeCamera(cameraId);
+    } else {
+      this.router.navigate(['/cameras/' + cameraId], {queryParams: {view: navigationType}});
+    }
   }
 
   addCamera() {

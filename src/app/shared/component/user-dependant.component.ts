@@ -8,6 +8,7 @@ import { LeaveGroupConfig } from '../../dialog/leave-group/leave-group-config.mo
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { StatusEnum } from './status.enum';
 import { Status } from 'tslint/lib/runner';
+import { RemoveCameraComponent } from '../../dialog/remove-camera/remove-camera.component';
 
 export abstract class UserDependantComponent implements OnInit {
 
@@ -132,5 +133,20 @@ export abstract class UserDependantComponent implements OnInit {
     } else {
       this.router.navigate(['/groups']);
     }
+  }
+
+  removeCamera(cameraId: string) {
+    const cameraDialog = this.dialog.open(RemoveCameraComponent, {
+      width: '50%',
+      data: {
+        cameraId: cameraId
+      }
+    });
+
+    cameraDialog.afterClosed().toPromise().then(isDeleted => {
+      if (isDeleted) {
+        this.router.navigate(['/home']);
+      }
+    });
   }
 }

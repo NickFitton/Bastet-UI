@@ -1,10 +1,12 @@
 export class NotFoundModel {
   private readonly value: string;
   private readonly link: string;
+  private readonly routable: boolean;
 
-  constructor(value: string, link: string) {
+  constructor(value: string, link: string, routable: boolean) {
     this.value = value;
     this.link = link;
+    this.routable = routable;
   }
 
   public getValue(): string {
@@ -13,5 +15,9 @@ export class NotFoundModel {
 
   public getLink(): string {
     return this.link;
+  }
+
+  public isRoutable(): boolean {
+    return this.routable;
   }
 }

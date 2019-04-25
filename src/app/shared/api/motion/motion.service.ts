@@ -50,8 +50,8 @@ export class MotionService {
     return this.GET_MOTION_URL + '?cameras=' + cameraIds.join(',') + '&from=' + from.toISOString() + '&to=' + to.toISOString();
   }
 
-  getMotionBetween(from: Date, to: Date, cameraId: string): Promise<MotionModel[]> {
-    return this.client.get<BackendModel<MotionBean[]>>(this.cameraMotionUrl([cameraId], from, to), {
+  getMotionBetween(from: Date, to: Date, cameraIds: string[]): Promise<MotionModel[]> {
+    return this.client.get<BackendModel<MotionBean[]>>(this.cameraMotionUrl(cameraIds, from, to), {
       observe: 'response',
       headers: this.generateAuthHeaders()
     }).toPromise()
