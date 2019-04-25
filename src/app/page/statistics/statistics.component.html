@@ -1,3 +1,38 @@
-<p>
-  statistics works!
-</p>
+<app-toolbar pageName="Dashboard" [firstName]="user !== null ? user.getFirstName() : null">
+  <div class="page_content column">
+    <div class="selections">
+      <mat-form-field>
+        <mat-label>Cameras</mat-label>
+        <mat-select multiple [(ngModel)]="selectedCameras">
+          <mat-option *ngFor="let camera of cameras" [value]="camera">
+            {{camera.getName()}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Statistic Type</mat-label>
+        <mat-select [(ngModel)]="selectedMeasurement">
+          <mat-option *ngFor="let method of measurements" [value]="method">
+            {{method}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Timeframe</mat-label>
+        <mat-select [(ngModel)]="selectedTimeframe">
+          <mat-option value="day">Day</mat-option>
+          <mat-option value="week">Week</mat-option>
+          <mat-option value="month">Month</mat-option>
+          <mat-option value="quarter">Quarter</mat-option>
+          <mat-option value="year">Year</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+    <h4>
+      Selection:
+    </h4>
+    <app-graph *ngIf="selectedMeasurement==='Frequency'" [data]="frequencyStatistics"></app-graph>
+    <app-graph *ngIf="selectedMeasurement==='Type'" [data]="typeStatistics"></app-graph>
+  </div>
+</app-toolbar>

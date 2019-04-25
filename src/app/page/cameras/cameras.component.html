@@ -1,9 +1,9 @@
 <app-toolbar pageName="My Cameras" [firstName]="user !== null ? user.getFirstName() : null">
-  <div class="content" fxLayout="column" fxLayoutGap="16px" ngClass.lt-sm="small_content" ngClass.gt-xs="large_content">
+  <div class="content column" fxLayout="column" fxLayoutGap="16px" ngClass.lt-sm="small_content" ngClass.gt-xs="large_content">
     <section class="cameras">
-      <h2>My Cameras</h2>
-      <div class="row" fxLayoutGap="16px">
-        <app-box class="column" *ngFor="let camera of ownedCameras"
+      <h2>Your Cameras</h2>
+      <div class="row collection">
+        <app-box @fadeInRight class="column" *ngFor="let camera of ownedCameras"
                  [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"
                  [link]="'/cameras/' + camera.getId()" (clicked)="onClick(camera.getId(), $event)">
           <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">
@@ -11,16 +11,16 @@
           </mat-icon>
           <span>{{camera.getName()}}</span>
         </app-box>
-        <app-box class="column" (clicked)="createCamera()">
+        <app-box @fadeInRight class="camera-setup" (clicked)="addCamera()">
           <mat-icon>video_call</mat-icon>
-          <span>Add a Camera</span>
+          <span>Add a{{ownedCameras.length > 0 ? 'nother' : ''}} camera</span>
         </app-box>
       </div>
     </section>
-    <section class="cameras">
-      <h2>Cameras Shared with me</h2>
-      <div class="row" fxLayoutGap="16px">
-        <app-box class="column" *ngFor="let camera of sharedCameras"
+    <section class="cameras" *ngIf="sharedCameras.length > 0">
+      <h2>Cameras shared with you</h2>
+      <div class="row collection">
+        <app-box @fadeInRight class="column" *ngFor="let camera of sharedCameras"
                  [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"
                  [link]="'/cameras/' + camera.getId()" (clicked)="onClick(camera.getId(), $event)">
           <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">

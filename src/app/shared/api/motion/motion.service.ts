@@ -6,6 +6,7 @@ import { MotionBean } from './motion.bean';
 import { UserService } from '../user/user.service';
 import { EntityBean } from './entity.bean';
 import { EntityModel } from './entity.model';
+import { Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class MotionService {
@@ -49,8 +50,8 @@ export class MotionService {
     return this.GET_MOTION_URL + '?cameras=' + cameraIds.join(',') + '&from=' + from.toISOString() + '&to=' + to.toISOString();
   }
 
-  getMotionBetween(from: Date, to: Date, cameraId: string): Promise<MotionModel[]> {
-    return this.client.get<BackendModel<MotionBean[]>>(this.cameraMotionUrl([cameraId], from, to), {
+  getMotionBetween(from: Date, to: Date, cameraIds: string[]): Promise<MotionModel[]> {
+    return this.client.get<BackendModel<MotionBean[]>>(this.cameraMotionUrl(cameraIds, from, to), {
       observe: 'response',
       headers: this.generateAuthHeaders()
     }).toPromise()
@@ -68,6 +69,22 @@ export class MotionService {
         }
 
         return models;
+      });
+  }
+
+  getImage(imageId: string): Promise<Blob> {
+    return this.client.get(`${this.GET_MOTION_URL}/${imageId}/image`, {
+      observe: 'response',
+      responseType: 'blob',
+      headers: this.generateAuthHeaders()
+    }).toPromise()
+      .then(response => {
+        console.log(response);
+        if (response.status === 200) {
+          return response.body;
+        } else {
+          throw response.status;
+        }
       });
   }
 }

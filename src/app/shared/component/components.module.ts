@@ -11,6 +11,8 @@ import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { BoxComponent } from './box/box.component';
 import { StatGraphComponent } from './stat-graph/stat-graph.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { GraphComponent } from './graph/graph.component';
+import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     BoxComponent,
     StatGraphComponent,
     ToolbarComponent,
+    GraphComponent,
   ],
   imports: [
     FormsModule,
@@ -28,12 +31,14 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     MaterialModule,
     BrowserAnimationsModule,
     MatNativeDateModule,
+    GoogleChartsModule.forRoot(),
   ],
   exports: [
     BarChartComponent,
     BoxComponent,
     StatGraphComponent,
     ToolbarComponent,
+    GraphComponent,
   ]
 })
 export class ComponentsModule {

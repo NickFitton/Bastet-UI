@@ -1,13 +1,11 @@
-import { EntityType } from './entity.bean';
-
 export class EntityModel {
   private readonly x: number;
   private readonly y: number;
   private readonly width: number;
   private readonly height: number;
-  private type: EntityType;
+  private type: string;
 
-  constructor(x: number, y: number, width: number, height: number, type: EntityType) {
+  constructor(x: number, y: number, width: number, height: number, type: string) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -31,7 +29,7 @@ export class EntityModel {
     return this.height;
   }
 
-  getType(): EntityType {
+  getType(): string {
     return this.type;
   }
 }

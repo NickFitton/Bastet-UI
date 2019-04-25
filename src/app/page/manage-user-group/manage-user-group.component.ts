@@ -12,6 +12,8 @@ import { CameraToGroupsComponent } from '../../dialog/camera-to-groups/camera-to
 import { HttpErrorResponse } from '@angular/common/http';
 import { InviteUserComponent } from '../../dialog/invite-user/invite-user.component';
 import { InviteType, InviteUserConfig } from '../../dialog/invite-user/invite-user.config';
+import { CameraToGroupsConfig } from '../../dialog/camera-to-groups/camera-to-groups.config';
+import { RemoveCameraComponent } from '../../dialog/remove-camera/remove-camera.component';
 
 @Component({
   selector: 'app-manage-user-group',
@@ -20,12 +22,38 @@ import { InviteType, InviteUserConfig } from '../../dialog/invite-user/invite-us
 })
 export class ManageUserGroupComponent extends UserDependantComponent {
 
-  private readonly groupId: string;
-  private group: GroupModel;
-
   cameras: CameraModel[];
   members: UserModel[];
   groupNotFound: boolean;
+  private readonly groupId: string;
+  private group: GroupModel;
+
+  constructor(
+    router: Router,
+    userService: UserService,
+    dialog: MatDialog,
+    snackBar: MatSnackBar,
+    private cameraService: CameraService,
+    private groupService: GroupService) {
+    super(userService, router, dialog, snackBar);
+    this.user = null;
+    this.group = null;
+    this.cameras = [];
+    this.members = [];
+
+    const url = this.router.url;
+    const segments = url
+      .split('/')
+      .map(segment => {
+        if (segment.includes('?')) {
+          return segment.split('?')[0];
+        }
+        return segment;
+      })
+      .filter(segment => segment.length > 0);
+
+    this.groupId = segments[segments.length - 1];
+  }
 
   inInit(): Promise<void> {
     this.groupNotFound = false;
@@ -66,33 +94,6 @@ export class ManageUserGroupComponent extends UserDependantComponent {
       });
   }
 
-  constructor(
-    router: Router,
-    userService: UserService,
-    dialog: MatDialog,
-    snackBar: MatSnackBar,
-    private cameraService: CameraService,
-    private groupService: GroupService) {
-    super(userService, router, dialog, snackBar);
-    this.user = null;
-    this.group = null;
-    this.cameras = [];
-    this.members = [];
-
-    const url = this.router.url;
-    const segments = url
-      .split('/')
-      .map(segment => {
-        if (segment.includes('?')) {
-          return segment.split('?')[0];
-        }
-        return segment;
-      })
-      .filter(segment => segment.length > 0);
-
-    this.groupId = segments[segments.length - 1];
-  }
-
   getOwnerName(ownerId: string): string {
     if (ownerId === this.user.getId()) {
       return 'you';
@@ -106,11 +107,16 @@ export class ManageUserGroupComponent extends UserDependantComponent {
   }
 
   addCamera(): void {
-    const addCamera = this.dialog.open(CameraToGroupsComponent);
+    const ownedCameras = this.cameraService.getOwnedCameras()
+      .then(cameras => cameras.filter(camera => camera.getOwnedBy().startsWith(this.user.getId())));
 
-    addCamera.afterClosed().toPromise().then(() => {
-      this.inInit();
+    const dialogConfig = new CameraToGroupsConfig(ownedCameras, this.groupId);
+    const addCamera = this.dialog.open(CameraToGroupsComponent, {
+      data: dialogConfig,
+      width: '512px'
     });
+
+    addCamera.afterClosed().toPromise().then(() => this.inInit());
   }
 
   addMember(): void {
@@ -122,5 +128,29 @@ export class ManageUserGroupComponent extends UserDependantComponent {
     addMember.afterClosed().toPromise().then(() => {
       this.inInit();
     });
+  }
+
+  memberClicked(event: string, memberId: string) {
+    console.log(event, memberId);
+  }
+
+  cameraClicked(event: string, cameraId: string) {
+    console.log(event, cameraId);
+    switch (event) {
+      case 'view':
+      case 'clicked':
+        this.router.navigate(['/cameras/' + cameraId], {queryParams: {view: event}});
+        break;
+      case 'remove':
+        const openDialog = this.dialog.open(RemoveCameraComponent, {
+          data: {
+            cameraId: cameraId,
+            groupId: this.groupId
+          }
+        });
+        openDialog.afterClosed().toPromise().then(() => {
+          this.cameras = this.cameras.filter(camera => camera.getId() !== cameraId);
+        });
+    }
   }
 }

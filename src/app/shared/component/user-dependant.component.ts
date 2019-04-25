@@ -8,6 +8,7 @@ import { LeaveGroupConfig } from '../../dialog/leave-group/leave-group-config.mo
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { StatusEnum } from './status.enum';
 import { Status } from 'tslint/lib/runner';
+import { RemoveCameraComponent } from '../../dialog/remove-camera/remove-camera.component';
 
 export abstract class UserDependantComponent implements OnInit {
 
@@ -30,27 +31,34 @@ export abstract class UserDependantComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getLoggedIn().then(loggedInUser => {
-        if (loggedInUser === null || loggedInUser === undefined) {
-          this.router.navigate(['/login']);
-        } else {
-          this.user = loggedInUser;
-        }
-        this.inInit();
-      },
-      error => {
-        if (error instanceof HttpErrorResponse) {
-          const httpError = <HttpErrorResponse>error;
-          if (httpError.status === 500) {
-            this.userService.logOut();
-            this.router.navigate(['/']);
-          } else {
-            alert(httpError.status);
-          }
-        } else {
-          alert(error);
-        }
-      });
+    const loggedIn = this.userService.getLoggedIn();
+    if (loggedIn != null) {
+      loggedIn
+        .then(loggedInUser => {
+            if (loggedInUser === null || loggedInUser === undefined) {
+              this.router.navigate(['/login']);
+            } else {
+              this.user = loggedInUser;
+            }
+            this.inInit();
+          },
+          error => {
+            if (error instanceof HttpErrorResponse) {
+              const httpError = <HttpErrorResponse>error;
+              if (httpError.status === 500) {
+                this.userService.logOut();
+                this.router.navigate(['/']);
+              } else {
+                alert(httpError.status);
+              }
+            } else {
+              alert(error);
+            }
+          });
+    } else {
+      this.userService.logOut();
+      this.router.navigate(['/']);
+    }
   }
 
   inInit(): Promise<void> {
@@ -125,5 +133,20 @@ export abstract class UserDependantComponent implements OnInit {
     } else {
       this.router.navigate(['/groups']);
     }
+  }
+
+  removeCamera(cameraId: string) {
+    const cameraDialog = this.dialog.open(RemoveCameraComponent, {
+      width: '50%',
+      data: {
+        cameraId: cameraId
+      }
+    });
+
+    cameraDialog.afterClosed().toPromise().then(isDeleted => {
+      if (isDeleted) {
+        this.router.navigate(['/home']);
+      }
+    });
   }
 }

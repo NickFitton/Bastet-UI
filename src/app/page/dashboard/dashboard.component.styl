@@ -1,63 +1,40 @@
 @import "../../../styles.styl"
-@import "../../shared/theme/button.styl"
 
-.content
-  display flex
-  flex-flow column nowrap
-  padding 16px
-  background-color $color-light-gray
-  section
-    padding 16px
-    background-color $color-light-gray
-    app-box
-      span
-        text-align center
+.page_content
   .title
-    display flex
-    flex-flow row wrap
-    justify-content space-between
     align-items center
+    justify-content space-between
+  section
+    margin-bottom 16px
+.collection
+  justify-content flex-start
+  align-items flex-start
 
-.large_content
-  width 80%
-  -webkit-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
-  -moz-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
-  box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
-
-.small_content
-  .title
-    display flex
-    flex-flow column nowrap
-    justify-content center
-  .status
-    display flex
-    flex-flow row nowrap
-    justify-content center
-  width 100%
-
-.row, .camera-title
-  display flex
-  flex-direction row
-
-.camera-title
-  justify-content left
-  align-items center
-
-.column
-  display flex
-  flex-flow column wrap
+.graphs
+  margin 8px
 
 .orange
   background orange
-
 .green
   background lawngreen
-
 .blue
   background dodgerblue
 
-table
-  text-align right
+app-box
+  justify-content center
+  align-items center
+  margin 8px
+  span
+    text-align center
 
-.camera-setup
-  cursor pointer
+mat-card
+  margin 8px
+mat-card-actions
+  justify-content flex-end
+mat-card-subtitle
+  margin-bottom 0
+
+
+.align_center
+  align-items center
+  margin-bottom 16px

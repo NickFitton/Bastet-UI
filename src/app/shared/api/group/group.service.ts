@@ -136,7 +136,6 @@ export class GroupService {
   }
 
   deleteGroup(groupId: string): Promise<boolean> {
-    console.log('Deleting group');
     return this.client.delete(GroupService.getGroupUrl(groupId), {
       observe: 'response',
       headers: RequestUtil.generateAuthHeaders(this.userService)
@@ -156,11 +155,27 @@ export class GroupService {
     return Promise.reject('Not complete');
   }
 
-  addCameraToGroup(): Promise<GroupModel> {
-    return Promise.reject('Not complete');
+  addCameraToGroup(groupId: string, cameraId: string): Promise<GroupModel> {
+    return this.client.post<BackendModel<GroupBean>>(GroupService.getGroupCameraUrl(groupId, cameraId), null, {
+      observe: 'response',
+      headers: RequestUtil.generateAuthHeaders(this.userService)
+    }).toPromise().then(response => {
+      if (response.status === 202) {
+        return response.body.data;
+      }
+      throw response.status;
+    }).then(bean => GroupService.mapFromBean(bean));
   }
 
-  removeCameraFromGroup(): Promise<GroupModel> {
-    return Promise.reject('Not complete');
+  removeCameraFromGroup(groupId: string, cameraId: string): Promise<void> {
+    return this.client.delete(GroupService.getGroupCameraUrl(groupId, cameraId), {
+      observe: 'response',
+      headers: RequestUtil.generateAuthHeaders(this.userService)
+    }).toPromise().then(response => {
+      if (response.status === 202) {
+        return Promise.resolve();
+      }
+      throw response.status;
+    });
   }
 }

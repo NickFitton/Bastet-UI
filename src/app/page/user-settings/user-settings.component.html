@@ -1,10 +1,10 @@
-<app-toolbar pageName="Settings" [firstName]="user.getFirstName()">
-  <div class="content">
+<app-toolbar pageName="Dashboard" [firstName]="user !== null ? user.getFirstName() : null">
+  <div class="page_content row">
     <div class="main-user_details">
       <h1>User Details</h1>
       <form>
         <mat-form-field>
-          <input [(ngModel)]="firstName" name="localFirstName" matInput (change)="changesMade = true" placeholder="First Name" type="text"
+          <input [(ngModel)]="firstName" name="localFirstName" matInput placeholder="First Name" type="text"
                  autocomplete="given-name">
         </mat-form-field>
         <mat-form-field>
@@ -14,9 +14,9 @@
           <input [(ngModel)]="email" name="localEmail" matInput placeholder="Email" type="email" autocomplete="email">
         </mat-form-field>
       </form>
-      <div class="user_details-buttons" fxLayoutGap="16px">
-        <button mat-flat-button [disabled]="!changesMade">Save Changes</button>
-        <button mat-flat-button>Change Password</button>
+      <div class="user_details-buttons" fxLayoutGap="16px" *ngIf="user">
+        <button mat-flat-button [disabled]="firstName === user.getFirstName() && lastName === user.getLastName() && email === user.getEmail()" (click)="saveDetails()">Save Changes</button>
+        <button mat-button (click)="changePassword()">Change Password</button>
       </div>
       <div class="main-user_groups">
         <h1>User Groups</h1>
@@ -35,7 +35,7 @@
       </div>
       <div class="action cameras">
         <mat-icon>videocam</mat-icon>
-        <span>{{cameras.length}} cameras owned</span>
+        <span>{{cameraCount}} cameras owned</span>
       </div>
       <div class="action groups">
         <mat-icon>group</mat-icon>

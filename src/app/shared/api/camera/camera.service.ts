@@ -8,16 +8,11 @@ import { CameraBean } from './camera.bean';
 @Injectable({providedIn: 'root'})
 export class CameraService {
 
-  constructor(private client: HttpClient, private userService: UserService) {
-    this.cameras = [];
-  }
-
   private static readonly CAMERAS_PATH = environment.serverUrl + '/v1/cameras';
-
   private cameras: CameraModel[];
 
-  private static cameraPath(cameraId: string): string {
-    return this.CAMERAS_PATH + '/' + cameraId;
+  constructor(private client: HttpClient, private userService: UserService) {
+    this.cameras = [];
   }
 
   static mapFromBean(bean: CameraBean): CameraModel {
@@ -30,8 +25,8 @@ export class CameraService {
       new Date(bean.lastUpload));
   }
 
-  private generateAuthHeaders(): HttpHeaders {
-    return new HttpHeaders({'authorization': 'Token ' + this.userService.getToken()});
+  private static cameraPath(cameraId: string): string {
+    return this.CAMERAS_PATH + '/' + cameraId;
   }
 
   claimCamera(cameraId: string): Promise<boolean> {
@@ -83,5 +78,22 @@ export class CameraService {
           throw response.status;
         }
       }).then(camera => CameraService.mapFromBean(camera));
+  }
+
+  deleteCamera(id: string): Promise<void> {
+    return this.client.delete(CameraService.cameraPath(id), {
+      observe: 'response',
+      headers: this.generateAuthHeaders()
+    }).toPromise().then(response => {
+      if (response.status === 204) {
+        return Promise.resolve();
+      } else {
+        throw response.status;
+      }
+    });
+  }
+
+  private generateAuthHeaders(): HttpHeaders {
+    return new HttpHeaders({'authorization': 'Token ' + this.userService.getToken()});
   }
 }

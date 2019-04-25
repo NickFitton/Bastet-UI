@@ -1,38 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { UserModel } from '../../shared/api/user/user.model';
+import { Component } from '@angular/core';
 import { GroupModel } from '../../shared/api/group/group.model';
-import { CameraModel } from '../../shared/api/camera/camera.model';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { ChangePasswordComponent } from '../../dialog/change-password/change-password.component';
+import { UserDependantComponent } from '../../shared/component/user-dependant.component';
+import { UserService } from '../../shared/api/user/user.service';
+import { Router } from '@angular/router';
+import { GroupService } from '../../shared/api/group/group.service';
+import { CameraService } from '../../shared/api/camera/camera.service';
+import { ChangePasswordConfig } from '../../dialog/change-password/change-password.config';
 
 @Component({
   selector: 'app-user-settings',
   templateUrl: './user-settings.component.html',
   styleUrls: ['./user-settings.component.styl']
 })
-export class UserSettingsComponent implements OnInit {
-  user: UserModel;
+export class UserSettingsComponent extends UserDependantComponent {
   groups: GroupModel[];
-  cameras: CameraModel[];
-  changesMade: boolean;
+  cameraCount: number;
 
   firstName: string;
   lastName: string;
   email: string;
 
-  constructor(private dialog: MatDialog) {
-    this.user = new UserModel('your_uuid', 'test', 'user', 'test@account.com', '1234', new Date(2016, 3, 22));
-    this.cameras = [];
+  constructor(dialog: MatDialog, userService: UserService, private groupService: GroupService, private cameraService: CameraService, router: Router, snackBar: MatSnackBar) {
+    super(userService, router, dialog, snackBar);
     this.groups = [];
-
-    this.changesMade = false;
   }
 
-  ngOnInit() {
+  inInit(): Promise<void> {
+    return super.inInit().then(() => {
+      this.firstName = this.user.getFirstName();
+      this.lastName = this.user.getLastName();
+      this.email = this.user.getEmail();
+
+      return this.groupService.getUserGroups();
+    }).then(userGroups => {
+      this.groups = userGroups;
+      return this.cameraService.getOwnedCameras();
+    }).then(cameras => {
+      this.cameraCount = cameras.filter(camera => camera.isOwnedBy(this.user.getId())).length;
+    });
   }
 
   changePassword() {
-    this.dialog.open(ChangePasswordComponent);
+    this.dialog.open(ChangePasswordComponent, {
+      data: new ChangePasswordConfig(this.user.getId())
+    });
+  }
+
+  saveDetails() {
   }
 
 }

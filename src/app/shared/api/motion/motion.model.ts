@@ -10,15 +10,11 @@ export class MotionModel {
   private updatedAt: Date;
   private fileExists: boolean;
   private imageEntities: EntityModel[];
+  private image: string;
 
-  constructor(id: string,
-  entryTime: Date,
-  exitTime: Date,
-  imageTime: Date,
-  createdAt: Date,
-  updatedAt: Date,
-  fileExists: boolean,
-  imageEntities: EntityModel[]) {
+  constructor(
+    id: string, entryTime: Date, exitTime: Date, imageTime: Date, createdAt: Date,
+    updatedAt: Date, fileExists: boolean, imageEntities: EntityModel[]) {
     this.id = id;
     this.entryTime = entryTime;
     this.exitTime = exitTime;
@@ -31,26 +27,41 @@ export class MotionModel {
 
   getId(): string {
     return this.id;
-}
+  }
+
   getEntryTime(): Date {
     return this.entryTime;
-}
+  }
+
   getExitTime(): Date {
     return this.exitTime;
-}
+  }
+
   getImageTime(): Date {
     return this.imageTime;
-}
+  }
+
   getCreatedAt(): Date {
     return this.createdAt;
-}
+  }
+
   getUpdatedAt(): Date {
     return this.updatedAt;
-}
+  }
+
   getFileExists(): boolean {
     return this.fileExists;
-}
+  }
+
   getImageEntities(): EntityModel[] {
     return this.imageEntities;
-}
+  }
+
+  getImage(): string {
+    return this.image;
+  }
+
+  setImage(image: string): void {
+    this.image = image;
+  }
 }

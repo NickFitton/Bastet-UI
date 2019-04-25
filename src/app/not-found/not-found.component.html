@@ -1,10 +1,11 @@
-<app-toolbar>
-  <div class="content">
+<app-toolbar pageName="Dashboard" [firstName]="user !== null ? user.getFirstName() : null">
+  <div class="page_content column">
     <h1>This page isn't available</h1>
     <h2>The link you followed may be broken, or the page may have been removed.</h2>
-    <div class="options" fxLayoutGap="8px">
+    <div class="options row" fxLayoutGap="8px">
       <div *ngFor="let option of options; let last = last" fxLayoutGap="8px">
-        <span class="option" (click)="optionClicked(option)">{{option.value}}</span>
+        <span class="option" *ngIf="option.isRoutable()" [routerLink]="option.getLink()">{{option.getValue()}}</span>
+        <span class="option" *ngIf="!option.isRoutable()" ><a [href]="option.getLink()">{{option.getValue()}}</a></span>
         <span *ngIf="!last">·</span>
       </div>
     </div>

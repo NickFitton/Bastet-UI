@@ -1,33 +1,17 @@
 @import "../../../styles.styl"
 
 .content
-  display flex
-  flex-flow column nowrap
   padding 16px
-  background-color $color-light-gray
-  section
-    padding 16px
-    background-color $color-light-gray
-    app-box
-      span
-        text-align center
+  min-height "calc(100vh - %s)" % $toolbar-height
+  background #f4f4f4
 
-.large_content
-  width 80%
-  -webkit-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
-  -moz-box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
-  box-shadow: 0 0 10px 0 rgba(125, 125, 125, 0.75);
+.collection
+  justify-content flex-start
+  align-items flex-start
 
-.small_content
-  .title
-    display flex
-    flex-flow column nowrap
-    justify-content center
-  .status
-    display flex
-    flex-flow row nowrap
-    justify-content center
-  width 100%
-.row
-  display flex
-  flex-direction row
+app-box
+  justify-content center
+  align-items center
+  margin 8px
+  span
+    text-align center
