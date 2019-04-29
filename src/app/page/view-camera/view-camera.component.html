@@ -13,7 +13,8 @@
           </mat-form-field>
         </form>
         <div class="title-right" fxLayoutGap="8px" *ngIf="camera.isOwnedBy(user.getId())">
-          <button *ngIf="!changingName" mat-flat-button (click)="changingName = !changingName" class="primary">
+          <button *ngIf="!changingName" mat-flat-button (click)="changingName = !changingName"
+                  class="primary">
             {{camera.getId() === camera.getName()? 'Give Camera Name' : 'Change Camera Name'}}
           </button>
           <button *ngIf="changingName" mat-button (click)="cancelNameChange()" class="secondary">
@@ -29,48 +30,65 @@
       </div>
     </div>
 
-    <div class="camera-info row" *ngIf="!cameraNotFound">
-      <section class="left" *ngIf="camera">
+    <div class="camera-info column" *ngIf="!cameraNotFound">
 
-        <div class="status" fxLayoutGap="4px">
-          <mat-icon [ngClass]="camera.isActive() ? 'green' : 'red'">{{camera.isActive() ? 'check_circle' : 'warning'}}
-          </mat-icon>
-          <h3>{{camera.isActive() ? 'Active' : 'Inactive'}}</h3>
-        </div>
+
+      <section class="metadata">
         <div>
-          <div>
-            <mat-form-field>
-              <mat-select [(ngModel)]="timeframe" placeholder="Select timeframe" (selectionChange)="timeframeChanged()">
-                <mat-option value="day">Day</mat-option>
-                <mat-option value="week">Week</mat-option>
-                <mat-option value="month">Month</mat-option>
-                <mat-option value="quarter">Quarter</mat-option>
-                <mat-option value="year">Year</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <span *ngIf="retrievedMotion">Recorded Entities: {{retrievedMotion.length}}</span>
+          <div class="status" fxLayoutGap="4px">
+            <mat-icon [ngClass]="camera.isActive() ? 'green' : 'red'">
+              {{camera.isActive() ? 'check_circle' : 'warning'}}
+            </mat-icon>
+            <h3>{{camera.isActive() ? 'Active' : 'Inactive'}}</h3>
           </div>
-        </div>
-        <div class="photos">
-          <img class="captured-entity" *ngFor="let motion of retrievedMotion" [src]="motion.getImage()"
-               (click)="presentImage(motion)">
-        </div>
-        <div class="active">
+          <mat-form-field>
+            <mat-select [(ngModel)]="timeframe" placeholder="Select timeframe"
+                        (selectionChange)="timeframeChanged()">
+              <mat-option value="day">Day</mat-option>
+              <mat-option value="week">Week</mat-option>
+              <mat-option value="month">Month</mat-option>
+              <mat-option value="quarter">Quarter</mat-option>
+              <mat-option value="year">Year</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <p *ngIf="retrievedMotion">Recorded Entities: {{retrievedMotion.length}}</p>
           <p>Registered at: {{camera.getCreatedAt().toLocaleString()}}</p>
           <p>Last active: {{camera.getLastActive().toLocaleString()}}</p>
         </div>
+        <div class="right" *ngIf="retrievedMotion.length > 0">
+          <h3>Activity</h3>
+          <app-graph [data]="activityData"></app-graph>
+        </div>
       </section>
-      <section class="right" *ngIf="retrievedMotion">
-        <h3>Activity</h3>
-        <app-graph [data]="activityData">
 
-        </app-graph>
+      <section class="images">
+
+        <mat-accordion *ngIf="hourOrganisedData.length > 0">
+          <mat-expansion-panel *ngFor="let group of hourOrganisedData" (opened)="triggerPhotoLoad(group)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{generatePanelTitle(group[0].getImageTime())}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <img
+                *ngFor="let motion of group"
+                class="captured-entity"
+                height="256px"
+                [src]="motion.getImage()"
+                (click)="presentImage(motion)">
+          </mat-expansion-panel>
+        </mat-accordion>
+        <div *ngIf="hourOrganisedData.length === 0" class="column space-around">
+          <mat-spinner></mat-spinner>
+          <span>Loading Image Data</span>
+        </div>
       </section>
     </div>
     <div *ngIf="cameraNotFound" class="not-found column">
       <h1>Camera Not Found</h1>
       <h2>It looks like the camera you're looking for doesn't exist</h2>
-      <p>If you believe this to be inaccurate or the issue persists, please contact us on <a href="mailto:support@nfitton.com">support@nfitton.com</a>.</p>
+      <p>If you believe this to be inaccurate or the issue persists, please contact us on <a
+          href="mailto:support@nfitton.com">support@nfitton.com</a>.</p>
     </div>
   </div>
 </app-toolbar>

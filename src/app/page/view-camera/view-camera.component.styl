@@ -45,14 +45,10 @@
   justify-content center
   align-items center
 
-.photos
-  img
-    max-width 300px
-    margin 8px
-    cursor pointer
-    &:hover
-      max-width 316px
-      margin 0
+img
+  margin 4px
+  cursor pointer
+  max-width 100%
 
 .camera-info
   .left, .right
@@ -65,3 +61,21 @@
   display flex
   justify-content center
   align-items center
+
+.space-between
+  justify-content space-between
+  align-items center
+
+.space-around
+  display flex
+  flex-flow column nowrap
+  flow-grow 1
+  justify-content space-around
+  align-items center
+
+.metadata
+  display flex
+  flex-flow row wrap
+  justify-content space-between
+  align-items center
+  padding-bottom 32px
