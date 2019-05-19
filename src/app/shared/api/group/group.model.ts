@@ -1,9 +1,9 @@
 export class GroupModel {
-  private readonly id: string;
-  private readonly name: string;
-  private readonly ownedBy: string;
-  private readonly members: string[];
-  private readonly cameras: string[];
+  public readonly id: string;
+  public readonly name: string;
+  public readonly ownedBy: string;
+  public readonly members: string[];
+  public readonly cameras: string[];
 
   constructor(
     id: string,

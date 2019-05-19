@@ -31,8 +31,8 @@ export class StatisticsComponent extends UserDependantComponent {
     router: Router,
     dialog: MatDialog,
     snackBar: MatSnackBar,
-    private cameraService: CameraService,
-    private motionService: MotionService) {
+    public cameraService: CameraService,
+    public motionService: MotionService) {
     super(userService, router, dialog, snackBar);
     this.selectedMeasurement = 'Frequency';
     this.selectedTimeframe = 'day';

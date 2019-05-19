@@ -14,7 +14,7 @@ export class CreateGroupComponent implements OnInit {
   errorMessage: string;
   showHelp = false;
 
-  constructor(public dialogRef: MatDialogRef<CreateGroupComponent>, private groupService: GroupService) {
+  constructor(public dialogRef: MatDialogRef<CreateGroupComponent>, public groupService: GroupService) {
     this.groupName = '';
     this.step = 1;
   }

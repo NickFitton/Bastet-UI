@@ -1,9 +1,9 @@
 export class EntityModel {
-  private readonly x: number;
-  private readonly y: number;
-  private readonly width: number;
-  private readonly height: number;
-  private type: string;
+  public readonly x: number;
+  public readonly y: number;
+  public readonly width: number;
+  public readonly height: number;
+  public type: string;
 
   constructor(x: number, y: number, width: number, height: number, type: string) {
     this.x = x;

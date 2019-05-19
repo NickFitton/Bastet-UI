@@ -11,19 +11,19 @@ import { GroupService } from '../../shared/api/group/group.service';
 })
 export class LeaveGroupComponent {
 
-  private errorMessage: string;
+  public errorMessage: string;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: LeaveGroupConfig,
-    private dialogRef: MatDialogRef<LeaveGroupComponent>,
-    private groupService: GroupService) {
+    @Inject(MAT_DIALOG_DATA) public data: LeaveGroupConfig,
+    public dialogRef: MatDialogRef<LeaveGroupComponent>,
+    public groupService: GroupService) {
   }
 
   public nameCase(string: string): string {
     return StringUtil.toNameCase(string);
   }
 
-  private confirm(): void {
+  public confirm(): void {
     let promise;
     if (this.data.leaveType.toLowerCase() === 'delete') {
       promise = this.groupService.deleteGroup(this.data.groupId);

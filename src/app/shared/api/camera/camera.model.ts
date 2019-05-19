@@ -1,10 +1,10 @@
 export class CameraModel {
-  private readonly id: string;
-  private readonly ownedBy: string;
-  private readonly name: string;
-  private readonly createdAt: Date;
-  private readonly updatedAt: Date;
-  private readonly lastActive: Date;
+  public readonly id: string;
+  public readonly ownedBy: string;
+  public readonly name: string;
+  public readonly createdAt: Date;
+  public readonly updatedAt: Date;
+  public readonly lastActive: Date;
 
   constructor(
     id: string,

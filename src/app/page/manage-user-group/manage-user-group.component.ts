@@ -25,16 +25,16 @@ export class ManageUserGroupComponent extends UserDependantComponent {
   cameras: CameraModel[];
   members: UserModel[];
   groupNotFound: boolean;
-  private readonly groupId: string;
-  private group: GroupModel;
+  public readonly groupId: string;
+  public group: GroupModel;
 
   constructor(
     router: Router,
     userService: UserService,
     dialog: MatDialog,
     snackBar: MatSnackBar,
-    private cameraService: CameraService,
-    private groupService: GroupService) {
+    public cameraService: CameraService,
+    public groupService: GroupService) {
     super(userService, router, dialog, snackBar);
     this.user = null;
     this.group = null;

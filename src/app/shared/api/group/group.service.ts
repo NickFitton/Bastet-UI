@@ -12,10 +12,10 @@ import { UserModel } from '../user/user.model';
 })
 export class GroupService {
 
-  constructor(private client: HttpClient, private userService: UserService) {
+  constructor(public client: HttpClient, public userService: UserService) {
   }
 
-  private static readonly BASE_GROUP_URL = environment.serverUrl + '/v1/groups';
+  public static readonly BASE_GROUP_URL = environment.serverUrl + '/v1/groups';
 
   groups: GroupModel[];
 
@@ -29,11 +29,11 @@ export class GroupService {
     );
   }
 
-  private static getGroupUrl(groupId: string): string {
+  public static getGroupUrl(groupId: string): string {
     return this.BASE_GROUP_URL + '/' + groupId;
   }
 
-  private static getMemberUrl(groupId: string, userId?: string): string {
+  public static getMemberUrl(groupId: string, userId?: string): string {
     const memeberUrl = this.getGroupUrl(groupId) + '/member';
     if (userId !== undefined) {
       return memeberUrl + '/' + userId;
@@ -41,11 +41,11 @@ export class GroupService {
     return memeberUrl;
   }
 
-  private static getOwnerUrl(groupId: string, newOwnerId: string): string {
+  public static getOwnerUrl(groupId: string, newOwnerId: string): string {
     return this.getGroupUrl(groupId) + '/owner/' + newOwnerId;
   }
 
-  private static getGroupCameraUrl(groupId: string, cameraId?: string): string {
+  public static getGroupCameraUrl(groupId: string, cameraId?: string): string {
     const cameraUrl = this.getGroupUrl(groupId) + '/cameras';
     if (cameraId) {
       return cameraUrl + '/' + cameraId;
@@ -53,7 +53,7 @@ export class GroupService {
     return cameraUrl;
   }
 
-  private getUserGroupsUrl(userId: string) {
+  public getUserGroupsUrl(userId: string) {
     return environment.serverUrl + '/v1/users/' + userId + '/groups';
   }
 

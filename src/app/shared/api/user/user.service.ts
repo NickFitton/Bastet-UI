@@ -11,11 +11,11 @@ import { RequestUtil } from '../request.util';
 export class UserService {
 
   loggedInUser: UserModel;
-  private readonly TOKEN = 'auth_token';
-  private readonly BASE_USER_URL = environment.serverUrl + '/v1/users';
-  private readonly USER_LOGIN_URL = environment.serverUrl + '/v1/login/user';
+  public readonly TOKEN = 'auth_token';
+  public readonly BASE_USER_URL = environment.serverUrl + '/v1/users';
+  public readonly USER_LOGIN_URL = environment.serverUrl + '/v1/login/user';
 
-  constructor(private client: HttpClient) {
+  constructor(public client: HttpClient) {
   }
 
   static mapFromBean(bean: UserBean): UserModel {
@@ -158,11 +158,11 @@ export class UserService {
     return sessionStorage.getItem(this.TOKEN);
   }
 
-  private getUserUrl(userId: string): string {
+  public getUserUrl(userId: string): string {
     return this.BASE_USER_URL + '/' + userId;
   }
 
-  private generateAuthHeaders(): HttpHeaders {
+  public generateAuthHeaders(): HttpHeaders {
     return new HttpHeaders({'authorization': 'Token ' + this.getToken()});
   }
 }

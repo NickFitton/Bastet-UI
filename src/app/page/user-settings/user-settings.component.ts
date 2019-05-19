@@ -22,7 +22,7 @@ export class UserSettingsComponent extends UserDependantComponent {
   lastName: string;
   email: string;
 
-  constructor(dialog: MatDialog, userService: UserService, private groupService: GroupService, private cameraService: CameraService, router: Router, snackBar: MatSnackBar) {
+  constructor(dialog: MatDialog, userService: UserService, public groupService: GroupService, public cameraService: CameraService, router: Router, snackBar: MatSnackBar) {
     super(userService, router, dialog, snackBar);
     this.groups = [];
   }

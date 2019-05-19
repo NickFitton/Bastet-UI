@@ -1,8 +1,8 @@
 import { CameraModel } from '../../shared/api/camera/camera.model';
 
 export class CameraToGroupsConfig {
-  private readonly cameraPromise: Promise<CameraModel[]>;
-  private readonly groupId: string;
+  public readonly cameraPromise: Promise<CameraModel[]>;
+  public readonly groupId: string;
 
 
   constructor(cameraPromise: Promise<CameraModel[]>, groupId: string) {

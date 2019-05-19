@@ -11,7 +11,32 @@ import { AnimationStatic } from '../../shared/animation.static';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.styl'],
   animations: [
-    AnimationStatic.fadeGrowIn,
+    trigger('fadeGrowIn', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          width: '0px',
+          height: '0px'
+        }),
+        animate('0.5s', style({
+          opacity: 1,
+          width: '*',
+          height: '*'
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          opacity: 1,
+          width: '*',
+          height: '*'
+        }),
+        animate('0.5s', style({
+          opacity: 0,
+          width: '0px',
+          height: '0px'
+        })),
+      ])
+    ]),
     trigger('loadLogo', [
       transition(':enter', [
         style({
@@ -51,8 +76,8 @@ import { AnimationStatic } from '../../shared/animation.static';
 })
 export class LoginComponent implements OnInit {
 
-  private readonly LOGIN_STATE: string = 'Login';
-  private readonly REGISTER_STATE: string = 'Register';
+  public readonly LOGIN_STATE: string = 'Login';
+  public readonly REGISTER_STATE: string = 'Register';
 
   firstName: string;
   lastName: string;
@@ -63,7 +88,7 @@ export class LoginComponent implements OnInit {
   state: string;
   nextState: string;
 
-  constructor(private router: Router, private userService: UserService) {
+  constructor(public router: Router, public userService: UserService) {
     this.state = this.LOGIN_STATE;
     this.nextState = this.REGISTER_STATE;
     this.errorMessages = [];

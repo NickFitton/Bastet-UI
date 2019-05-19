@@ -1,7 +1,7 @@
 export class NotFoundModel {
-  private readonly value: string;
-  private readonly link: string;
-  private readonly routable: boolean;
+  public readonly value: string;
+  public readonly link: string;
+  public readonly routable: boolean;
 
   constructor(value: string, link: string, routable: boolean) {
     this.value = value;

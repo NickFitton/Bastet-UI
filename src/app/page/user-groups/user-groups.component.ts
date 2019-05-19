@@ -9,13 +9,35 @@ import { UserService } from '../../shared/api/user/user.service';
 import { GroupService } from '../../shared/api/group/group.service';
 import { CreateGroupComponent } from '../../dialog/create-group/create-group.component';
 import { AnimationStatic } from '../../shared/animation.static';
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-user-groups',
   templateUrl: './user-groups.component.html',
   styleUrls: ['./user-groups.component.styl'],
   animations: [
-    AnimationStatic.fadeInRight
+    trigger('fadeInRight', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          transform: 'translateY(50px)'
+        }),
+        animate('1s', style({
+          opacity: 1,
+          transform: 'none'
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          opacity: 1,
+          transform: 'none'
+        }),
+        animate('1s', style({
+          opacity: 0,
+          transform: 'translateY(50px)'
+        })),
+      ])
+    ])
   ]
 })
 export class UserGroupsComponent extends UserDependantComponent {
@@ -28,7 +50,7 @@ export class UserGroupsComponent extends UserDependantComponent {
     userService: UserService,
     dialog: MatDialog,
     snackBar: MatSnackBar,
-    private groupService: GroupService) {
+    public groupService: GroupService) {
     super(userService, router, dialog, snackBar);
     this.adminGroups = [];
     this.otherGroups = [];
