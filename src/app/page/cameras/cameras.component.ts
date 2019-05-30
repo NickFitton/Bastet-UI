@@ -7,13 +7,35 @@ import { CameraService } from '../../shared/api/camera/camera.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddCameraComponent } from '../../dialog/add-camera/add-camera.component';
 import { AnimationStatic } from '../../shared/animation.static';
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-cameras',
   templateUrl: './cameras.component.html',
   styleUrls: ['./cameras.component.styl'],
   animations: [
-    AnimationStatic.fadeInRight
+    trigger('fadeInRight', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          transform: 'translateY(50px)'
+        }),
+        animate('1s', style({
+          opacity: 1,
+          transform: 'none'
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          opacity: 1,
+          transform: 'none'
+        }),
+        animate('1s', style({
+          opacity: 0,
+          transform: 'translateY(50px)'
+        })),
+      ])
+    ])
   ]
 })
 export class CamerasComponent extends UserDependantComponent {
@@ -21,7 +43,7 @@ export class CamerasComponent extends UserDependantComponent {
   ownedCameras: CameraModel[];
   sharedCameras: CameraModel[];
 
-  constructor(router: Router, userService: UserService, dialog: MatDialog, snackBar: MatSnackBar, private cameraService: CameraService) {
+  constructor(router: Router, userService: UserService, dialog: MatDialog, snackBar: MatSnackBar, public cameraService: CameraService) {
     super(userService, router, dialog, snackBar);
     this.ownedCameras = [];
     this.sharedCameras = [];

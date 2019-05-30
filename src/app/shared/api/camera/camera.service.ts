@@ -8,10 +8,10 @@ import { CameraBean } from './camera.bean';
 @Injectable({providedIn: 'root'})
 export class CameraService {
 
-  private static readonly CAMERAS_PATH = environment.serverUrl + '/v1/cameras';
-  private cameras: CameraModel[];
+  public static readonly CAMERAS_PATH = environment.serverUrl + '/v1/cameras';
+  public cameras: CameraModel[];
 
-  constructor(private client: HttpClient, private userService: UserService) {
+  constructor(public client: HttpClient, public userService: UserService) {
     this.cameras = [];
   }
 
@@ -25,7 +25,7 @@ export class CameraService {
       new Date(bean.lastUpload));
   }
 
-  private static cameraPath(cameraId: string): string {
+  public static cameraPath(cameraId: string): string {
     return this.CAMERAS_PATH + '/' + cameraId;
   }
 
@@ -93,7 +93,7 @@ export class CameraService {
     });
   }
 
-  private generateAuthHeaders(): HttpHeaders {
+  public generateAuthHeaders(): HttpHeaders {
     return new HttpHeaders({'authorization': 'Token ' + this.userService.getToken()});
   }
 }

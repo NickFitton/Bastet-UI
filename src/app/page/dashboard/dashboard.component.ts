@@ -14,13 +14,35 @@ import { AnimationStatic } from '../../shared/animation.static';
 import { MotionService } from '../../shared/api/motion/motion.service';
 import { MotionModel } from '../../shared/api/motion/motion.model';
 import { GraphModel } from '../../shared/component/graph/graph.model';
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.styl'],
   animations: [
-    AnimationStatic.fadeInRight
+    trigger('fadeInRight', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          transform: 'translateY(50px)'
+        }),
+        animate('1s', style({
+          opacity: 1,
+          transform: 'none'
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          opacity: 1,
+          transform: 'none'
+        }),
+        animate('1s', style({
+          opacity: 0,
+          transform: 'translateY(50px)'
+        })),
+      ])
+    ])
   ]
 })
 export class DashboardComponent extends UserDependantComponent {
@@ -38,9 +60,9 @@ export class DashboardComponent extends UserDependantComponent {
     userService: UserService,
     dialog: MatDialog,
     snackBar: MatSnackBar,
-    private cameraService: CameraService,
-    private groupService: GroupService,
-    private motionService: MotionService) {
+    public cameraService: CameraService,
+    public groupService: GroupService,
+    public motionService: MotionService) {
     super(userService, router, dialog, snackBar);
     this.user = null;
     this.frequencyGraphData = new GraphModel('Today\'s Events per Camera', 'ColumnChart', ['Time'],

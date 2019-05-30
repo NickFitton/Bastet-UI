@@ -15,7 +15,7 @@ export class AddCameraComponent implements OnInit {
   errorMessage: string;
   showHelp = false;
 
-  constructor(public dialogRef: MatDialogRef<AddCameraComponent>, private cameraService: CameraService) {
+  constructor(public dialogRef: MatDialogRef<AddCameraComponent>, public cameraService: CameraService) {
     this.cameraId = '';
     this.step = 1;
   }

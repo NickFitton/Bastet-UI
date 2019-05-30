@@ -12,7 +12,7 @@ export class RemoveCameraComponent implements OnInit {
   typedCameraId: string;
   cameraId: string;
 
-  constructor(public dialogRef: MatDialogRef<RemoveCameraComponent>, private groupService: GroupService, private cameraService: CameraService,
+  constructor(public dialogRef: MatDialogRef<RemoveCameraComponent>, public groupService: GroupService, public cameraService: CameraService,
               @Inject(MAT_DIALOG_DATA) public config: { cameraId: string, groupId: string }) {
     this.cameraId = config.cameraId.split('-')[0];
     this.typedCameraId = '';

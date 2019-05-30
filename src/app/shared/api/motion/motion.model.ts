@@ -2,15 +2,15 @@ import { EntityModel } from './entity.model';
 
 export class MotionModel {
 
-  private id: string;
-  private entryTime: Date;
-  private exitTime: Date;
-  private imageTime: Date;
-  private createdAt: Date;
-  private updatedAt: Date;
-  private fileExists: boolean;
-  private imageEntities: EntityModel[];
-  private image: string;
+  public id: string;
+  public entryTime: Date;
+  public exitTime: Date;
+  public imageTime: Date;
+  public createdAt: Date;
+  public updatedAt: Date;
+  public fileExists: boolean;
+  public imageEntities: EntityModel[];
+  public image: string;
 
   constructor(
     id: string, entryTime: Date, exitTime: Date, imageTime: Date, createdAt: Date,

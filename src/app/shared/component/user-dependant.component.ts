@@ -7,18 +7,17 @@ import { LeaveGroupComponent } from '../../dialog/leave-group/leave-group.compon
 import { LeaveGroupConfig } from '../../dialog/leave-group/leave-group-config.model';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { StatusEnum } from './status.enum';
-import { Status } from 'tslint/lib/runner';
 import { RemoveCameraComponent } from '../../dialog/remove-camera/remove-camera.component';
 
 export abstract class UserDependantComponent implements OnInit {
 
-  protected user: UserModel;
-  protected userService: UserService;
-  protected router: Router;
-  protected dialog: MatDialog;
-  protected snackBar: MatSnackBar;
+  public user: UserModel;
+  public userService: UserService;
+  public router: Router;
+  public dialog: MatDialog;
+  public snackBar: MatSnackBar;
 
-  protected constructor(
+  public constructor(
     userService: UserService,
     router: Router,
     dialog: MatDialog,

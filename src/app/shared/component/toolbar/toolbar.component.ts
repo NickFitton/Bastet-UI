@@ -9,7 +9,24 @@ import { animate, style, transition, trigger } from '@angular/animations';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.styl'],
   animations: [
-    AnimationStatic.fadeIn,
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({
+          opacity: 0
+        }),
+        animate('0.5s', style({
+          opacity: 1
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          opacity: 1
+        }),
+        animate('0.5s', style({
+          opacity: 0
+        })),
+      ])
+    ]),
     trigger('topIn', [
       transition(':enter', [
         style({
@@ -42,7 +59,7 @@ export class ToolbarComponent implements OnInit {
 
   settingsHidden: boolean;
 
-  constructor(private router: Router, private userService: UserService) {
+  constructor(public router: Router, public userService: UserService) {
     this.toolbarLinks = [
       new Link('Dashboard', '/dashboard', 'home'),
       new Link('Cameras', '/cameras', 'videocam'),

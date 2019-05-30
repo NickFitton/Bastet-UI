@@ -1,10 +1,10 @@
 export class UserModel {
-  private readonly id: string;
-  private readonly firstName: string;
-  private readonly lastName: string;
-  private readonly email: string;
-  private readonly password: string;
-  private readonly createdAt: Date;
+  public readonly id: string;
+  public readonly firstName: string;
+  public readonly lastName: string;
+  public readonly email: string;
+  public readonly password: string;
+  public readonly createdAt: Date;
 
   constructor(
     id: string,

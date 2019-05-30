@@ -15,7 +15,7 @@ export class ShareCameraComponent implements OnInit {
   errorMessage: string;
   showHelp = false;
 
-  constructor(public dialogRef: MatDialogRef<ShareCameraComponent>, private cameraService: CameraService) {
+  constructor(public dialogRef: MatDialogRef<ShareCameraComponent>, public cameraService: CameraService) {
     this.cameraId = '';
     this.step = 1;
   }

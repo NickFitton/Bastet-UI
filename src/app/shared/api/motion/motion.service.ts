@@ -11,10 +11,10 @@ import { Observable } from 'rxjs';
 @Injectable({providedIn: 'root'})
 export class MotionService {
 
-  constructor(private client: HttpClient, private userService: UserService) {
+  constructor(public client: HttpClient, public userService: UserService) {
 
   }
-  private readonly GET_MOTION_URL = environment.serverUrl + '/v1/motion';
+  public readonly GET_MOTION_URL = environment.serverUrl + '/v1/motion';
 
   static mapToEntityModel(entity: EntityBean): EntityModel {
     return new EntityModel(entity.x,
@@ -42,11 +42,11 @@ export class MotionService {
     );
   }
 
-  private generateAuthHeaders(): HttpHeaders {
+  public generateAuthHeaders(): HttpHeaders {
     return new HttpHeaders({'authorization': 'Token ' + this.userService.getToken()});
   }
 
-  private cameraMotionUrl(cameraIds: string[], from: Date, to: Date) {
+  public cameraMotionUrl(cameraIds: string[], from: Date, to: Date) {
     return this.GET_MOTION_URL + '?cameras=' + cameraIds.join(',') + '&from=' + from.toISOString() + '&to=' + to.toISOString();
   }
 

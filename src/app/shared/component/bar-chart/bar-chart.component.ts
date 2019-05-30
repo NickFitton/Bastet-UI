@@ -10,29 +10,29 @@ import { DateEnum } from './date.enum';
 })
 export class BarChartComponent {
 
-  private yLabelCount = 5;
-  private yLabelRange = Array.from({length: this.yLabelCount + 1}, (value, key) => key);
-  private svgWidth = 800;
-  private svgHeight = 450;
-  private padding = {
+  public yLabelCount = 5;
+  public yLabelRange = Array.from({length: this.yLabelCount + 1}, (value, key) => key);
+  public svgWidth = 800;
+  public svgHeight = 450;
+  public padding = {
     top: 10,
     bottom: 40,
     left: 35,
     right: 5
   };
-  private chartWidth = this.svgWidth - (this.padding.left + this.padding.right);
-  private chartHeight = this.svgHeight - (this.padding.top + this.padding.bottom);
-  private barWidth = this.chartWidth;
-  private givenValues: DataPointModel[];
-  private maxVal: number;
-  private minVal: number;
-  private barPadding = 3;
+  public chartWidth = this.svgWidth - (this.padding.left + this.padding.right);
+  public chartHeight = this.svgHeight - (this.padding.top + this.padding.bottom);
+  public barWidth = this.chartWidth;
+  public givenValues: DataPointModel[];
+  public maxVal: number;
+  public minVal: number;
+  public barPadding = 3;
 
   // @Input()
-  private readonly sortBy: DataOrderModel;
+  public readonly sortBy: DataOrderModel;
 
   @Input()
-  private format: DateEnum;
+  public format: DateEnum;
 
   @Input()
   set values(points: DataPointModel[]) {

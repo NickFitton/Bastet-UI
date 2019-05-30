@@ -1,7 +1,7 @@
 export class DataPointModel {
   readonly value: Date;
-  private y: number;
-  private x: number;
+  public y: number;
+  public x: number;
 
   constructor(value: Date) {
     this.value = value;

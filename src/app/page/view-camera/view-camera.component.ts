@@ -18,25 +18,25 @@ import {HttpErrorResponse} from '@angular/common/http';
 })
 export class ViewCameraComponent extends UserDependantComponent {
 
-  private camera: CameraModel;
-  private cameraId: string;
-  private cameraName: string;
-  private timeframe: string;
-  private retrievedMotion: MotionModel[];
-  private hourOrganisedData: MotionModel[][];
-  private images: string[];
-  private activityData: GraphModel;
-  private cameraNotFound: boolean;
+  public camera: CameraModel;
+  public cameraId: string;
+  public cameraName: string;
+  public timeframe: string;
+  public retrievedMotion: MotionModel[];
+  public hourOrganisedData: MotionModel[][];
+  public images: string[];
+  public activityData: GraphModel;
+  public cameraNotFound: boolean;
 
-  private changingName: boolean;
+  public changingName: boolean;
 
   constructor(
       userService: UserService,
       router: Router,
       dialog: MatDialog,
       snackBar: MatSnackBar,
-      private cameraService: CameraService,
-      private motionService: MotionService) {
+      public cameraService: CameraService,
+      public motionService: MotionService) {
     super(userService, router, dialog, snackBar);
     this.cameraNotFound = false;
     this.timeframe = 'day';
