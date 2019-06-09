@@ -1,20 +1,19 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
-import { CameraModel } from '../../shared/api/camera/camera.model';
-import { UserModel } from '../../shared/api/user/user.model';
+import { MatDialog, MatSnackBar, MatTabChangeEvent } from '@angular/material';
 import { Router } from '@angular/router';
-import { UserService } from '../../shared/api/user/user.service';
-import { CameraService } from '../../shared/api/camera/camera.service';
-import { MatDialog, MatSnackBar } from '@angular/material';
 import { AddCameraComponent } from '../../dialog/add-camera/add-camera.component';
-import { UserDependantComponent } from '../../shared/component/user-dependant.component';
+import { CreateGroupComponent } from '../../dialog/create-group/create-group.component';
+import { CameraModel } from '../../shared/api/camera/camera.model';
+import { CameraService } from '../../shared/api/camera/camera.service';
 import { GroupModel } from '../../shared/api/group/group.model';
 import { GroupService } from '../../shared/api/group/group.service';
-import { CreateGroupComponent } from '../../dialog/create-group/create-group.component';
-import { AnimationStatic } from '../../shared/animation.static';
-import { MotionService } from '../../shared/api/motion/motion.service';
 import { MotionModel } from '../../shared/api/motion/motion.model';
+import { MotionService } from '../../shared/api/motion/motion.service';
+import { UserModel } from '../../shared/api/user/user.model';
+import { UserService } from '../../shared/api/user/user.service';
 import { GraphModel } from '../../shared/component/graph/graph.model';
-import {animate, style, transition, trigger} from "@angular/animations";
+import { UserDependantComponent } from '../../shared/component/user-dependant.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -42,6 +41,28 @@ import {animate, style, transition, trigger} from "@angular/animations";
           transform: 'translateY(50px)'
         })),
       ])
+    ]),
+    trigger('easeInOut', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          height: 0,
+        }),
+        animate('0.25s', style({
+          opacity: '*',
+          height: '*',
+        }))
+      ]),
+      transition(':leave', [
+        style({
+          opacity: '*',
+          height: '*',
+        }),
+        animate('0.25s', style({
+          opacity: 0,
+          height: 0,
+        }))
+      ])
     ])
   ]
 })
@@ -51,34 +72,35 @@ export class DashboardComponent extends UserDependantComponent {
   groups: GroupModel[];
   user: UserModel;
   cameraNames: string[];
+  selected: number;
 
   frequencyGraphData: GraphModel;
   entityTypeData: GraphModel;
 
   constructor(
-    router: Router,
-    userService: UserService,
-    dialog: MatDialog,
-    snackBar: MatSnackBar,
-    public cameraService: CameraService,
-    public groupService: GroupService,
-    public motionService: MotionService) {
+      router: Router,
+      userService: UserService,
+      dialog: MatDialog,
+      snackBar: MatSnackBar,
+      public cameraService: CameraService,
+      public groupService: GroupService,
+      public motionService: MotionService) {
     super(userService, router, dialog, snackBar);
     this.user = null;
     this.frequencyGraphData = new GraphModel('Today\'s Events per Camera', 'ColumnChart', ['Time'],
-      {
-        hAxis: {
-          title: 'Time'
-        },
-        vAxis: {
-          title: 'Event Frequency'
-        },
-        isStacked: true,
-      }, '45%', 250);
+        {
+          hAxis: {
+            title: 'Time'
+          },
+          vAxis: {
+            title: 'Event Frequency'
+          },
+          isStacked: true,
+        }, '45%', 250);
     this.entityTypeData = new GraphModel('Entity Frequency Today', 'PieChart', null,
-      {
-        title: 'Entity Frequency Today'
-      }, '45%', 250);
+        {
+          title: 'Entity Frequency Today'
+        }, '45%', 250);
     this.entityTypeData.data = [
       ['Work', 11],
       ['Eat', 2],
@@ -125,13 +147,13 @@ export class DashboardComponent extends UserDependantComponent {
   inInit(): Promise<void> {
     super.inInit();
     return this.cameraService.getOwnedCameras()
-      .then(cameras => {
-        this.updateCameras(this.cameras, cameras);
-        return this.groupService.getUserGroups();
-      }).then(groups => {
-        this.updateGroups(this.groups, groups);
-        return Promise.resolve();
-      });
+        .then(cameras => {
+          this.updateCameras(this.cameras, cameras);
+          return this.groupService.getUserGroups();
+        }).then(groups => {
+          this.updateGroups(this.groups, groups);
+          return Promise.resolve();
+        });
   }
 
   onClickCamera(cameraId: string, navigation: string): void {
@@ -141,13 +163,13 @@ export class DashboardComponent extends UserDependantComponent {
   addCamera() {
     const cameraDialog = this.dialog.open(AddCameraComponent, {width: '50%'});
     cameraDialog.afterClosed().toPromise().then(
-      () => this.inInit());
+        () => this.inInit());
   }
 
   createGroup() {
     const groupDialog = this.dialog.open(CreateGroupComponent, {width: '50%'});
     groupDialog.afterClosed().toPromise().then(
-      () => this.inInit());
+        () => this.inInit());
   }
 
   updateGroups(existing: GroupModel[], newGroups: GroupModel[]): void {
@@ -237,16 +259,16 @@ export class DashboardComponent extends UserDependantComponent {
 
     const keyCount = new Map<string, number>();
     motionData.map(motion => motion.getImageEntities())
-      .map(entities => entities.map(entity => entity.getType()))
-      .forEach(entities => {
-        entities.forEach(entity => {
-          if (!keyCount.has(entity)) {
-            keyCount.set(entity, 1);
-          } else {
-            keyCount.set(entity, keyCount.get(entity) + 1);
-          }
+        .map(entities => entities.map(entity => entity.getType()))
+        .forEach(entities => {
+          entities.forEach(entity => {
+            if (!keyCount.has(entity)) {
+              keyCount.set(entity, 1);
+            } else {
+              keyCount.set(entity, keyCount.get(entity) + 1);
+            }
+          });
         });
-      });
 
     const arrayized = [];
     for (const key of Array.from(keyCount.keys())) {
@@ -261,5 +283,9 @@ export class DashboardComponent extends UserDependantComponent {
     }
     this.frequencyGraphData.data = DashboardComponent.hashDataToColumnData(this.frequencyGraphData.hashData);
     this.frequencyGraphData.columnNames.push(cameraName);
+  }
+
+  tabChanged(selected: MatTabChangeEvent): void {
+    this.selected = selected.index;
   }
 }

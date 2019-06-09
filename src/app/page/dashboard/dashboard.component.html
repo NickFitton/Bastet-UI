@@ -1,64 +1,99 @@
-<app-toolbar pageName="Dashboard" [firstName]="user !== null ? user.getFirstName() : null">
-  <div class="page_content column">
-    <section>
-      <h1>Activity</h1>
-      <div class="row graphs" fxLayoutGap="32px" *ngIf="cameras && cameras.length > 0">
-        <app-graph [data]="frequencyGraphData"></app-graph>
-        <app-graph *ngIf="entityTypeData.data.length > 1" [data]="entityTypeData"></app-graph>
+<mat-tab-group (selectedTabChange)="tabChanged($event)" mat-stretch-tabs>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <div class="tab_format">
+        <mat-icon>bar_chart</mat-icon>
+        <span @easeInOut class="tab_title" *ngIf="selected==0">Activity</span>
       </div>
+    </ng-template>
+    <div class="row graphs" fxLayoutGap="32px" *ngIf="cameras && cameras.length > 0">
+      <app-graph [data]="frequencyGraphData"></app-graph>
+      <app-graph *ngIf="entityTypeData.data.length > 1" [data]="entityTypeData"></app-graph>
+    </div>
+    <div class="column align_center fill_size">
+      <mat-icon class="large-icon">warning</mat-icon>
       <span *ngIf="!cameras || cameras.length == 0">Add cameras to your account to see activity.</span>
-    </section>
-    <section>
-      <div class="row title">
-        <h1>Cameras</h1>
-        <button mat-flat-button (click)="router.navigate(['/cameras'])">
-          View Cameras
-        </button>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label class="column">
+      <div class="tab_format">
+        <mat-icon>videocam</mat-icon>
+        <span @easeInOut class="tab_title" *ngIf="selected==1">Cameras</span>
       </div>
-      <div class="row collection" *ngIf="cameras">
-        <app-box @fadeInRight class="column" *ngFor="let camera of cameras"
-                 [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"
-                 [link]="'/cameras/' + camera.getId()" (clicked)="onClickCamera(camera.getId(), $event)">
-          <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">
-            {{camera.isOwnedBy(user.getId()) ? 'person' : 'group'}}
-          </mat-icon>
-          <span>{{camera.getName()}}</span>
-        </app-box>
-        <app-box @fadeInRight *ngIf="cameras.length === 0" class="camera-setup" (clicked)="addCamera()">
-          <mat-icon>video_call</mat-icon>
-          <span>Set up a</span>
-          <span>new camera</span>
-        </app-box>
+    </ng-template>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label class="column">
+      <div class="tab_format">
+        <mat-icon>group</mat-icon>
+        <span @easeInOut class="tab_title" *ngIf="selected==2">Groups</span>
       </div>
-      <div class="row collection" *ngIf="!cameras">
-        <mat-spinner></mat-spinner>
-      </div>
-    </section>
-    <section>
-      <div class="row title">
-        <h1>Groups</h1>
-        <button mat-flat-button (click)="router.navigate(['/groups'])">
-          View Groups
-        </button>
-      </div>
-      <div class="row collection" *ngIf="groups">
-        <app-box @fadeInRight class="column" *ngFor="let group of groups"
-                 [options]="group.getAdmin() === user.getId() ? 'Manage Delete' : 'View Leave'"
-                 [link]="'/groups/' + group.getId()" (clicked)="groupClicked($event, group.getId())">
-          <mat-icon>group</mat-icon>
-          <span>{{group.getName()}}</span>
-          <span *ngIf="group.getMembers().length > 1">
-            Members: {{group.getMembers() !== undefined ? 'You + ' + (group.getMembers().length - 1) + ' others' : 'You'}}
-          </span>
-        </app-box>
-        <app-box @fadeInRight *ngIf="groups.length === 0" class="camera-setup" (clicked)="createGroup()">
-          <mat-icon>group_add</mat-icon>
-          <span>Create a group</span>
-        </app-box>
-      </div>
-      <div class="row collection" *ngIf="!groups">
-        <mat-spinner></mat-spinner>
-      </div>
-    </section>
-  </div>
-</app-toolbar>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+
+<!--<app-toolbar pageName="Dashboard" [firstName]="user !== null ? user.getFirstName() : null">-->
+<!--  <div class="page_content column">-->
+<!--    <section>-->
+<!--      <h1>Activity</h1>-->
+<!--      <div class="row graphs" fxLayoutGap="32px" *ngIf="cameras && cameras.length > 0">-->
+<!--        <app-graph [data]="frequencyGraphData"></app-graph>-->
+<!--        <app-graph *ngIf="entityTypeData.data.length > 1" [data]="entityTypeData"></app-graph>-->
+<!--      </div>-->
+<!--      <span *ngIf="!cameras || cameras.length == 0">Add cameras to your account to see activity.</span>-->
+<!--    </section>-->
+<!--    <section>-->
+<!--      <div class="row title">-->
+<!--        <h1>Cameras</h1>-->
+<!--        <button mat-flat-button (click)="router.navigate(['/cameras'])">-->
+<!--          View Cameras-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div class="row collection" *ngIf="cameras">-->
+<!--        <app-box @fadeInRight class="column" *ngFor="let camera of cameras"-->
+<!--                 [options]="camera.isOwnedBy(user.getId()) ? 'View Delete' : 'View Manage'"-->
+<!--                 [link]="'/cameras/' + camera.getId()" (clicked)="onClickCamera(camera.getId(), $event)">-->
+<!--          <mat-icon [matTooltip]="camera.getOwnedStatement(user.getId())" matTooltipPosition="above">-->
+<!--            {{camera.isOwnedBy(user.getId()) ? 'person' : 'group'}}-->
+<!--          </mat-icon>-->
+<!--          <span>{{camera.getName()}}</span>-->
+<!--        </app-box>-->
+<!--        <app-box @fadeInRight *ngIf="cameras.length === 0" class="camera-setup" (clicked)="addCamera()">-->
+<!--          <mat-icon>video_call</mat-icon>-->
+<!--          <span>Set up a</span>-->
+<!--          <span>new camera</span>-->
+<!--        </app-box>-->
+<!--      </div>-->
+<!--      <div class="row collection" *ngIf="!cameras">-->
+<!--        <mat-spinner></mat-spinner>-->
+<!--      </div>-->
+<!--    </section>-->
+<!--    <section>-->
+<!--      <div class="row title">-->
+<!--        <h1>Groups</h1>-->
+<!--        <button mat-flat-button (click)="router.navigate(['/groups'])">-->
+<!--          View Groups-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div class="row collection" *ngIf="groups">-->
+<!--        <app-box @fadeInRight class="column" *ngFor="let group of groups"-->
+<!--                 [options]="group.getAdmin() === user.getId() ? 'Manage Delete' : 'View Leave'"-->
+<!--                 [link]="'/groups/' + group.getId()" (clicked)="groupClicked($event, group.getId())">-->
+<!--          <mat-icon>group</mat-icon>-->
+<!--          <span>{{group.getName()}}</span>-->
+<!--          <span *ngIf="group.getMembers().length > 1">-->
+<!--            Members: {{group.getMembers() !== undefined ? 'You + ' + (group.getMembers().length - 1) + ' others' : 'You'}}-->
+<!--          </span>-->
+<!--        </app-box>-->
+<!--        <app-box @fadeInRight *ngIf="groups.length === 0" class="camera-setup" (clicked)="createGroup()">-->
+<!--          <mat-icon>group_add</mat-icon>-->
+<!--          <span>Create a group</span>-->
+<!--        </app-box>-->
+<!--      </div>-->
+<!--      <div class="row collection" *ngIf="!groups">-->
+<!--        <mat-spinner></mat-spinner>-->
+<!--      </div>-->
+<!--    </section>-->
+<!--  </div>-->
+<!--</app-toolbar>-->

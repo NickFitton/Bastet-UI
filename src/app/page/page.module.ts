@@ -6,7 +6,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppRoutingModule} from '../app-routing.module';
 import {MaterialModule} from '../shared/material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatExpansionModule, MatNativeDateModule, MatProgressSpinnerModule} from '@angular/material';
+import { MatExpansionModule, MatNativeDateModule, MatProgressSpinnerModule, MatTabsModule } from '@angular/material';
 import {LoginComponent} from './login/login.component';
 import {UserGroupsComponent} from './user-groups/user-groups.component';
 import {CamerasComponent} from './cameras/cameras.component';
@@ -57,6 +57,7 @@ import {GoogleChartsModule} from 'angular-google-charts';
     MatNativeDateModule,
     MatExpansionModule,
     MatProgressSpinnerModule,
+    MatTabsModule,
     GoogleChartsModule.forRoot(),
   ]
 })
